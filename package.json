@@ -2,6 +2,7 @@
   "name": "aos-battle-plans",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "konva": "4.1.0",
     "react": "16.12.0",
