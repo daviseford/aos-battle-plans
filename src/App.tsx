@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stage, Layer, Text } from 'react-konva'
+import { Stage, Layer, Text, Group } from 'react-konva'
 import './App.css'
 import CircleBase from 'components/circleBase'
 
@@ -15,9 +15,11 @@ const App = () => {
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
         <Text text="For Darren Watson's eyes only" offsetX={-20} offsetY={-20} />
-        {[...Array(5)].map((x, i) => (
-          <CircleBase key={i} x={30 + xSpacing * i} y={50} radius={radius} />
-        ))}
+        <Group draggable={true}>
+          {[...Array(5)].map((x, i) => (
+            <CircleBase key={i} x={30 + xSpacing * i} y={50} radius={radius} />
+          ))}
+        </Group>
       </Layer>
     </Stage>
   )

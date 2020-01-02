@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Circle } from 'react-konva'
-import Konva from 'konva'
+
+const DRAGGABLE = 'red'
+const NON_DRAGGABLE = 'green'
 
 interface ICircleBase {
   x: number
@@ -9,11 +11,22 @@ interface ICircleBase {
 }
 
 const CircleBase: React.FC<ICircleBase> = ({ x, y, radius }) => {
-  const [color, setColor] = useState('green')
-  // TODO it may be unnecessary to keep this in state
+  // TODO use useReducer for all of these updates
+  const [color, setColor] = useState(NON_DRAGGABLE)
+  const [draggable, setDraggable] = useState(false)
+  // TODO it may be unnecessary to keep pos in state
   const [pos, setPos] = useState({ x, y })
 
-  const onDragEnd = e => {
+  const handleClick = useCallback(
+    e => {
+      const newColor = color === NON_DRAGGABLE ? DRAGGABLE : NON_DRAGGABLE
+      setColor(newColor)
+      setDraggable(newColor === DRAGGABLE)
+    },
+    [color]
+  )
+
+  const handleDragEnd = e => {
     setPos({
       x: e.target.x(),
       y: e.target.y(),
@@ -27,9 +40,9 @@ const CircleBase: React.FC<ICircleBase> = ({ x, y, radius }) => {
       radius={radius}
       fill={color}
       shadowBlur={5}
-      onClick={() => setColor(Konva.Util.getRandomColor())}
-      onDragEnd={onDragEnd}
-      draggable={true}
+      onClick={handleClick}
+      // onDragEnd={onDragEnd}
+      draggable={draggable}
     />
   )
 }
