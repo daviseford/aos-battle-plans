@@ -22,19 +22,22 @@ const App = () => {
   debugger
 
   return (
-    <div className="" style={{ backgroundColor: 'black', paddingBottom: '50px' }}>
-      <Stage width={canvasX} height={canvasY} style={{ backgroundColor: 'white' }}>
-        <Layer>
-          <Text text="For Darren Watson's eyes only" offsetX={-20} offsetY={-20} />
-          <Group draggable={true}>
-            {[...Array(5)].map((x, i) => (
-              <CircleBase key={i} x={30 + xSpacing * i} y={50} radius={radius} />
-            ))}
-          </Group>
-        </Layer>
-      </Stage>
-      Bottom of Stage
-    </div>
+    <>
+      <div className="container bg-info text-white">Sample toolbar color</div>
+      <div className="bg-dark text-white pb-5">
+        <Stage width={canvasX} height={canvasY} style={{ backgroundColor: 'white' }}>
+          <Layer>
+            <Text text="For Darren Watson's eyes only" offsetX={-20} offsetY={-20} />
+            <Group draggable={true}>
+              {[...Array(5)].map((x, i) => (
+                <CircleBase key={i} x={30 + xSpacing * i} y={50} radius={radius} />
+              ))}
+            </Group>
+          </Layer>
+        </Stage>
+        Bottom of Stage
+      </div>
+    </>
   )
 }
 
