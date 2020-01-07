@@ -1,9 +1,8 @@
 import React from 'react'
-import { Stage, Layer, Group } from 'react-konva'
+import { Stage } from 'react-konva'
+
+// CSS
 import './App.css'
-import { mmToInches } from 'utils/measurements'
-import CircleBase from 'components/CircleBase'
-import ScenarioLinesComponent from 'components/ScenarioLines'
 
 // Redux
 import { createStore, combineReducers } from 'redux'
@@ -12,6 +11,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
 import { canvas, scenario } from 'ducks'
+import CanvasContentContainer from 'components/CanvasContentContainer'
 
 const persistConfig = {
   key: 'root',
@@ -46,18 +46,7 @@ const App = () => {
   // Inches to mm
   const [tableX, tableY] = [72, 48]
   const canvasX = window.innerWidth
-  const conversionPercentX = tableX / canvasX
-
   const canvasY = canvasX * (tableY / tableX)
-
-  const baseSize25 = mmToInches(25) / conversionPercentX
-  const baseSize32 = mmToInches(32) / conversionPercentX
-  const baseSize50 = mmToInches(50) / conversionPercentX
-
-  const cohesion = 1 / conversionPercentX
-
-  // Diameter + cohesion
-  const getXSpacing = (radius: number) => radius * 2 + cohesion
 
   return (
     <>
@@ -66,35 +55,7 @@ const App = () => {
         <Stage width={canvasX} height={canvasY} style={{ backgroundColor: 'white' }}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <Layer>
-                <Group draggable={true}>
-                  {[...Array(5)].map((x, i) => (
-                    <CircleBase key={i} x={30 + getXSpacing(baseSize25) * i} y={50} radius={baseSize25} />
-                  ))}
-                </Group>
-                <Group draggable={true}>
-                  {[...Array(5)].map((x, i) => (
-                    <CircleBase
-                      key={i}
-                      x={30 + getXSpacing(baseSize32) * i}
-                      y={50 + getXSpacing(baseSize32)}
-                      radius={baseSize32}
-                    />
-                  ))}
-                </Group>
-                <Group draggable={true}>
-                  {[...Array(5)].map((x, i) => (
-                    <CircleBase
-                      key={i}
-                      x={30 + getXSpacing(baseSize50) * i}
-                      y={50 + getXSpacing(baseSize32) + getXSpacing(baseSize50)}
-                      radius={baseSize50}
-                    />
-                  ))}
-                </Group>
-              </Layer>
-
-              <ScenarioLinesComponent />
+              <CanvasContentContainer />
             </PersistGate>
           </Provider>
         </Stage>

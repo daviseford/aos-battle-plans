@@ -18,8 +18,12 @@ interface ICCC {
 const CanvasContentContainerComponent: React.FC<ICCC> = props => {
   const { canvas, setCanvas } = props
 
+  // Handle window resizes and initial sizing
   useEffect(() => {
-    setCanvas(window.innerWidth)
+    const handleResize = () => setCanvas(window.innerWidth)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [setCanvas])
 
   if (!canvas) return <></>
