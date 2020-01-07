@@ -62,16 +62,15 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           y={canvasHeight - divider / 2}
         />
 
-        {/* Edge of play area (top)  */}
-        <Line points={[sideOffset, 0, canvasWidth - sideOffset, 0]} stroke="red" />
-
         {/* This line is created when you need to deploy X inches from the top of the table  */}
-        {playerOffset > 0 && (
+        {playerOffset > 0 ? (
           <Line points={[sideOffset, playerOffset, canvasWidth - sideOffset, playerOffset]} stroke="red" />
+        ) : (
+          <Line points={[sideOffset, 0, canvasWidth, 0]} stroke="red" />
         )}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
-        {sideOffset > 0 && (
+        {sideOffset > 0 ? (
           <>
             <Line points={[sideOffset, playerOffset, sideOffset, divider - dividerOffset]} stroke="red" />
 
@@ -84,6 +83,12 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
               ]}
               stroke="red"
             />
+          </>
+        ) : (
+          <>
+            {' '}
+            <Line points={[0, 0, 0, divider]} stroke="red" />
+            <Line points={[canvasWidth, 0, canvasWidth, divider]} stroke="red" />
           </>
         )}
 
