@@ -38,6 +38,7 @@ const CircleBase: React.FC<ICircleBase> = ({ x, y, radius }) => {
       x={pos.x}
       y={pos.y}
       radius={radius}
+      perfectDrawEnabled={false}
       fill={color}
       shadowBlur={5}
       onClick={handleClick}

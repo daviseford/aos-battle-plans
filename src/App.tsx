@@ -3,6 +3,7 @@ import { Stage, Layer, Text, Group } from 'react-konva'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import CircleBase from 'components/circleBase'
+import { mmToInches } from 'utils/measurements'
 
 const App = () => {
   // Stage is a div container
@@ -16,8 +17,14 @@ const App = () => {
 
   const canvasY = canvasX * (tableY / tableX)
 
-  const radius = 12.5
-  const xSpacing = radius * 3
+  const baseSize25 = mmToInches(25) / conversionPercentX
+  const baseSize32 = mmToInches(32) / conversionPercentX
+  const baseSize50 = mmToInches(50) / conversionPercentX
+
+  const cohesion = 1 / conversionPercentX
+
+  // Diameter + cohesion
+  const getXSpacing = (radius: number) => radius * 2 + cohesion
 
   debugger
 
@@ -30,7 +37,27 @@ const App = () => {
             <Text text="For Darren Watson's eyes only" offsetX={-20} offsetY={-20} />
             <Group draggable={true}>
               {[...Array(5)].map((x, i) => (
-                <CircleBase key={i} x={30 + xSpacing * i} y={50} radius={radius} />
+                <CircleBase key={i} x={30 + getXSpacing(baseSize25) * i} y={50} radius={baseSize25} />
+              ))}
+            </Group>
+            <Group draggable={true}>
+              {[...Array(5)].map((x, i) => (
+                <CircleBase
+                  key={i}
+                  x={30 + getXSpacing(baseSize32) * i}
+                  y={50 + getXSpacing(baseSize32)}
+                  radius={baseSize32}
+                />
+              ))}
+            </Group>
+            <Group draggable={true}>
+              {[...Array(5)].map((x, i) => (
+                <CircleBase
+                  key={i}
+                  x={30 + getXSpacing(baseSize50) * i}
+                  y={50 + getXSpacing(baseSize32) + getXSpacing(baseSize50)}
+                  radius={baseSize50}
+                />
               ))}
             </Group>
           </Layer>
