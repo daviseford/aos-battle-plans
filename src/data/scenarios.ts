@@ -1,7 +1,16 @@
+import {
+  TABLE_HEIGHT_FULL,
+  TABLE_WIDTH_FULL,
+  TABLE_WIDTH_HALF,
+  TABLE_HEIGHT_HALF,
+  TABLE_WIDTH_QUARTER,
+  TABLE_HEIGHT_QUARTER,
+} from './table'
+
 export interface ISetupRestrictions {
   fromDividerInches: number
   fromSideInches: number
-  fromTopInches: number
+  fromPlayerInches: number
 }
 
 export interface IObjective {
@@ -20,19 +29,35 @@ export interface IScenario {
 
 const Scenarios: IScenario[] = [
   {
+    name: `Battle For The Pass`,
+    matchedPlay: true,
+    orientation: `vertical`,
+    setupRestrictions: {
+      fromDividerInches: 12,
+      fromSideInches: 0,
+      fromPlayerInches: 0,
+    },
+    objectives: [
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF - TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF + TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_FULL - TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+    ],
+  },
+  {
     name: `Total Commitment`,
     matchedPlay: true,
     orientation: `horizontal`,
     setupRestrictions: {
       fromDividerInches: 9,
       fromSideInches: 0,
-      fromTopInches: 0,
+      fromPlayerInches: 0,
     },
     objectives: [
-      { x: 12, y: 12 },
-      { x: 60, y: 12 },
-      { x: 12, y: 36 },
-      { x: 60, y: 36 },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_FULL - TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_FULL - TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_FULL - TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_FULL - TABLE_HEIGHT_QUARTER },
     ],
   },
   {
@@ -42,15 +67,15 @@ const Scenarios: IScenario[] = [
     setupRestrictions: {
       fromDividerInches: 9,
       fromSideInches: 0,
-      fromTopInches: 0,
+      fromPlayerInches: 0,
     },
     objectives: [
-      { x: 12, y: 12 },
-      { x: 36, y: 12 },
-      { x: 60, y: 12 },
-      { x: 12, y: 36 },
-      { x: 36, y: 36 },
-      { x: 60, y: 36 },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_FULL - TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_FULL - TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_FULL - TABLE_HEIGHT_QUARTER },
+      { x: TABLE_WIDTH_FULL - TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_FULL - TABLE_HEIGHT_QUARTER },
     ],
   },
 ]

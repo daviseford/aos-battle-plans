@@ -32,7 +32,7 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row bg-info text-center justify-content-center">
           <div className="col-6">
             <Select onChange={handleScenarioChange} options={options} placeholder={Scenarios[0].name} />

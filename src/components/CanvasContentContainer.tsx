@@ -7,8 +7,9 @@ import CircleBase from 'components/CircleBase'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import { TABLE_WIDTH } from 'data/table'
+import { TABLE_WIDTH_FULL } from 'data/table'
 import HorizontalScenarioLines from 'components/ScenarioLines/Horizontal'
+import VerticalScenarioLines from './ScenarioLines/Vertical'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -20,7 +21,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   if (!canvas) return <></>
 
-  const conversionPercentX = TABLE_WIDTH / canvas.canvasWidth
+  const conversionPercentX = TABLE_WIDTH_FULL / canvas.canvasWidth
   const baseSize25 = mmToInches(25) / conversionPercentX
   const baseSize32 = mmToInches(32) / conversionPercentX
   const baseSize50 = mmToInches(50) / conversionPercentX
@@ -30,12 +31,12 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
   // Diameter + cohesion
   const getXSpacing = (radius: number) => radius * 2 + cohesion
 
-  // const ScenarioLines = scenario.orientation === 'horizontal' ? HorizontalScenarioLines : VerticalScenarioLines
   const ScenarioLines =
-    scenario.orientation === 'horizontal' ? HorizontalScenarioLines : HorizontalScenarioLines
+    scenario.orientation === 'horizontal' ? HorizontalScenarioLines : VerticalScenarioLines
 
   return (
     <>
+      <ScenarioLines />
       <Layer>
         <Group draggable={true}>
           {[...Array(5)].map((x, i) => (
@@ -63,8 +64,6 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
           ))}
         </Group>
       </Layer>
-
-      <ScenarioLines />
     </>
   )
 }

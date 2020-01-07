@@ -6,13 +6,14 @@ import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
+import { TABLE_WIDTH_HALF, TABLE_WIDTH_QUARTER } from 'data/table'
 
 interface IScenarioLines {
   scenario: IScenario
   canvas: ICanvasDimensions | null
 }
 
-const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
+const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
   const { canvas, scenario } = props
 
   const [lineInfo, setLineInfo] = useState<ILineInfo | null>(null)
@@ -35,25 +36,25 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
                 as: [x1, y1, x2, y2, x3, y3]. 
                 */}
 
-        {/* Edge of play area (top)  */}
-        <Line points={[sideOffset, 0, canvasWidth - sideOffset, 0]} stroke="red" />
+        {/* Edge of play area (player side) */}
+        <Line points={[1, 0, 1, canvasHeight]} stroke="red" />
 
-        {/* This line is created when you need to deploy X inches from the top of the table  */}
+        {/* This line is created when you need to deploy X inches from the player side of the table  */}
         {playerOffset > 0 && (
-          <Line points={[sideOffset, playerOffset, canvasWidth - sideOffset, playerOffset]} stroke="red" />
+          <Line points={[playerOffset, sideOffset, playerOffset, canvasHeight - sideOffset]} stroke="red" />
         )}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
         {sideOffset > 0 && (
           <>
-            <Line points={[sideOffset, playerOffset, sideOffset, divider - dividerOffset]} stroke="red" />
+            <Line points={[playerOffset, sideOffset, divider - dividerOffset, sideOffset]} stroke="red" />
 
             <Line
               points={[
-                canvasWidth - sideOffset,
                 playerOffset,
-                canvasWidth - sideOffset,
+                canvasHeight - sideOffset,
                 divider - dividerOffset,
+                canvasHeight - sideOffset,
               ]}
               stroke="red"
             />
@@ -63,18 +64,18 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         {/* This line is created when you need to deploy X inches from the midline  */}
         {dividerOffset > 0 && (
           <Line
-            points={[sideOffset, divider - dividerOffset, canvasWidth - sideOffset, divider - dividerOffset]}
+            points={[divider - dividerOffset, sideOffset, divider - dividerOffset, canvasHeight - sideOffset]}
             stroke="red"
           />
         )}
 
-        {/* This layer is the dividing line */}
-        <Line points={[0, divider, canvasWidth, divider]} stroke="black" />
+        {/* This is the dividing line */}
+        <Line points={[divider, 0, divider, canvasHeight]} stroke="black" />
 
         {/* Greyed out enemy area */}
-        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+        <Rect x={divider + 1} y={0} width={canvasWidth} height={canvasHeight} fill={'grey'} />
 
-        {/* Letting the user know this is greyed out */}
+        {/* Letting the user know why this is greyed out */}
         <Text
           align={'center'}
           fill="white"
@@ -82,9 +83,9 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           fontSize={36}
           fontStyle={'normal'}
           stroke="white"
-          text={'ENEMY AREA'}
-          x={canvasWidth / 2 - 100}
-          y={canvasHeight - divider / 2}
+          text={'ENEMY\nAREA'}
+          x={canvasWidth - TABLE_WIDTH_QUARTER / canvas.conversionPercentX}
+          y={canvasHeight / 2}
         />
       </Layer>
     </>
@@ -97,6 +98,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const HorizontalScenarioLines = connect(mapStateToProps, null)(HorizontalScenarioLinesComponent)
+const VerticalScenarioLines = connect(mapStateToProps, null)(VerticalScenarioLinesComponent)
 
-export default HorizontalScenarioLines
+export default VerticalScenarioLines
