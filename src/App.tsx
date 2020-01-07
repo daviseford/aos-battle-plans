@@ -1,83 +1,68 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Stage } from 'react-konva'
 
 // CSS
 import './App.css'
 
 // Redux
-import { createStore, combineReducers } from 'redux'
-import { Provider } from 'react-redux'
-import { persistStore, persistReducer } from 'redux-persist'
+import { store, persistor } from 'index'
+import { Provider, connect } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import storage from 'redux-persist/lib/storage'
-import { canvas, scenario } from 'ducks'
+import { canvas, selectors } from 'ducks'
+
+// Elements
 import CanvasContentContainer from 'components/CanvasContentContainer'
-import { TABLE_HEIGHT, TABLE_WIDTH } from 'data/table'
-
-const persistConfig = {
-  key: 'root',
-  storage: storage,
-}
-
-const rootReducer = combineReducers({
-  canvas: canvas.reducer,
-  scenario: scenario.reducer,
-})
-
-const pReducer = persistReducer(persistConfig, rootReducer)
-
-export const store = createStore(
-  pReducer,
-  //@ts-ignore
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
-
-const persistor = persistStore(store)
-
-// Uncomment to purge cache
-persistor.purge()
+import TopToolbar from 'components/TopToolbar'
+import { ICanvasDimensions } from 'types/canvas'
+import { IStore } from 'types/store'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
  * https://github.com/konvajs/react-konva/issues/311
  */
 
-const App = () => {
-  // Stage is a div container
-  // Layer is actual canvas element (so you may have several canvases in the stage)
-  // And then we have canvas shapes inside the Layer
+interface IApp {
+  canvas: ICanvasDimensions
+  setCanvas: (payload: number) => void
+}
 
-  const [stage, setStage] = useState({
-    canvasWidth: window.innerWidth,
-    canvasHeight: window.innerWidth * (TABLE_HEIGHT / TABLE_WIDTH),
-  })
+const AppComponent: React.FC<IApp> = props => {
+  const { canvas, setCanvas } = props
 
+  // Handle window resizes and initial sizing
   useEffect(() => {
-    const handleResize = () =>
-      setStage({
-        canvasWidth: window.innerWidth,
-        canvasHeight: window.innerWidth * (TABLE_HEIGHT / TABLE_WIDTH),
-      })
-
+    const handleResize = () => setCanvas(window.innerWidth)
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [setStage])
+  }, [setCanvas])
+
+  if (!canvas) return <></>
 
   return (
     <>
-      <div className="container bg-info text-white text-center">Total Commitment</div>
-      <div className="bg-dark text-white pb-5">
-        <Stage width={stage.canvasWidth} height={stage.canvasHeight} style={{ backgroundColor: 'white' }}>
+      <TopToolbar />
+
+      <div className="stage">
+        <Stage width={canvas.canvasWidth} height={canvas.canvasHeight} style={{ backgroundColor: 'white' }}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <CanvasContentContainer />
             </PersistGate>
           </Provider>
         </Stage>
-        Bottom of Stage
       </div>
+
+      <div className="bg-dark text-white text-center py-2">Bottom of Stage</div>
     </>
   )
 }
+
+const mapStateToProps = (state: IStore, ownProps) => ({
+  ...ownProps,
+  canvas: selectors.getCanvas(state),
+})
+
+const App = connect(mapStateToProps, { setCanvas: canvas.actions.setCanvas })(AppComponent)
 
 export default App

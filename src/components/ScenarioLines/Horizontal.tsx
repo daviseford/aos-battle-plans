@@ -2,59 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { Layer, Line } from 'react-konva'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
-import { selectors, scenario } from 'ducks'
-import Scenarios, { IScenario } from 'data/scenarios'
+import { selectors } from 'ducks'
+import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
+import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
 
 interface IScenarioLines {
-  scenario: IScenario | null
+  scenario: IScenario
   canvas: ICanvasDimensions | null
-  setScenario: (payload: IScenario) => void
 }
 
-interface ILineInfo {
-  dividerY: number
-  sideOffsetX: number
-  dividerOffsetY: number
-  topOffsetY: number
-  canvasWidth: number
-}
-
-const getLineInfo = (canvas: ICanvasDimensions, scenario: IScenario): ILineInfo => {
-  const dividerY = canvas.canvasHeight / 2
-
-  const { setupRestrictions } = scenario
-  const { fromSideInches = 0, fromDividerInches = 0, fromTopInches = 0 } = setupRestrictions
-
-  const sideOffsetX = fromSideInches ? fromSideInches / canvas.conversionPercentX : 0
-  const dividerOffsetY = fromDividerInches ? fromDividerInches / canvas.conversionPercentY : 0
-  const topOffsetY = fromTopInches ? fromTopInches / canvas.conversionPercentY : 0
-
-  return {
-    dividerOffsetY,
-    dividerY,
-    sideOffsetX,
-    topOffsetY,
-    canvasWidth: canvas.canvasWidth,
-  }
-}
-
-const ScenarioLinesComponent: React.FC<IScenarioLines> = props => {
-  const { canvas, scenario, setScenario } = props
+const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
+  const { canvas, scenario } = props
 
   const [lineInfo, setLineInfo] = useState<ILineInfo | null>(null)
 
   useEffect(() => {
-    if (!canvas || !scenario) return
+    if (!canvas) return
     const newLineInfo = getLineInfo(canvas, scenario)
-    console.log(newLineInfo)
     setLineInfo(newLineInfo)
   }, [canvas, scenario])
-
-  if (!scenario) {
-    setScenario(Scenarios[0])
-    return <></>
-  }
 
   if (!canvas || !lineInfo) return <></>
 
@@ -119,8 +86,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const ScenarioLines = connect(mapStateToProps, { setScenario: scenario.actions.setScenario })(
-  ScenarioLinesComponent
-)
+const HorizontalScenarioLines = connect(mapStateToProps, null)(HorizontalScenarioLinesComponent)
 
-export default ScenarioLines
+export default HorizontalScenarioLines

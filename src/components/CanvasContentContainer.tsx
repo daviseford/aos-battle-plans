@@ -1,31 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Layer, Group } from 'react-konva'
-import { selectors, canvas } from 'ducks'
+import { selectors } from 'ducks'
 import { mmToInches } from 'utils/measurements'
 import CircleBase from 'components/CircleBase'
-import ScenarioLinesComponent from 'components/ScenarioLines'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { TABLE_WIDTH } from 'data/table'
+import HorizontalScenarioLines from 'components/ScenarioLines/Horizontal'
 
 interface ICCC {
   canvas: ICanvasDimensions
   scenario: IScenario
-  setCanvas: (payload: number) => void
 }
 
 const CanvasContentContainerComponent: React.FC<ICCC> = props => {
-  const { canvas, setCanvas } = props
-
-  // Handle window resizes and initial sizing
-  useEffect(() => {
-    const handleResize = () => setCanvas(window.innerWidth)
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [setCanvas])
+  const { canvas, scenario } = props
 
   if (!canvas) return <></>
 
@@ -38,6 +29,10 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   // Diameter + cohesion
   const getXSpacing = (radius: number) => radius * 2 + cohesion
+
+  // const ScenarioLines = scenario.orientation === 'horizontal' ? HorizontalScenarioLines : VerticalScenarioLines
+  const ScenarioLines =
+    scenario.orientation === 'horizontal' ? HorizontalScenarioLines : HorizontalScenarioLines
 
   return (
     <>
@@ -69,7 +64,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
         </Group>
       </Layer>
 
-      <ScenarioLinesComponent />
+      <ScenarioLines />
     </>
   )
 }
@@ -80,8 +75,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const CanvasContentContainer = connect(mapStateToProps, { setCanvas: canvas.actions.setCanvas })(
-  CanvasContentContainerComponent
-)
+const CanvasContentContainer = connect(mapStateToProps, null)(CanvasContentContainerComponent)
 
 export default CanvasContentContainer
