@@ -30,10 +30,8 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   return (
     <>
+      <Zones {...lineInfo} />
       <Layer>
-        {/* Greyed out enemy area */}
-        <Rect x={divider + 1} y={0} width={canvasWidth} height={canvasHeight} fill={'grey'} />
-
         {/* Objectives */}
         {objectives.map(({ x, y, label }, i) => (
           <Circle
@@ -47,7 +45,7 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           />
         ))}
 
-        {/* Letting the user know why this is greyed out */}
+        {/* Letting the user know why the enemy area is greyed out */}
         <Text
           align={'center'}
           fill="white"
@@ -59,14 +57,6 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           x={canvasWidth - TABLE_WIDTH_QUARTER / canvas.conversionPercentX}
           y={canvasHeight / 2}
         />
-
-        {/*   If you have three points with x and y coordinates 
-                you should define points property 
-                as: [x1, y1, x2, y2, x3, y3]. 
-                */}
-
-        {/* Edge of play area (player side) */}
-        <Line points={[1, 0, 1, canvasHeight]} stroke="red" />
 
         {/* This line is created when you need to deploy X inches from the player side of the table  */}
         {playerOffset > 0 && (
@@ -100,6 +90,46 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This is the dividing line */}
         <Line points={[divider, 0, divider, canvasHeight]} stroke="black" />
+      </Layer>
+    </>
+  )
+}
+
+/** All of the zones we need to display for the user */
+const Zones: React.FC<ILineInfo> = props => {
+  const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight } = props
+
+  return (
+    <>
+      <Layer>
+        {/* Greyed out enemy area */}
+        <Rect x={divider + 1} y={0} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+
+        {/* Player edge */}
+        {playerOffset > 0 && (
+          <Rect x={0} y={sideOffset} width={playerOffset} height={canvasHeight} fill={'red'} />
+        )}
+
+        {/* Side */}
+        {sideOffset > 0 && (
+          <>
+            {/* Top */}
+            <Rect x={0} y={0} width={divider - dividerOffset} height={sideOffset} fill={'red'} />
+            {/* Bottom */}
+            <Rect
+              x={0}
+              y={canvasHeight - sideOffset}
+              width={divider - dividerOffset}
+              height={sideOffset}
+              fill={'red'}
+            />
+          </>
+        )}
+
+        {/* Divider */}
+        {dividerOffset > 0 && (
+          <Rect x={divider - dividerOffset} y={0} width={dividerOffset} height={canvasHeight} fill={'red'} />
+        )}
       </Layer>
     </>
   )

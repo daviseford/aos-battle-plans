@@ -7,7 +7,6 @@ import CircleBase from 'components/CircleBase'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import { TABLE_WIDTH_FULL } from 'data/table'
 import HorizontalScenarioLines from 'components/ScenarioLines/Horizontal'
 import VerticalScenarioLines from './ScenarioLines/Vertical'
 

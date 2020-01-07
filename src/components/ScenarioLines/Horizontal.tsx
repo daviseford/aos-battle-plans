@@ -29,14 +29,12 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   return (
     <>
+      <Zones {...lineInfo} />
       <Layer>
         {/*   If you have three points with x and y coordinates 
                 you should define points property 
                 as: [x1, y1, x2, y2, x3, y3]. 
                 */}
-
-        {/* Greyed out enemy area */}
-        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
 
         {/* Objectives */}
         {objectives.map(({ x, y, label }, i) => (
@@ -99,6 +97,36 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This layer is the dividing line */}
         <Line points={[0, divider, canvasWidth, divider]} stroke="black" />
+      </Layer>
+    </>
+  )
+}
+
+/** All of the zones we need to display for the user */
+const Zones: React.FC<ILineInfo> = props => {
+  const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight } = props
+
+  return (
+    <>
+      <Layer>
+        {/* Greyed out enemy area */}
+        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+
+        {/* Player edge */}
+        {playerOffset > 0 && <Rect x={0} y={0} width={canvasWidth} height={playerOffset} fill={'red'} />}
+
+        {/* Side */}
+        {sideOffset > 0 && (
+          <>
+            <Rect x={0} y={0} width={sideOffset} height={divider} fill={'red'} />
+            <Rect x={canvasWidth - sideOffset} y={0} width={sideOffset} height={divider} fill={'red'} />
+          </>
+        )}
+
+        {/* Divider */}
+        {dividerOffset > 0 && (
+          <Rect x={0} y={divider - dividerOffset} width={canvasWidth} height={dividerOffset} fill={'red'} />
+        )}
       </Layer>
     </>
   )
