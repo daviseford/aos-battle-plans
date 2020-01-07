@@ -21,12 +21,13 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   if (!canvas) return <></>
 
-  const conversionPercentX = TABLE_WIDTH_FULL / canvas.canvasWidth
-  const baseSize25 = mmToInches(25) / conversionPercentX
-  const baseSize32 = mmToInches(32) / conversionPercentX
-  const baseSize50 = mmToInches(50) / conversionPercentX
+  const baseSize25 = mmToInches(25) / canvas.conversionPercentX / 2
+  const baseSize32 = mmToInches(32) / canvas.conversionPercentX / 2
+  const baseSize50 = mmToInches(50) / canvas.conversionPercentX / 2
 
-  const cohesion = 1 / conversionPercentX
+  console.log(mmToInches(50))
+
+  const cohesion = 1 / canvas.conversionPercentX
 
   // Diameter + cohesion
   const getXSpacing = (radius: number) => radius * 2 + cohesion
