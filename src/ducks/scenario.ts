@@ -10,8 +10,11 @@ export const scenario = createSlice({
   name: 'scenario',
   initialState,
   reducers: {
-    setScenario: (state, action: { payload: IScenario }) => {
-      state.scenario = action.payload
+    /**
+     * Pass in the name of the scenario
+     */
+    setScenario: (state, action: { payload: string }) => {
+      state.scenario = Scenarios.find(x => x.name === action.payload) as IScenario
     },
   },
 })
