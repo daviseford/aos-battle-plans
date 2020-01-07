@@ -2,7 +2,7 @@ import React from 'react'
 import { Stage, Layer, Group } from 'react-konva'
 import './App.css'
 import { mmToInches } from 'utils/measurements'
-import CircleBase from 'components/CircleBase'
+import CircleBase from 'components/CircularBase'
 import ScenarioLinesComponent from 'components/ScenarioLines'
 
 // Redux

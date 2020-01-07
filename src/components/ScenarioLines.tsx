@@ -1,23 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Layer, Line } from 'react-konva'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
-import { selectors, canvas } from 'ducks'
+import { selectors } from 'ducks'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 
 interface IScenarioLines {
   scenario: IScenario | null
   canvas: ICanvasDimensions | null
-  setCanvas: (payload: number) => void
 }
 
 const ScenarioLinesComponent: React.FC<IScenarioLines> = props => {
-  const { canvas, setCanvas } = props
-
-  useEffect(() => {
-    setCanvas(window.innerWidth)
-  }, [setCanvas])
+  const { canvas } = props
 
   if (!canvas) return <></>
 
@@ -41,8 +36,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const ScenarioLines = connect(mapStateToProps, { setCanvas: canvas.actions.setCanvas })(
-  ScenarioLinesComponent
-)
+const ScenarioLines = connect(mapStateToProps, null)(ScenarioLinesComponent)
 
 export default ScenarioLines

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Layer, Group } from 'react-konva'
 import { selectors, canvas } from 'ducks'
 import { mmToInches } from 'utils/measurements'
-import CircleBase from 'components/CircleBase'
+import CircleBase from 'components/CircularBase'
 import ScenarioLinesComponent from 'components/ScenarioLines'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
@@ -12,10 +12,17 @@ import { IStore } from 'types/store'
 interface ICCC {
   canvas: ICanvasDimensions
   scenario: IScenario
+  setCanvas: (payload: number) => void
 }
 
 const CanvasContentContainerComponent: React.FC<ICCC> = props => {
-  const { canvas } = props
+  const { canvas, setCanvas } = props
+
+  useEffect(() => {
+    setCanvas(window.innerWidth)
+  }, [setCanvas])
+
+  if (!canvas) return <></>
 
   const { tableX, canvasX } = canvas
 
