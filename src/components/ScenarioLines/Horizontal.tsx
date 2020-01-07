@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layer, Line, Rect, Text } from 'react-konva'
+import { Layer, Line, Rect, Text, Circle } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors } from 'ducks'
 import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
@@ -25,7 +25,7 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   if (!canvas || !lineInfo) return <></>
 
-  const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight } = lineInfo
+  const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight, objectives } = lineInfo
 
   return (
     <>
@@ -34,6 +34,35 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
                 you should define points property 
                 as: [x1, y1, x2, y2, x3, y3]. 
                 */}
+
+        {/* Greyed out enemy area */}
+        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+
+        {/* Objectives */}
+        {objectives.map(({ x, y, label }, i) => (
+          <Circle
+            x={x}
+            y={y}
+            key={i}
+            radius={3 / canvas.conversionPercentX}
+            draggable={false}
+            stroke="black"
+            fillEnabled={false}
+          />
+        ))}
+
+        {/* Letting the user know this is greyed out */}
+        <Text
+          align={'center'}
+          fill="white"
+          fontFamily={'Calibri'}
+          fontSize={36}
+          fontStyle={'normal'}
+          stroke="white"
+          text={'ENEMY AREA'}
+          x={canvasWidth / 2 - 100}
+          y={canvasHeight - divider / 2}
+        />
 
         {/* Edge of play area (top)  */}
         <Line points={[sideOffset, 0, canvasWidth - sideOffset, 0]} stroke="red" />
@@ -70,22 +99,6 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This layer is the dividing line */}
         <Line points={[0, divider, canvasWidth, divider]} stroke="black" />
-
-        {/* Greyed out enemy area */}
-        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
-
-        {/* Letting the user know this is greyed out */}
-        <Text
-          align={'center'}
-          fill="white"
-          fontFamily={'Calibri'}
-          fontSize={36}
-          fontStyle={'normal'}
-          stroke="white"
-          text={'ENEMY AREA'}
-          x={canvasWidth / 2 - 100}
-          y={canvasHeight - divider / 2}
-        />
       </Layer>
     </>
   )

@@ -16,6 +16,7 @@ export interface ISetupRestrictions {
 export interface IObjective {
   x: number
   y: number
+  label?: string
 }
 
 export interface IScenario {

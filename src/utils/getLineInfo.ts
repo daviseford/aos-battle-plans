@@ -1,5 +1,5 @@
 import { ICanvasDimensions } from 'types/canvas'
-import { IScenario } from 'data/scenarios'
+import { IScenario, IObjective } from 'data/scenarios'
 
 export interface ILineInfo {
   divider: number
@@ -8,6 +8,7 @@ export interface ILineInfo {
   playerOffset: number
   canvasWidth: number
   canvasHeight: number
+  objectives: IObjective[]
 }
 
 export const getLineInfo = (canvas: ICanvasDimensions, scenario: IScenario): ILineInfo => {
@@ -34,6 +35,7 @@ const getInfoVertical = (canvas: ICanvasDimensions, scenario: IScenario): ILineI
     playerOffset,
     canvasWidth: canvas.canvasWidth,
     canvasHeight: canvas.canvasHeight,
+    objectives: convertObjectives(canvas, scenario),
   }
 }
 
@@ -54,5 +56,14 @@ const getInfoHorizontal = (canvas: ICanvasDimensions, scenario: IScenario): ILin
     playerOffset,
     canvasWidth: canvas.canvasWidth,
     canvasHeight: canvas.canvasHeight,
+    objectives: convertObjectives(canvas, scenario),
   }
+}
+
+const convertObjectives = (canvas: ICanvasDimensions, scenario: IScenario): IObjective[] => {
+  return scenario.objectives.map(o => ({
+    x: o.x / canvas.conversionPercentX,
+    y: o.y / canvas.conversionPercentY,
+    label: o.label || undefined,
+  }))
 }
