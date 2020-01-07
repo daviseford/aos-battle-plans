@@ -44,15 +44,15 @@ const App = () => {
   // And then we have canvas shapes inside the Layer
 
   // Inches to mm
-  const [tableX, tableY] = [72, 48]
-  const canvasX = window.innerWidth
-  const canvasY = canvasX * (tableY / tableX)
+  const [tableWidth, tableHeight] = [72, 48]
+  const canvasWidth = window.innerWidth
+  const canvasHeight = canvasWidth * (tableHeight / tableWidth)
 
   return (
     <>
       <div className="container bg-info text-white">Sample toolbar color</div>
       <div className="bg-dark text-white pb-5">
-        <Stage width={canvasX} height={canvasY} style={{ backgroundColor: 'white' }}>
+        <Stage width={canvasWidth} height={canvasHeight} style={{ backgroundColor: 'white' }}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <CanvasContentContainer />

@@ -28,9 +28,9 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   if (!canvas) return <></>
 
-  const { tableX, canvasX } = canvas
+  const { tableWidth, canvasWidth } = canvas
 
-  const conversionPercentX = tableX / canvasX
+  const conversionPercentX = tableWidth / canvasWidth
   const baseSize25 = mmToInches(25) / conversionPercentX
   const baseSize32 = mmToInches(32) / conversionPercentX
   const baseSize50 = mmToInches(50) / conversionPercentX

@@ -1,6 +1,6 @@
 export interface ICanvasDimensions {
-  tableX: number
-  tableY: number
-  canvasX: number
-  canvasY: number
+  tableWidth: number
+  tableHeight: number
+  canvasWidth: number
+  canvasHeight: number
 }

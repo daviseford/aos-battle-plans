@@ -6,15 +6,15 @@ const initialState: ICanvasStore = {
 }
 
 const setCanvas = (state: ICanvasStore, action: { payload: number }) => {
-  const [tableX, tableY] = [72, 48]
-  const canvasX = action.payload // window.innerWidth
-  const canvasY = canvasX * (tableY / tableX)
+  const [tableWidth, tableHeight] = [72, 48]
+  const canvasWidth = action.payload // window.innerWidth
+  const canvasHeight = canvasWidth * (tableHeight / tableWidth)
 
   state.canvas = {
-    tableX,
-    tableY,
-    canvasX,
-    canvasY,
+    tableWidth,
+    tableHeight,
+    canvasWidth,
+    canvasHeight,
   }
 }
 
