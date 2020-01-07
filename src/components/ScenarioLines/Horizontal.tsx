@@ -6,6 +6,7 @@ import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
+import ZoneRect from './ZoneRect'
 
 interface IScenarioLines {
   scenario: IScenario
@@ -117,19 +118,19 @@ const Zones: React.FC<ILineInfo> = props => {
         <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
 
         {/* Player edge */}
-        {playerOffset > 0 && <Rect x={0} y={0} width={canvasWidth} height={playerOffset} fill={'red'} />}
+        {playerOffset > 0 && <ZoneRect x={0} y={0} width={canvasWidth} height={playerOffset} />}
 
         {/* Side */}
         {sideOffset > 0 && (
           <>
-            <Rect x={0} y={0} width={sideOffset} height={divider} fill={'red'} />
-            <Rect x={canvasWidth - sideOffset} y={0} width={sideOffset} height={divider} fill={'red'} />
+            <ZoneRect x={0} y={0} width={sideOffset} height={divider} />
+            <ZoneRect x={canvasWidth - sideOffset} y={0} width={sideOffset} height={divider} />
           </>
         )}
 
         {/* Divider */}
         {dividerOffset > 0 && (
-          <Rect x={0} y={divider - dividerOffset} width={canvasWidth} height={dividerOffset} fill={'red'} />
+          <ZoneRect x={0} y={divider - dividerOffset} width={canvasWidth} height={dividerOffset} />
         )}
       </Layer>
     </>
