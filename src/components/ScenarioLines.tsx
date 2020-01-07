@@ -25,19 +25,17 @@ const ScenarioLinesComponent: React.FC<IScenarioLines> = props => {
   const dividerY = canvas.canvasHeight / 2
 
   const { setupRestrictions } = scenario
-  const { fromBoardEgeInches = 0, fromDividerInches = 0 } = setupRestrictions
+  const { fromSideInches = 0, fromDividerInches = 0, fromTopInches = 0 } = setupRestrictions
 
-  const { tableWidth, canvasWidth, tableHeight, canvasHeight } = canvas
+  const { canvasWidth, conversionPercentX, conversionPercentY } = canvas
 
-  const conversionPercentX = tableWidth / canvasWidth
-  const conversionPercentY = tableHeight / canvasHeight
-
-  let boardEdgeOffsetX = fromBoardEgeInches ? fromBoardEgeInches / conversionPercentX : 0
+  let sideOffsetX = fromSideInches ? fromSideInches / conversionPercentX : 0
   let dividerOffsetY = fromDividerInches ? fromDividerInches / conversionPercentY : 0
+  let topOffsetY = fromTopInches ? fromTopInches / conversionPercentY : 0
 
   debugger
 
-  console.log(boardEdgeOffsetX, canvasWidth)
+  console.log(sideOffsetX, canvasWidth)
 
   return (
     <>
@@ -46,29 +44,47 @@ const ScenarioLinesComponent: React.FC<IScenarioLines> = props => {
                 you should define points property 
                 as: [x1, y1, x2, y2, x3, y3]. 
                 */}
-        {/* This layer will be the midline */}
-        <Line points={[10, dividerY, canvasWidth - 10, dividerY]} stroke="black" />
+
+        {/* Edge of play area (top)  */}
+        <Line points={[sideOffsetX, 0, canvasWidth - sideOffsetX, 0]} stroke="red" />
+
+        {/* This line is created when you need to deploy X inches from the top of the table  */}
+        {topOffsetY > 0 && (
+          <Line points={[sideOffsetX, topOffsetY, canvasWidth - sideOffsetX, topOffsetY]} stroke="blue" />
+        )}
+
+        {/* These lines are created when you have to deploy X inches from the sides  */}
+        {sideOffsetX > 0 && (
+          <>
+            <Line points={[sideOffsetX, topOffsetY, sideOffsetX, dividerY - dividerOffsetY]} stroke="red" />
+
+            <Line
+              points={[
+                canvasWidth - sideOffsetX,
+                topOffsetY,
+                canvasWidth - sideOffsetX,
+                dividerY - dividerOffsetY,
+              ]}
+              stroke="red"
+            />
+          </>
+        )}
 
         {/* This line is created when you need to deploy X inches from the midline  */}
-        {dividerOffsetY && (
+        {dividerOffsetY > 0 && (
           <Line
             points={[
-              boardEdgeOffsetX,
+              sideOffsetX,
               dividerY - dividerOffsetY,
-              canvasWidth - boardEdgeOffsetX,
+              canvasWidth - sideOffsetX,
               dividerY - dividerOffsetY,
             ]}
-            stroke="blue"
+            stroke="red"
           />
         )}
 
-        {/* This line is created when you need to deploy X inches from the midline  */}
-        {dividerOffsetY && (
-          <Line
-            points={[boardEdgeOffsetX, dividerOffsetY, canvasWidth - boardEdgeOffsetX, dividerOffsetY]}
-            stroke="blue"
-          />
-        )}
+        {/* This layer is the dividing line */}
+        <Line points={[10, dividerY, canvasWidth - 10, dividerY]} stroke="black" />
       </Layer>
     </>
   )

@@ -3,4 +3,6 @@ export interface ICanvasDimensions {
   tableHeight: number
   canvasWidth: number
   canvasHeight: number
+  conversionPercentX: number
+  conversionPercentY: number
 }

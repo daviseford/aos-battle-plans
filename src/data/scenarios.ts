@@ -1,7 +1,7 @@
 export interface ISetupRestrictions {
-  //   fromEnemyInches: number | null
-  fromDividerInches: number | null
-  fromBoardEgeInches: number | null
+  fromDividerInches: number
+  fromSideInches: number
+  fromTopInches: number
 }
 
 export interface IObjective {
@@ -25,7 +25,8 @@ const Scenarios: IScenario[] = [
     orientation: `horizontal`,
     setupRestrictions: {
       fromDividerInches: 9,
-      fromBoardEgeInches: 12,
+      fromSideInches: 0,
+      fromTopInches: 0,
     },
     objectives: [
       { x: 12, y: 12 },
@@ -40,7 +41,8 @@ const Scenarios: IScenario[] = [
     orientation: `horizontal`,
     setupRestrictions: {
       fromDividerInches: 9,
-      fromBoardEgeInches: null,
+      fromSideInches: 0,
+      fromTopInches: 0,
     },
     objectives: [
       { x: 12, y: 12 },

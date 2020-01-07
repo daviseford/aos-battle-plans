@@ -33,6 +33,9 @@ export const store = createStore(
 
 const persistor = persistStore(store)
 
+// Uncomment to purge cache
+persistor.purge()
+
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
  * https://github.com/konvajs/react-konva/issues/311
