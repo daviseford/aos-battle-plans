@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layer, Line } from 'react-konva'
+import { Layer, Line, Rect, Text } from 'react-konva'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
 import { selectors } from 'ducks'
@@ -25,7 +25,7 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   if (!canvas || !lineInfo) return <></>
 
-  const { dividerOffsetY, dividerY, sideOffsetX, topOffsetY, canvasWidth } = lineInfo
+  const { dividerOffsetY, dividerY, sideOffsetX, topOffsetY, canvasWidth, canvasHeight } = lineInfo
 
   return (
     <>
@@ -74,7 +74,23 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         )}
 
         {/* This layer is the dividing line */}
-        <Line points={[10, dividerY, canvasWidth - 10, dividerY]} stroke="black" />
+        <Line points={[0, dividerY, canvasWidth, dividerY]} stroke="black" />
+
+        {/* Greyed out enemy area */}
+        <Rect x={0} y={dividerY + 1} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+
+        {/* Letting the user know this is greyed out */}
+        <Text
+          align={'center'}
+          y={canvasHeight - dividerY / 2}
+          x={canvasWidth / 2}
+          text={'ENEMY AREA'}
+          fill="white"
+          stroke="white"
+          fontFamily={'Calibri'}
+          fontSize={36}
+          fontStyle={'normal'}
+        />
       </Layer>
     </>
   )

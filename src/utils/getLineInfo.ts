@@ -7,6 +7,7 @@ export interface ILineInfo {
   dividerOffsetY: number
   topOffsetY: number
   canvasWidth: number
+  canvasHeight: number
 }
 
 export const getLineInfo = (canvas: ICanvasDimensions, scenario: IScenario): ILineInfo => {
@@ -25,5 +26,6 @@ export const getLineInfo = (canvas: ICanvasDimensions, scenario: IScenario): ILi
     sideOffsetX,
     topOffsetY,
     canvasWidth: canvas.canvasWidth,
+    canvasHeight: canvas.canvasHeight,
   }
 }
