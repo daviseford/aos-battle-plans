@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Stage } from 'react-konva'
 
 // CSS
@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
 import { canvas, scenario } from 'ducks'
 import CanvasContentContainer from 'components/CanvasContentContainer'
+import { TABLE_HEIGHT, TABLE_WIDTH } from 'data/table'
 
 const persistConfig = {
   key: 'root',
@@ -46,16 +47,27 @@ const App = () => {
   // Layer is actual canvas element (so you may have several canvases in the stage)
   // And then we have canvas shapes inside the Layer
 
-  // Inches to mm
-  const [tableWidth, tableHeight] = [72, 48]
-  const canvasWidth = window.innerWidth
-  const canvasHeight = canvasWidth * (tableHeight / tableWidth)
+  const [stage, setStage] = useState({
+    canvasWidth: window.innerWidth,
+    canvasHeight: window.innerWidth * (TABLE_HEIGHT / TABLE_WIDTH),
+  })
+
+  useEffect(() => {
+    const handleResize = () =>
+      setStage({
+        canvasWidth: window.innerWidth,
+        canvasHeight: window.innerWidth * (TABLE_HEIGHT / TABLE_WIDTH),
+      })
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [setStage])
 
   return (
     <>
-      <div className="container bg-info text-white">Sample toolbar color</div>
+      <div className="container bg-info text-white text-center">Total Commitment</div>
       <div className="bg-dark text-white pb-5">
-        <Stage width={canvasWidth} height={canvasHeight} style={{ backgroundColor: 'white' }}>
+        <Stage width={stage.canvasWidth} height={stage.canvasHeight} style={{ backgroundColor: 'white' }}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <CanvasContentContainer />

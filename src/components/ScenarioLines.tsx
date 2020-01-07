@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layer, Line } from 'react-konva'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
@@ -12,30 +12,53 @@ interface IScenarioLines {
   setScenario: (payload: IScenario) => void
 }
 
+interface ILineInfo {
+  dividerY: number
+  sideOffsetX: number
+  dividerOffsetY: number
+  topOffsetY: number
+  canvasWidth: number
+}
+
+const getLineInfo = (canvas: ICanvasDimensions, scenario: IScenario): ILineInfo => {
+  const dividerY = canvas.canvasHeight / 2
+
+  const { setupRestrictions } = scenario
+  const { fromSideInches = 0, fromDividerInches = 0, fromTopInches = 0 } = setupRestrictions
+
+  const sideOffsetX = fromSideInches ? fromSideInches / canvas.conversionPercentX : 0
+  const dividerOffsetY = fromDividerInches ? fromDividerInches / canvas.conversionPercentY : 0
+  const topOffsetY = fromTopInches ? fromTopInches / canvas.conversionPercentY : 0
+
+  return {
+    dividerOffsetY,
+    dividerY,
+    sideOffsetX,
+    topOffsetY,
+    canvasWidth: canvas.canvasWidth,
+  }
+}
+
 const ScenarioLinesComponent: React.FC<IScenarioLines> = props => {
   const { canvas, scenario, setScenario } = props
+
+  const [lineInfo, setLineInfo] = useState<ILineInfo | null>(null)
+
+  useEffect(() => {
+    if (!canvas || !scenario) return
+    const newLineInfo = getLineInfo(canvas, scenario)
+    console.log(newLineInfo)
+    setLineInfo(newLineInfo)
+  }, [canvas, scenario])
 
   if (!scenario) {
     setScenario(Scenarios[0])
     return <></>
   }
 
-  if (!canvas) return <></>
+  if (!canvas || !lineInfo) return <></>
 
-  const dividerY = canvas.canvasHeight / 2
-
-  const { setupRestrictions } = scenario
-  const { fromSideInches = 0, fromDividerInches = 0, fromTopInches = 0 } = setupRestrictions
-
-  const { canvasWidth, conversionPercentX, conversionPercentY } = canvas
-
-  let sideOffsetX = fromSideInches ? fromSideInches / conversionPercentX : 0
-  let dividerOffsetY = fromDividerInches ? fromDividerInches / conversionPercentY : 0
-  let topOffsetY = fromTopInches ? fromTopInches / conversionPercentY : 0
-
-  debugger
-
-  console.log(sideOffsetX, canvasWidth)
+  const { dividerOffsetY, dividerY, sideOffsetX, topOffsetY, canvasWidth } = lineInfo
 
   return (
     <>

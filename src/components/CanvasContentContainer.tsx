@@ -8,6 +8,7 @@ import ScenarioLinesComponent from 'components/ScenarioLines'
 import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
+import { TABLE_WIDTH } from 'data/table'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -28,9 +29,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   if (!canvas) return <></>
 
-  const { tableWidth, canvasWidth } = canvas
-
-  const conversionPercentX = tableWidth / canvasWidth
+  const conversionPercentX = TABLE_WIDTH / canvas.canvasWidth
   const baseSize25 = mmToInches(25) / conversionPercentX
   const baseSize32 = mmToInches(32) / conversionPercentX
   const baseSize50 = mmToInches(50) / conversionPercentX
