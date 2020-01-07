@@ -86,7 +86,6 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           </>
         ) : (
           <>
-            {' '}
             <Line points={[0, 0, 0, divider]} stroke="red" />
             <Line points={[canvasWidth, 0, canvasWidth, divider]} stroke="red" />
           </>

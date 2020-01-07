@@ -59,12 +59,14 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         />
 
         {/* This line is created when you need to deploy X inches from the player side of the table  */}
-        {playerOffset > 0 && (
+        {playerOffset > 0 ? (
           <Line points={[playerOffset, sideOffset, playerOffset, canvasHeight - sideOffset]} stroke="red" />
+        ) : (
+          <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
         )}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
-        {sideOffset > 0 && (
+        {sideOffset > 0 ? (
           <>
             <Line points={[playerOffset, sideOffset, divider - dividerOffset, sideOffset]} stroke="red" />
 
@@ -77,6 +79,11 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
               ]}
               stroke="red"
             />
+          </>
+        ) : (
+          <>
+            <Line points={[0, 0, divider, 0]} stroke="red" />
+            <Line points={[0, canvasHeight, divider, canvasHeight]} stroke="red" />
           </>
         )}
 

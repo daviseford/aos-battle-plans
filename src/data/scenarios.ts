@@ -35,8 +35,8 @@ const Scenarios: IScenario[] = [
     orientation: `vertical`,
     setupRestrictions: {
       fromDividerInches: 12,
-      fromSideInches: 3, // todo 0
-      fromPlayerInches: 3, // todo 0
+      fromSideInches: 0,
+      fromPlayerInches: 0,
     },
     objectives: [
       { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
