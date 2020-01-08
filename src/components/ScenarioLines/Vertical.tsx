@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layer, Line, Rect, Text, Circle } from 'react-konva'
+import { Layer, Line, Rect, Text } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors } from 'ducks'
 import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
@@ -8,6 +8,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { TABLE_WIDTH_QUARTER } from 'data/table'
 import ZoneRect from './ZoneRect'
+import Objectives from './Objectives'
 
 interface IScenarioLines {
   scenario: IScenario
@@ -32,28 +33,17 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
   return (
     <>
       <Zones {...lineInfo} />
-      <Layer>
-        {/* Objectives */}
-        {objectives.map(({ x, y, label }, i) => (
-          <Circle
-            x={x}
-            y={y}
-            key={i}
-            radius={3 / canvas.conversionPercentX}
-            draggable={false}
-            stroke="black"
-            fillEnabled={false}
-          />
-        ))}
+      <Objectives objectives={objectives} canvas={canvas} />
 
-        {/* Letting the user know why the enemy area is greyed out */}
+      <Layer>
+        {/* Enemy Deployment Zone text */}
         <Text
           align={'center'}
-          fill="white"
+          fill="black"
           fontFamily={'Calibri'}
           fontSize={36}
           fontStyle={'normal'}
-          stroke="white"
+          stroke="black"
           text={'ENEMY\nAREA'}
           x={canvasWidth - TABLE_WIDTH_QUARTER / canvas.conversionPercentX}
           y={canvasHeight / 2}
@@ -90,10 +80,28 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This line is created when you need to deploy X inches from the midline  */}
         {dividerOffset > 0 && (
-          <Line
-            points={[divider - dividerOffset, sideOffset, divider - dividerOffset, canvasHeight - sideOffset]}
-            stroke="red"
-          />
+          <>
+            {/* Player side */}
+            <Line
+              points={[
+                divider - dividerOffset,
+                sideOffset,
+                divider - dividerOffset,
+                canvasHeight - sideOffset,
+              ]}
+              stroke="red"
+            />
+            {/* Enemy side */}
+            <Line
+              points={[
+                divider + dividerOffset,
+                sideOffset,
+                divider + dividerOffset,
+                canvasHeight - sideOffset,
+              ]}
+              stroke="red"
+            />
+          </>
         )}
 
         {/* This is the dividing line */}
@@ -111,7 +119,7 @@ const Zones: React.FC<ILineInfo> = props => {
     <>
       <Layer>
         {/* Greyed out enemy area */}
-        <Rect x={divider + 1} y={0} width={canvasWidth} height={canvasHeight} fill={'grey'} />
+        <Rect x={divider} y={0} width={canvasWidth} height={canvasHeight} fill={'red'} opacity={0.15} />
 
         {/* Player edge */}
         {playerOffset > 0 && <ZoneRect x={0} y={sideOffset} width={playerOffset} height={canvasHeight} />}
@@ -133,7 +141,7 @@ const Zones: React.FC<ILineInfo> = props => {
 
         {/* Divider */}
         {dividerOffset > 0 && (
-          <ZoneRect x={divider - dividerOffset} y={0} width={dividerOffset} height={canvasHeight} />
+          <ZoneRect x={divider - dividerOffset} y={0} width={dividerOffset * 2} height={canvasHeight} />
         )}
       </Layer>
     </>
