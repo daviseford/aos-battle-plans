@@ -9,7 +9,7 @@ interface IZoneRectProps {
 }
 
 const ZoneRect: React.FC<IZoneRectProps> = props => {
-  return <Rect {...props} fill={'grey'} opacity={0.35} />
+  return <Rect {...props} fill={'#d6d5d0'} />
 }
 
 export default ZoneRect

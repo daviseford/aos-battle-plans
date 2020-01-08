@@ -51,16 +51,32 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This line is created when you need to deploy X inches from the player side of the table  */}
         {playerOffset > 0 ? (
-          <Line points={[playerOffset, sideOffset, playerOffset, canvasHeight - sideOffset]} stroke="red" />
+          <>
+            <Line points={[playerOffset, sideOffset, playerOffset, canvasHeight - sideOffset]} stroke="red" />
+            <Line
+              points={[
+                canvasWidth - playerOffset,
+                sideOffset,
+                canvasWidth - playerOffset,
+                canvasHeight - sideOffset,
+              ]}
+              stroke="red"
+            />
+          </>
         ) : (
-          <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
+          <>
+            {/* Player */}
+            <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
+            {/* Enemy */}
+            <Line points={[canvasWidth, 0, canvasWidth, canvasHeight]} stroke="red" />
+          </>
         )}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
         {sideOffset > 0 ? (
           <>
+            {/* Player lines */}
             <Line points={[playerOffset, sideOffset, divider - dividerOffset, sideOffset]} stroke="red" />
-
             <Line
               points={[
                 playerOffset,
@@ -70,11 +86,25 @@ const VerticalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
               ]}
               stroke="red"
             />
+            {/* Enemy lines */}
+            <Line
+              points={[divider + dividerOffset, sideOffset, canvasWidth - playerOffset, sideOffset]}
+              stroke="red"
+            />
+            <Line
+              points={[
+                divider + dividerOffset,
+                canvasHeight - sideOffset,
+                canvasWidth - playerOffset,
+                canvasHeight - sideOffset,
+              ]}
+              stroke="red"
+            />
           </>
         ) : (
           <>
-            <Line points={[0, 0, divider, 0]} stroke="red" />
-            <Line points={[0, canvasHeight, divider, canvasHeight]} stroke="red" />
+            <Line points={[0, 0, canvasWidth, 0]} stroke="red" />
+            <Line points={[0, canvasHeight, canvasWidth, canvasHeight]} stroke="red" />
           </>
         )}
 
@@ -118,13 +148,22 @@ const Zones: React.FC<ILineInfo> = props => {
   return (
     <>
       <Layer>
-        {/* Greyed out enemy area */}
+        {/* Enemy area */}
         <Rect x={divider} y={0} width={canvasWidth} height={canvasHeight} fill={'red'} opacity={0.15} />
 
         {/* Player edge */}
-        {playerOffset > 0 && <ZoneRect x={0} y={sideOffset} width={playerOffset} height={canvasHeight} />}
+        {playerOffset > 0 && <ZoneRect x={0} y={0} width={playerOffset} height={canvasHeight} />}
+        {/* Enemy edge */}
+        {playerOffset > 0 && (
+          <ZoneRect
+            x={canvasWidth - playerOffset}
+            y={sideOffset}
+            width={playerOffset}
+            height={canvasHeight}
+          />
+        )}
 
-        {/* Side */}
+        {/* Player sides */}
         {sideOffset > 0 && (
           <>
             {/* Top */}
@@ -136,6 +175,16 @@ const Zones: React.FC<ILineInfo> = props => {
               width={divider - dividerOffset}
               height={sideOffset}
             />
+          </>
+        )}
+
+        {/* Enemy sides */}
+        {sideOffset > 0 && (
+          <>
+            {/* Top */}
+            <ZoneRect x={divider} y={0} width={divider} height={sideOffset} />
+            {/* Bottom */}
+            <ZoneRect x={divider} y={canvasHeight - sideOffset} width={divider} height={sideOffset} />
           </>
         )}
 

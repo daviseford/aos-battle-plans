@@ -59,7 +59,6 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         {sideOffset > 0 ? (
           <>
             <Line points={[sideOffset, playerOffset, sideOffset, divider - dividerOffset]} stroke="red" />
-
             <Line
               points={[
                 canvasWidth - sideOffset,
