@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Circle, Layer } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { IObjective } from 'types/scenario'
@@ -17,7 +17,7 @@ const Objectives: React.FC<IObjectivesProps> = props => {
     <Layer>
       {/* Objectives */}
       {objectives.map(({ x, y, label }, i) => (
-        <>
+        <Fragment key={i}>
           {/* Stroke */}
           <Circle
             x={x}
@@ -39,7 +39,7 @@ const Objectives: React.FC<IObjectivesProps> = props => {
             fillEnabled={true}
             opacity={0.2}
           />
-        </>
+        </Fragment>
       ))}
     </Layer>
   )
