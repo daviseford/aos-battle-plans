@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IBaseGroup } from 'types/bases'
+import { IBaseGroup, IBase } from 'types/bases'
 import { IBaseGroupStore } from 'types/store'
 
 const initialState: IBaseGroupStore = {
@@ -11,8 +11,36 @@ const initialState: IBaseGroupStore = {
  * @param state
  * @param action
  */
-const addBaseGroup = (state, action: { payload: IBaseGroup }) => {
+const addBaseGroup = (state: IBaseGroupStore, action: { payload: IBaseGroup }) => {
   state.baseGroups.push(action.payload)
+}
+
+/**
+ * Update a single base group, based on groupId matching
+ * @param state
+ * @param action
+ */
+const updateBaseGroup = (state: IBaseGroupStore, action: { payload: IBaseGroup }) => {
+  const i = state.baseGroups.findIndex(x => x.id === action.payload.id)
+  state.baseGroups[i] = action.payload
+}
+
+/**
+ * Update a single base , based on baseId matching
+ * @param state
+ * @param action
+ */
+const updateBase = (state: IBaseGroupStore, action: { payload: IBase }) => {
+  let baseIndex = -1
+  const groupIndex = state.baseGroups.findIndex(group => {
+    const _baseIds = group.bases.map(base => base.id)
+    const baseIdx = _baseIds.indexOf(action.payload.id)
+    if (baseIdx > -1) {
+      baseIndex = baseIdx
+    }
+    return baseIdx > -1
+  })
+  state.baseGroups[groupIndex][baseIndex] = action.payload
 }
 
 /**
@@ -46,5 +74,7 @@ export const baseGroups = createSlice({
     clearBaseGroups: state => (state = initialState),
     deleteBaseGroup,
     deleteBaseFromGroup,
+    updateBase,
+    updateBaseGroup,
   },
 })
