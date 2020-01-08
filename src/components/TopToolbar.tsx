@@ -6,6 +6,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import Select from 'react-select'
 import { IScenario } from 'types/scenario'
+import UnitSelectMenu from './Input/UnitSelectMenu'
 
 interface ITopToolbar {
   canvas: ICanvasDimensions
@@ -41,6 +42,9 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
           <div className="col-12">
             <h3 className="text-white">Scenario: {scenario.name}</h3>
             <span className="text-white">Canvas Width: {canvas.canvasWidth}</span>
+          </div>
+          <div className="col-12">
+            <UnitSelectMenu />
           </div>
         </div>
       </div>

@@ -1,37 +1,92 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { selectors, scenario, baseGroups } from 'ducks'
+import shortid from 'shortid'
+import { selectors, baseGroups } from 'ducks'
 import Scenarios from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import Select from 'react-select'
 import { IScenario } from 'types/scenario'
+import { CircleBaseSizes } from 'data/bases'
+import { IBaseGroup, IBase } from 'types/bases'
 
 interface ITopToolbar {
   canvas: ICanvasDimensions
   scenario: IScenario
-  setScenario: (name: string) => void
+  baseGroups: IBaseGroup[]
+  deleteBaseGroup: (id: string) => void
+  addBaseGroup: (group: IBaseGroup) => void
+  updateBaseGroup: (group: IBaseGroup) => void
 }
 
-const
+const baseSizesToOptions = (): { value: string; label: string }[] => {
+  return Object.keys(CircleBaseSizes).map(key => ({
+    value: key,
+    label: key,
+  }))
+}
+
+const createBases = (numBases: number) => {
+  const bases: IBase[] = [...Array(numBases)].map(x => {
+    return {
+      id: shortid.generate(),
+      x: 0,
+      y: 0,
+      draggable: true,
+    }
+  })
+
+  return bases
+}
 
 const initialState = {
   numBases: 0,
-  groupId: null,
-  baseSizeMM: 0,
+  baseSizeString: '',
+  groupId: '',
 }
 
 const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
-  const { canvas, scenario, setScenario } = props
+  const { canvas, addBaseGroup, baseGroups, deleteBaseGroup, updateBaseGroup } = props
 
   const [state, setState] = useState(initialState)
 
   if (!canvas) return <></>
 
-  const options = scenariosToOptions()
+  const options = baseSizesToOptions()
 
-  const handleScenarioChange = value => {
-    setScenario(value.label)
+  const handleNumBaseChange = e => {
+    e.preventDefault()
+
+    const numBases = e.target.value
+    const difference = numBases - state.numBases // so 7 - 10 = -3   10 - 0 = 0
+
+    setState(c => ({ ...c, numBases }))
+
+    if (!state.groupId) return
+    if (numBases === 0) return deleteBaseGroup(state.groupId)
+
+    const group = baseGroups.find(x => x.id === state.groupId) as IBaseGroup
+    let bases: IBase[] = []
+
+    if (difference > 0) {
+      bases = group.bases.concat(createBases(numBases))
+    }
+
+    updateBaseGroup({ ...group, bases })
+  }
+
+  const handleBaseSelection = value => {
+    const bases = createBases(state.numBases)
+
+    const groupId = shortid.generate()
+    const baseGroup: IBaseGroup = {
+      id: groupId,
+      baseSizeMM: CircleBaseSizes[value.label],
+      baseSizeString: value.label,
+      bases,
+    }
+    addBaseGroup(baseGroup)
+    setState(s => ({ ...s, groupId }))
   }
 
   return (
@@ -39,7 +94,15 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
       <div className="container-fluid">
         <div className="row bg-info text-center justify-content-center">
           <div className="col-6">
-            <Select onChange={handleScenarioChange} options={options} placeholder={Scenarios[0].name} />
+            <input
+              className="form-control"
+              type="number"
+              onChange={handleNumBaseChange}
+              placeholder="Number of models"
+            />
+          </div>
+          <div className="col-6">
+            <Select onChange={handleBaseSelection} options={options} placeholder={'Base size'} />
           </div>
         </div>
       </div>
@@ -49,12 +112,15 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
 
 const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
-  scenario: selectors.getScenario(state),
+  baseGroups: selectors.getBaseGroups(state),
   canvas: selectors.getCanvas(state),
+  scenario: selectors.getScenario(state),
 })
 
-const UnitSelectMenu = connect(mapStateToProps, { setScenario: baseGroups.actions.addBaseGroup })(
-  UnitSelectMenuComponent
-)
+const UnitSelectMenu = connect(mapStateToProps, {
+  addBaseGroup: baseGroups.actions.addBaseGroup,
+  deleteBaseGroup: baseGroups.actions.deleteBaseGroup,
+  updateBaseGroup: baseGroups.actions.updateBaseGroup,
+})(UnitSelectMenuComponent)
 
 export default UnitSelectMenu
