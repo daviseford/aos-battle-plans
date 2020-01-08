@@ -50,14 +50,33 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
         {/* This line is created when you need to deploy X inches from the top of the table  */}
         {playerOffset > 0 ? (
-          <Line points={[sideOffset, playerOffset, canvasWidth - sideOffset, playerOffset]} stroke="red" />
+          <>
+            {/* Player */}
+            <Line points={[sideOffset, playerOffset, canvasWidth - sideOffset, playerOffset]} stroke="red" />
+            {/* Enemy */}
+            <Line
+              points={[
+                sideOffset,
+                canvasHeight - playerOffset,
+                canvasWidth - sideOffset,
+                canvasHeight - playerOffset,
+              ]}
+              stroke="red"
+            />
+          </>
         ) : (
-          <Line points={[sideOffset, 0, canvasWidth, 0]} stroke="red" />
+          <>
+            {/* Player */}
+            <Line points={[sideOffset, 0, canvasWidth - sideOffset, 0]} stroke="red" />
+            {/* Enemy */}
+            <Line points={[sideOffset, canvasHeight, canvasWidth - sideOffset, canvasHeight]} stroke="red" />
+          </>
         )}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
         {sideOffset > 0 ? (
           <>
+            {/* Player */}
             <Line points={[sideOffset, playerOffset, sideOffset, divider - dividerOffset]} stroke="red" />
             <Line
               points={[
@@ -68,20 +87,53 @@ const HorizontalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
               ]}
               stroke="red"
             />
+            {/* Enemy */}
+            <Line
+              points={[sideOffset, divider + dividerOffset, sideOffset, canvasHeight - playerOffset]}
+              stroke="red"
+            />
+            <Line
+              points={[
+                canvasWidth - sideOffset,
+                divider + dividerOffset,
+                canvasWidth - sideOffset,
+                canvasHeight - playerOffset,
+              ]}
+              stroke="red"
+            />
           </>
         ) : (
           <>
-            <Line points={[0, 0, 0, divider]} stroke="red" />
-            <Line points={[canvasWidth, 0, canvasWidth, divider]} stroke="red" />
+            {/* Player */}
+            <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
+            <Line points={[canvasWidth, 0, canvasWidth, canvasHeight]} stroke="red" />
           </>
         )}
 
         {/* This line is created when you need to deploy X inches from the midline  */}
         {dividerOffset > 0 && (
-          <Line
-            points={[sideOffset, divider - dividerOffset, canvasWidth - sideOffset, divider - dividerOffset]}
-            stroke="red"
-          />
+          <>
+            {/* Player */}
+            <Line
+              points={[
+                sideOffset,
+                divider - dividerOffset,
+                canvasWidth - sideOffset,
+                divider - dividerOffset,
+              ]}
+              stroke="red"
+            />
+            {/* Enemy */}
+            <Line
+              points={[
+                sideOffset,
+                divider + dividerOffset,
+                canvasWidth - sideOffset,
+                divider + dividerOffset,
+              ]}
+              stroke="red"
+            />
+          </>
         )}
 
         {/* This layer is the dividing line */}
@@ -103,12 +155,25 @@ const Zones: React.FC<ILineInfo> = props => {
 
         {/* Player edge */}
         {playerOffset > 0 && <ZoneRect x={0} y={0} width={canvasWidth} height={playerOffset} />}
+        {/* Enemy edge */}
+        {playerOffset > 0 && (
+          <ZoneRect x={0} y={canvasHeight - playerOffset} width={canvasWidth} height={playerOffset} />
+        )}
 
         {/* Side */}
         {sideOffset > 0 && (
           <>
+            {/* Player */}
             <ZoneRect x={0} y={0} width={sideOffset} height={divider} />
             <ZoneRect x={canvasWidth - sideOffset} y={0} width={sideOffset} height={divider} />
+            {/* Enemy */}
+            <ZoneRect x={0} y={divider + dividerOffset} width={sideOffset} height={divider} />
+            <ZoneRect
+              x={canvasWidth - sideOffset}
+              y={divider + dividerOffset}
+              width={sideOffset}
+              height={divider}
+            />
           </>
         )}
 
