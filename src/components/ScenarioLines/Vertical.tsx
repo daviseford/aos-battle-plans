@@ -3,12 +3,12 @@ import { Layer, Line, Rect, Text } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors } from 'ducks'
 import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
-import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { TABLE_WIDTH_QUARTER } from 'data/table'
 import ZoneRect from './ZoneRect'
 import Objectives from './Objectives'
+import { IScenario } from 'types/scenario'
 
 interface IScenarioLines {
   scenario: IScenario

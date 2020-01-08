@@ -6,27 +6,7 @@ import {
   TABLE_WIDTH_QUARTER,
   TABLE_HEIGHT_QUARTER,
 } from './table'
-
-export interface ISetupRestrictions {
-  fromDividerInches: number
-  fromSideInches: number
-  fromPlayerInches: number
-}
-
-export interface IObjective {
-  x: number
-  y: number
-  label?: string
-}
-
-export interface IScenario {
-  name: string
-  matchedPlay: boolean
-  orientation: 'horizontal' | 'vertical' | 'diagonalTopLeft' | 'diagonalTopRight'
-  setupRestrictions: ISetupRestrictions
-  // Measured in inches, [x, y]
-  objectives: IObjective[]
-}
+import { IScenario } from 'types/scenario'
 
 const Scenarios: IScenario[] = [
   {

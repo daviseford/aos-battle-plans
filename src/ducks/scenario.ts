@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IScenarioStore } from 'types/store'
-import Scenarios, { IScenario } from 'data/scenarios'
+import Scenarios from 'data/scenarios'
+import { IScenario } from 'types/scenario'
 
 const initialState: IScenarioStore = {
   scenario: Scenarios[0],

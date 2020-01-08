@@ -15,7 +15,7 @@ import { Provider } from 'react-redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
-import { canvas, scenario } from 'ducks'
+import { baseGroups, canvas, scenario } from 'ducks'
 
 const persistConfig = {
   key: 'root',
@@ -23,6 +23,7 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
+  baseGroups: baseGroups.reducer,
   canvas: canvas.reducer,
   scenario: scenario.reducer,
 })

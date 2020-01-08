@@ -1,7 +1,7 @@
 import React from 'react'
 import { Circle, Layer } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
-import { IObjective } from 'data/scenarios'
+import { IObjective } from 'types/scenario'
 
 interface IObjectivesProps {
   objectives: IObjective[]

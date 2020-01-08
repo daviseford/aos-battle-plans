@@ -1,5 +1,5 @@
 import { ICanvasDimensions } from 'types/canvas'
-import { IScenario, IObjective } from 'data/scenarios'
+import { IObjective, IScenario } from 'types/scenario'
 
 export interface ILineInfo {
   divider: number

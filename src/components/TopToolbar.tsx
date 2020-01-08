@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { selectors, scenario } from 'ducks'
-import Scenarios, { IScenario } from 'data/scenarios'
+import Scenarios from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import Select from 'react-select'
+import { IScenario } from 'types/scenario'
 
 interface ITopToolbar {
   canvas: ICanvasDimensions

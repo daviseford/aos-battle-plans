@@ -4,11 +4,11 @@ import { Layer, Group } from 'react-konva'
 import { selectors } from 'ducks'
 import { mmToInches } from 'utils/measurements'
 import CircleBase from 'components/CircleBase'
-import { IScenario } from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import HorizontalScenarioLines from 'components/ScenarioLines/Horizontal'
 import VerticalScenarioLines from './ScenarioLines/Vertical'
+import { IScenario } from 'types/scenario'
 
 interface ICCC {
   canvas: ICanvasDimensions
