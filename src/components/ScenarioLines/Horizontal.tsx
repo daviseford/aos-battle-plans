@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Layer, Line, Rect, Text } from 'react-konva'
+import { Layer, Line, Text } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors } from 'ducks'
 import { ILineInfo, getLineInfo } from 'utils/getLineInfo'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import ZoneRect from './ZoneRect'
+import { ZoneRect, EnemyZone } from './ZoneRect'
 import Objectives from './Objectives'
 import { IScenario } from 'types/scenario'
 
@@ -150,8 +150,8 @@ const Zones: React.FC<ILineInfo> = props => {
   return (
     <>
       <Layer>
-        {/* Greyed out enemy area */}
-        <Rect x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} fill={'red'} opacity={0.15} />
+        {/* Enemy area */}
+        <EnemyZone x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} />
 
         {/* Player edge */}
         {playerOffset > 0 && <ZoneRect x={0} y={0} width={canvasWidth} height={playerOffset} />}

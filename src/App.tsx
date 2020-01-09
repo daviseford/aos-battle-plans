@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Stage } from 'react-konva'
 
 // CSS
@@ -15,6 +15,7 @@ import CanvasContentContainer from 'components/CanvasContentContainer'
 import TopToolbar from 'components/Toolbar/TopToolbar'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
+import GenericButton from 'components/Input/GenericButton'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -29,6 +30,8 @@ interface IApp {
 const AppComponent: React.FC<IApp> = props => {
   const { canvas, setCanvas } = props
 
+  const stageRef = useRef()
+
   // Handle window resizes and initial sizing
   useEffect(() => {
     const handleResize = () => setCanvas(window.innerWidth)
@@ -39,12 +42,35 @@ const AppComponent: React.FC<IApp> = props => {
 
   if (!canvas) return <></>
 
+  const downloadURI = (uri: string, name: string) => {
+    const link = document.createElement('a')
+    link.download = name
+    link.href = uri
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const handleSaveImage = event => {
+    event.preventDefault()
+    // @ts-ignore
+    const dataURL = stageRef.current.toDataURL()
+    downloadURI(dataURL, 'stage.png')
+  }
+
   return (
     <>
       <TopToolbar />
 
       <div className="stage">
-        <Stage width={canvas.canvasWidth} height={canvas.canvasHeight} style={{ backgroundColor: 'white' }}>
+        {/* 
+        // @ts-ignore */}
+        <Stage
+          width={canvas.canvasWidth}
+          height={canvas.canvasHeight}
+          style={{ backgroundColor: 'white' }}
+          ref={stageRef}
+        >
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <CanvasContentContainer />
@@ -53,7 +79,11 @@ const AppComponent: React.FC<IApp> = props => {
         </Stage>
       </div>
 
-      <div className="bg-dark text-white text-center py-2">Bottom of Stage</div>
+      <div className="row bg-dark text-white text-center py-2 justify-content-center">
+        <div className="col-3">
+          <GenericButton onClick={handleSaveImage}>Save Image</GenericButton>
+        </div>
+      </div>
     </>
   )
 }

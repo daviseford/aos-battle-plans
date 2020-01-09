@@ -35,9 +35,9 @@ const Objectives: React.FC<IObjectivesProps> = props => {
             key={`fill-${i}`}
             radius={3 / canvas.conversionPercentX}
             draggable={false}
-            fill={color}
+            fill={'#CCD1E2'}
             fillEnabled={true}
-            opacity={0.2}
+            opacity={1}
           />
         </Fragment>
       ))}
