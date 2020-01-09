@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Line, Layer, Text } from 'react-konva'
+import React from 'react'
+import { Line, Text, Group } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors, scenario } from 'ducks'
 import { IStore } from 'types/store'
@@ -18,32 +18,27 @@ const RulerComponent: React.FC<IRulerProps> = props => {
   const { canvas, scenario, rulerLengthInches, x, y } = props
 
   let points = [x, y, x, y + rulerLengthInches / canvas.conversionPercentY]
+  let [xOffset, yOffset] = [0, 0]
 
   if (scenario.orientation === 'vertical') {
     points = [x, y, x + rulerLengthInches / canvas.conversionPercentX, y]
+    yOffset = -4
+  } else {
+    xOffset = -5
   }
 
-  const [pos, setPos] = useState({
-    x: (points[0] + points[2]) / 2,
-    y: (points[1] + points[3]) / 2,
-  })
+  const pos = {
+    x: (points[0] + points[2]) / 2 + xOffset,
+    y: (points[1] + points[3]) / 2 + yOffset,
+  }
 
   if (!canvas) return <></>
 
-  const handleDragEnd = e => {
-    const x = e.target.attrs.x
-    const y = e.target.attrs.y
-    setPos(s => ({
-      x: s.x + x,
-      y: s.y + y,
-    }))
-  }
-
   return (
-    <Layer>
-      <Line points={points} draggable={true} onDragEnd={handleDragEnd} stroke="green" strokeWidth={15} />
-      <Text text={`${rulerLengthInches}"`} x={pos.x} y={pos.y} />
-    </Layer>
+    <Group draggable>
+      <Line points={points} stroke={'black'} strokeWidth={15} fill={'black'} />
+      <Text text={`${rulerLengthInches}"`} x={pos.x} y={pos.y} fill={'white'} />
+    </Group>
   )
 }
 

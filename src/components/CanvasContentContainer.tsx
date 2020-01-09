@@ -35,17 +35,19 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
         ))}
       </Layer>
 
-      <Ruler
-        rulerLengthInches={9}
-        x={canvas.canvasWidth / 2}
-        y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
-      />
-      <Ruler rulerLengthInches={6} x={canvas.canvasWidth / 2} y={canvas.canvasHeight / 2} />
-      <Ruler
-        rulerLengthInches={3}
-        x={canvas.canvasWidth / 2}
-        y={canvas.canvasHeight / 2 + 6 / canvas.conversionPercentY}
-      />
+      <Layer>
+        <Ruler
+          rulerLengthInches={9}
+          x={canvas.canvasWidth / 2}
+          y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
+        />
+        <Ruler rulerLengthInches={6} x={canvas.canvasWidth / 2} y={canvas.canvasHeight / 2} />
+        <Ruler
+          rulerLengthInches={3}
+          x={canvas.canvasWidth / 2}
+          y={canvas.canvasHeight / 2 + 6 / canvas.conversionPercentY}
+        />
+      </Layer>
     </>
   )
 }
