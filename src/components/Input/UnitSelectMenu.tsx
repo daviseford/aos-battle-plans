@@ -8,6 +8,7 @@ import Select from 'react-select'
 import { IScenario } from 'types/scenario'
 import { CircleBaseSizes } from 'data/bases'
 import { IBaseGroup, IBase } from 'types/bases'
+import GenericButton from './GenericButton'
 
 interface ITopToolbar {
   canvas: ICanvasDimensions
@@ -40,12 +41,11 @@ const createBases = (numBases: number) => {
 
 const initialState = {
   numBases: 0,
-  baseSizeString: '',
-  groupId: '',
+  baseSizeString: Object.keys(CircleBaseSizes)[0],
 }
 
 const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
-  const { canvas, addBaseGroup, baseGroups, deleteBaseGroup, updateBaseGroup } = props
+  const { canvas, addBaseGroup } = props
 
   const [state, setState] = useState(initialState)
 
@@ -55,42 +55,35 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
 
   const handleNumBaseChange = e => {
     e.preventDefault()
-
     const numBases = parseInt(e.target.value || 0, 10)
-    const difference = numBases - state.numBases // so 7 - 10 = -3   10 - 0 = 0
-
     setState(c => ({ ...c, numBases }))
-
-    if (!state.groupId) return
-    if (numBases === 0) return deleteBaseGroup(state.groupId)
-
-    const group = baseGroups.find(x => x.id === state.groupId) as IBaseGroup
-    let bases: IBase[] = []
-
-    if (difference > 0) {
-      bases = group.bases.concat(createBases(numBases))
-    }
-
-    updateBaseGroup({ ...group, bases })
   }
 
-  const handleBaseSelection = value => {
+  const handleBaseSizeChange = value => {
+    setState(s => ({ ...s, baseSizeString: value.label }))
+  }
+
+  const handleDeployButtonClick = e => {
+    e.preventDefault()
     const bases = createBases(state.numBases)
 
-    const groupId = shortid.generate()
     const baseGroup: IBaseGroup = {
-      id: groupId,
-      baseSizeMM: CircleBaseSizes[value.label],
-      baseSizeString: value.label,
+      id: shortid.generate(),
+      baseSizeMM: CircleBaseSizes[state.baseSizeString],
+      baseSizeString: state.baseSizeString,
       bases,
     }
+
     addBaseGroup(baseGroup)
-    setState(s => ({ ...s, groupId }))
   }
+
+  const canClick = state.baseSizeString !== '' || state.numBases > 0
+
+  console.log(canClick)
 
   return (
     <div className="row justify-content-center">
-      <div className="col-6">
+      <div className="col-4">
         <input
           className="form-control"
           type="number"
@@ -98,8 +91,18 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
           placeholder="Number of models"
         />
       </div>
-      <div className="col-6">
-        <Select onChange={handleBaseSelection} options={options} placeholder={'Base size'} />
+      <div className="col-4">
+        <Select
+          onChange={handleBaseSizeChange}
+          options={options}
+          placeholder={'Base size'}
+          defaultInputValue={Object.keys(CircleBaseSizes)[0]}
+        />
+      </div>
+      <div className="col-4">
+        <GenericButton onClick={handleDeployButtonClick} hidden={!canClick}>
+          Deploy Unit
+        </GenericButton>
       </div>
     </div>
   )
