@@ -16,6 +16,7 @@ import TopToolbar from 'components/Toolbar/TopToolbar'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import GenericButton from 'components/Input/GenericButton'
+import { IScenario } from 'types/scenario'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -24,11 +25,12 @@ import GenericButton from 'components/Input/GenericButton'
 
 interface IApp {
   canvas: ICanvasDimensions
+  scenario: IScenario
   setCanvas: (payload: number) => void
 }
 
 const AppComponent: React.FC<IApp> = props => {
-  const { canvas, setCanvas } = props
+  const { canvas, setCanvas, scenario } = props
 
   const stageRef = useRef()
 
@@ -55,7 +57,7 @@ const AppComponent: React.FC<IApp> = props => {
     event.preventDefault()
     // @ts-ignore
     const dataURL = stageRef.current.toDataURL()
-    downloadURI(dataURL, 'stage.png')
+    downloadURI(dataURL, `${scenario}.png`)
   }
 
   return (
@@ -90,6 +92,7 @@ const AppComponent: React.FC<IApp> = props => {
 const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
   canvas: selectors.getCanvas(state),
+  scenario: selectors.getScenario(state),
 })
 
 const App = connect(mapStateToProps, { setCanvas: canvas.actions.setCanvas })(AppComponent)
