@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import shortid from 'shortid'
 import { selectors, baseGroups } from 'ducks'
-import Scenarios from 'data/scenarios'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import Select from 'react-select'
@@ -90,23 +89,19 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
   }
 
   return (
-    <>
-      <div className="container-fluid">
-        <div className="row bg-info text-center justify-content-center">
-          <div className="col-6">
-            <input
-              className="form-control"
-              type="number"
-              onChange={handleNumBaseChange}
-              placeholder="Number of models"
-            />
-          </div>
-          <div className="col-6">
-            <Select onChange={handleBaseSelection} options={options} placeholder={'Base size'} />
-          </div>
-        </div>
+    <div className="row justify-content-center">
+      <div className="col-6">
+        <input
+          className="form-control"
+          type="number"
+          onChange={handleNumBaseChange}
+          placeholder="Number of models"
+        />
       </div>
-    </>
+      <div className="col-6">
+        <Select onChange={handleBaseSelection} options={options} placeholder={'Base size'} />
+      </div>
+    </div>
   )
 }
 
