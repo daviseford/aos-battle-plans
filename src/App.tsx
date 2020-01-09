@@ -63,12 +63,11 @@ const AppComponent: React.FC<IApp> = props => {
       <TopToolbar />
 
       <div className="stage">
-        {/* 
-        // @ts-ignore */}
         <Stage
           width={canvas.canvasWidth}
           height={canvas.canvasHeight}
           style={{ backgroundColor: 'white' }}
+          // @ts-ignore
           ref={stageRef}
         >
           <Provider store={store}>
