@@ -41,7 +41,7 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
   return (
     <>
       <Group draggable={true}>
-        {[...Array(5)].map((x, i) => (
+        {[...Array(baseGroup.bases.length)].map((x, i) => (
           <CircleBase key={i} x={30 + getXSpacing(baseRadius) * i} y={50} radius={baseRadius} />
         ))}
       </Group>

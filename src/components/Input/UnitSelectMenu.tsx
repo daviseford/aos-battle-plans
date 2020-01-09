@@ -56,7 +56,7 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
   const handleNumBaseChange = e => {
     e.preventDefault()
 
-    const numBases = e.target.value
+    const numBases = parseInt(e.target.value || 0, 10)
     const difference = numBases - state.numBases // so 7 - 10 = -3   10 - 0 = 0
 
     setState(c => ({ ...c, numBases }))
