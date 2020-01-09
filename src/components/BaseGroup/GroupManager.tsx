@@ -7,6 +7,7 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { genericButtonBlockDanger } from 'theme/helperClasses'
+import { SwatchesPicker } from 'react-color'
 
 interface IGroupManager {
   baseGroup: IBaseGroup
@@ -27,6 +28,11 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
     deleteBaseGroup(props.baseGroup.id)
   }
 
+  const handleChangeComplete = (color, event) => {
+    const colorHex = color.hex
+    console.log(colorHex)
+  }
+
   return (
     <div className="card">
       <div className="card-body">
@@ -35,6 +41,9 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
           {props.baseGroup.bases.length} x {props.baseGroup.baseSizeString}
         </h6>
         <p className="card-text">
+          {/* 
+          // @ts-ignore */}
+          <SwatchesPicker onChangeComplete={handleChangeComplete} />
           <br />
           <GenericButton onClick={handleDeleteClick} className={genericButtonBlockDanger}>
             Delete
