@@ -36,7 +36,7 @@ const createBases = (numBases: number) => {
       id: shortid.generate(),
       x: 0,
       y: 0,
-      draggable: true,
+      draggable: false,
     }
   })
 

@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Circle } from 'react-konva'
 import { DEFAULT_DRAGGABLE_COLOR } from 'theme/colors'
 import { connect } from 'react-redux'
-import { IStore } from 'types/store'
 import { baseGroups, IUpdateBasePayload } from 'ducks'
 import { IBaseGroup, IBase } from 'types/bases'
 
@@ -14,41 +13,40 @@ interface ICircleBase {
 }
 
 const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, updateBase }) => {
-  // TODO use useReducer for all of these updates
-  const [color, setColor] = useState(baseGroup.color)
-  const [draggable, setDraggable] = useState(false)
-
   useEffect(() => {
+    // Only run on mount
     updateBase({ base, groupId: baseGroup.id })
-
-    // Run on mount
+    // eslint-disable-next-line
   }, [])
-
-  useEffect(() => {
-    if (color !== DEFAULT_DRAGGABLE_COLOR && color !== baseGroup.color) {
-      setColor(baseGroup.color)
-    }
-  }, [color, baseGroup.color])
 
   const handleClick = useCallback(
     e => {
-      const newColor = color !== DEFAULT_DRAGGABLE_COLOR ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color
-      setColor(newColor)
-      setDraggable(newColor === DEFAULT_DRAGGABLE_COLOR)
+      const payload = {
+        base: {
+          ...base,
+          draggable: !base.draggable,
+        },
+        groupId: baseGroup.id,
+      }
+      updateBase(payload)
     },
-    [baseGroup, color]
+    [base, baseGroup.id, updateBase]
   )
 
-  const handleDragEnd = e => {
-    updateBase({
-      base: {
-        ...base,
-        x: e.target.x(),
-        y: e.target.y(),
-      },
-      groupId: baseGroup.id,
-    })
-  }
+  const handleDragEnd = useCallback(
+    e => {
+      const payload = {
+        base: {
+          ...base,
+          x: e.target.x(),
+          y: e.target.y(),
+        },
+        groupId: baseGroup.id,
+      }
+      updateBase(payload)
+    },
+    [base, baseGroup.id, updateBase]
+  )
 
   return (
     <Circle
@@ -56,20 +54,16 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
       y={base.y}
       radius={radius}
       perfectDrawEnabled={false}
-      fill={color}
+      fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
       shadowBlur={5}
       onClick={handleClick}
       onDragEnd={handleDragEnd}
-      draggable={draggable}
+      draggable={base.draggable}
     />
   )
 }
 
-const mapStateToProps = (state: IStore, ownProps) => ({
-  ...ownProps,
-})
-
-const CircleBase = connect(mapStateToProps, {
+const CircleBase = connect(null, {
   updateBase: baseGroups.actions.updateBase,
 })(CircleBaseComponent)
 

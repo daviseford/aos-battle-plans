@@ -38,7 +38,7 @@ export interface IUpdateBasePayload {
 const updateBase = (state: IBaseGroupStore, action: { payload: IUpdateBasePayload }) => {
   const groupIndex = state.baseGroups.findIndex(group => group.id === action.payload.groupId)
   const baseIdx = state.baseGroups[groupIndex].bases.findIndex(base => base.id === action.payload.base.id)
-  state.baseGroups[groupIndex][baseIdx] = action.payload.base
+  state.baseGroups[groupIndex].bases[baseIdx] = action.payload.base
 }
 
 /**
