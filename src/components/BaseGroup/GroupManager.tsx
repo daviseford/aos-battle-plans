@@ -7,7 +7,7 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { genericButtonBlockDanger } from 'theme/helperClasses'
-import { GithubPicker } from 'react-color'
+import { GithubPicker, CirclePicker } from 'react-color'
 
 interface IGroupManager {
   baseGroup: IBaseGroup
@@ -42,7 +42,7 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
         <div className="card-text">
           {/* 
           // @ts-ignore */}
-          <GithubPicker onChangeComplete={handleChangeComplete} />
+          <CirclePicker onChangeComplete={handleChangeComplete} />
           <br />
           <GenericButton onClick={handleDeleteClick} className={genericButtonBlockDanger}>
             Delete

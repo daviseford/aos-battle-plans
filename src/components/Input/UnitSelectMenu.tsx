@@ -44,7 +44,7 @@ const createBases = (numBases: number) => {
 }
 
 const initialState = {
-  numBases: 0,
+  numBases: MIN_MODELS,
   baseSizeString: Object.keys(CircleBaseSizes)[0],
   label: '',
 }
@@ -95,29 +95,29 @@ const UnitSelectMenuComponent: React.FC<IUnitSelectMenu> = props => {
   const canClick = state.baseSizeString !== '' && state.numBases > 0
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-3">
+    <div className="row justify-content-center pb-3">
+      <div className="col">
         <input
           className="form-control"
           type="number"
           onChange={handleNumBaseChange}
-          placeholder="Number of models"
+          placeholder="# Models"
           min={MIN_MODELS}
           max={MAX_MODELS}
         />
       </div>
-      <div className="col-3">
+      <div className="col">
         <Select
           onChange={handleBaseSizeChange}
           options={options}
-          placeholder={'Base size'}
+          placeholder={'Base Size'}
           defaultValue={options[0]}
         />
       </div>
-      <div className="col-3">
+      <div className="col">
         <input className="form-control" type="text" onChange={handleNameChange} placeholder="Name" />
       </div>
-      <div className="col-3">
+      <div className="col-3" hidden={!canClick}>
         <GenericButton onClick={handleDeployButtonClick} hidden={!canClick}>
           Deploy Unit
         </GenericButton>
