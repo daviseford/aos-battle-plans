@@ -9,6 +9,7 @@ import VerticalScenarioLines from './ScenarioLines/Vertical'
 import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
+import Ruler from './Line/Ruler'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -33,6 +34,18 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
           <BaseGroup baseGroup={group} key={group.id} />
         ))}
       </Layer>
+
+      <Ruler
+        rulerLengthInches={9}
+        x={canvas.canvasWidth / 2}
+        y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
+      />
+      <Ruler rulerLengthInches={6} x={canvas.canvasWidth / 2} y={canvas.canvasHeight / 2} />
+      <Ruler
+        rulerLengthInches={3}
+        x={canvas.canvasWidth / 2}
+        y={canvas.canvasHeight / 2 + 6 / canvas.conversionPercentY}
+      />
     </>
   )
 }
