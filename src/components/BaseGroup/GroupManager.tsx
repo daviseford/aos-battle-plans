@@ -7,7 +7,8 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { genericButtonBlockDanger } from 'theme/helperClasses'
-import { GithubPicker, CirclePicker } from 'react-color'
+import { CirclePicker } from 'react-color'
+import { PICKER_COLORS } from 'theme/colors'
 
 interface IGroupManager {
   baseGroup: IBaseGroup
@@ -40,9 +41,12 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
           {props.baseGroup.bases.length} x {props.baseGroup.baseSizeString}
         </h6>
         <div className="card-text">
-          {/* 
+          <div className="d-flex justify-content-center">
+            {/* 
           // @ts-ignore */}
-          <CirclePicker onChangeComplete={handleChangeComplete} />
+            <CirclePicker onChangeComplete={handleChangeComplete} colors={PICKER_COLORS} />
+          </div>
+
           <br />
           <GenericButton onClick={handleDeleteClick} className={genericButtonBlockDanger}>
             Delete
