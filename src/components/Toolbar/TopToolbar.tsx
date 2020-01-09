@@ -8,7 +8,7 @@ import Select from 'react-select'
 import { IScenario } from 'types/scenario'
 import UnitSelectMenu from '../Input/UnitSelectMenu'
 import { IBaseGroup } from 'types/bases'
-import GroupManager from './GroupManager'
+import GroupManager from '../BaseGroup/GroupManager'
 
 interface ITopToolbar {
   baseGroups: IBaseGroup[]
@@ -50,9 +50,15 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
             <UnitSelectMenu />
           </div>
           <div className="col-12">
-            {baseGroups.map(group => {
-              return <GroupManager baseGroup={group} />
-            })}
+            <div className="row justify-content-center">
+              {baseGroups.map(group => {
+                return (
+                  <div className="col-3">
+                    <GroupManager baseGroup={group} key={group.id} />
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>

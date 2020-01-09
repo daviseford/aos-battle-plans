@@ -30,7 +30,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* Base display layer */}
       <Layer>
         {baseGroups.map(group => (
-          <BaseGroup baseGroup={group} />
+          <BaseGroup baseGroup={group} key={group.id} />
         ))}
       </Layer>
     </>
