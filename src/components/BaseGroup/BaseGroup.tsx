@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Group } from 'react-konva'
 import { selectors } from 'ducks'
 import { mmToInches } from 'utils/measurements'
-import CircleBase from 'components/Base/CircleBase'
+import CircleBaseComponent from 'components/Base/CircleBase'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { IBaseGroup } from 'types/bases'
@@ -47,12 +47,16 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
   return (
     <>
       <Group draggable={true}>
-        {rows.map((r, rowIndex) => {
-          return [...Array(r.length)].map((x, baseIndex) => (
-            <CircleBase
+        {rows.map((bases, rowIndex) => {
+          return bases.map((base, baseIndex) => (
+            <CircleBaseComponent
               key={baseIndex}
-              x={30 + getXSpacing(baseRadius) * baseIndex}
-              y={50 + getYSpacing(baseRadius) * rowIndex}
+              baseGroup={baseGroup}
+              base={{
+                ...base,
+                x: 30 + getXSpacing(baseRadius) * baseIndex,
+                y: 50 + getYSpacing(baseRadius) * rowIndex,
+              }}
               radius={baseRadius}
             />
           ))

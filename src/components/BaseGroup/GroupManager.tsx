@@ -19,7 +19,7 @@ interface IGroupManager {
 }
 
 const GroupManagerComponent: React.FC<IGroupManager> = props => {
-  const { canvas, deleteBaseGroup } = props
+  const { canvas, deleteBaseGroup, updateBaseGroup, baseGroup } = props
 
   if (!canvas) return <></>
 
@@ -29,8 +29,7 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
   }
 
   const handleChangeComplete = (color, event) => {
-    const colorHex = color.hex
-    console.log(colorHex)
+    updateBaseGroup({ ...baseGroup, color: color.hex })
   }
 
   return (
