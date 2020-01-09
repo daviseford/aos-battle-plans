@@ -39,22 +39,10 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
   const cohesionY = 1 / canvas.conversionPercentY
 
   // Diameter + cohesion
-  const getXSpacing = (radius: number) => radius * 2 + cohesionX * 2
+  const getXSpacing = (radius: number) => radius * 2 + cohesionX
   const getYSpacing = (radius: number) => radius * 2 + cohesionY
 
   const rows = chunk(baseGroup.bases, 10)
-
-  const rowY = {
-    0: 50,
-    1: 50 + getYSpacing(baseRadius),
-    2: 50 + getYSpacing(baseRadius) * 2,
-    3: 50 + getYSpacing(baseRadius) * 3,
-    4: 50 + getYSpacing(baseRadius) * 4,
-    5: 50 + getYSpacing(baseRadius) * 5,
-    6: 50 + getYSpacing(baseRadius) * 6,
-    7: 50 + getYSpacing(baseRadius) * 7,
-    8: 50 + getYSpacing(baseRadius) * 8,
-  }
 
   return (
     <>
@@ -64,7 +52,7 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
             <CircleBase
               key={baseIndex}
               x={30 + getXSpacing(baseRadius) * baseIndex}
-              y={rowY[rowIndex]}
+              y={50 + getYSpacing(baseRadius) * rowIndex}
               radius={baseRadius}
             />
           ))
