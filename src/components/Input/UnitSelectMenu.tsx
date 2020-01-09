@@ -10,7 +10,7 @@ import { CircleBaseSizes } from 'data/bases'
 import { IBaseGroup, IBase } from 'types/bases'
 import GenericButton from './GenericButton'
 
-interface ITopToolbar {
+interface IUnitSelectMenu {
   canvas: ICanvasDimensions
   scenario: IScenario
   baseGroups: IBaseGroup[]
@@ -44,7 +44,7 @@ const initialState = {
   baseSizeString: Object.keys(CircleBaseSizes)[0],
 }
 
-const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
+const UnitSelectMenuComponent: React.FC<IUnitSelectMenu> = props => {
   const { canvas, addBaseGroup } = props
 
   const [state, setState] = useState(initialState)
@@ -55,7 +55,8 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
 
   const handleNumBaseChange = e => {
     e.preventDefault()
-    const numBases = parseInt(e.target.value || 0, 10)
+    let numBases = parseInt(e.target.value || 0, 10)
+    numBases = numBases > 0 ? numBases : 0 // Remove negative numbers
     setState(c => ({ ...c, numBases }))
   }
 
@@ -77,9 +78,7 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
     addBaseGroup(baseGroup)
   }
 
-  const canClick = state.baseSizeString !== '' || state.numBases > 0
-
-  console.log(canClick)
+  const canClick = state.baseSizeString !== '' && state.numBases > 0
 
   return (
     <div className="row justify-content-center">
@@ -96,7 +95,7 @@ const UnitSelectMenuComponent: React.FC<ITopToolbar> = props => {
           onChange={handleBaseSizeChange}
           options={options}
           placeholder={'Base size'}
-          defaultInputValue={Object.keys(CircleBaseSizes)[0]}
+          defaultValue={options[0]}
         />
       </div>
       <div className="col-4">

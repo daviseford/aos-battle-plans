@@ -62,7 +62,7 @@ const deleteBaseFromGroup = (
  * Delete a baseGroup by id
  */
 const deleteBaseGroup = (state: IBaseGroupStore, action: { payload: string }) => {
-  state.baseGroups.filter(group => group.id !== action.payload)
+  state.baseGroups = state.baseGroups.filter(group => group.id !== action.payload)
 }
 
 export const baseGroups = createSlice({

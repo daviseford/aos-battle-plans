@@ -6,9 +6,12 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import Select from 'react-select'
 import { IScenario } from 'types/scenario'
-import UnitSelectMenu from './Input/UnitSelectMenu'
+import UnitSelectMenu from '../Input/UnitSelectMenu'
+import { IBaseGroup } from 'types/bases'
+import GroupManager from './GroupManager'
 
 interface ITopToolbar {
+  baseGroups: IBaseGroup[]
   canvas: ICanvasDimensions
   scenario: IScenario
   setScenario: (name: string) => void
@@ -22,7 +25,7 @@ const scenariosToOptions = (): { value: string; label: string }[] => {
 }
 
 const TopToolbarComponent: React.FC<ITopToolbar> = props => {
-  const { canvas, scenario, setScenario } = props
+  const { canvas, scenario, setScenario, baseGroups } = props
 
   if (!canvas) return <></>
 
@@ -46,6 +49,11 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
           <div className="col-12">
             <UnitSelectMenu />
           </div>
+          <div className="col-12">
+            {baseGroups.map(group => {
+              return <GroupManager baseGroup={group} />
+            })}
+          </div>
         </div>
       </div>
     </>
@@ -56,6 +64,7 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
   scenario: selectors.getScenario(state),
   canvas: selectors.getCanvas(state),
+  baseGroups: selectors.getBaseGroups(state),
 })
 
 const TopToolbar = connect(mapStateToProps, { setScenario: scenario.actions.setScenario })(

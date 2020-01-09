@@ -12,7 +12,7 @@ import { canvas, selectors } from 'ducks'
 
 // Elements
 import CanvasContentContainer from 'components/CanvasContentContainer'
-import TopToolbar from 'components/TopToolbar'
+import TopToolbar from 'components/Toolbar/TopToolbar'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 
