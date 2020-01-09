@@ -9,6 +9,7 @@ import { IScenario } from 'types/scenario'
 import { CircleBaseSizes } from 'data/bases'
 import { IBaseGroup, IBase } from 'types/bases'
 import GenericButton from './GenericButton'
+import { DEFAULT_BASE_COLOR } from 'theme/colors'
 
 interface IUnitSelectMenu {
   canvas: ICanvasDimensions
@@ -85,6 +86,7 @@ const UnitSelectMenuComponent: React.FC<IUnitSelectMenu> = props => {
       baseSizeString: state.baseSizeString,
       bases,
       label: state.label,
+      color: DEFAULT_BASE_COLOR,
     }
 
     addBaseGroup(baseGroup)

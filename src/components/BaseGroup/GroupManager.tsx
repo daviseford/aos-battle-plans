@@ -7,7 +7,7 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { genericButtonBlockDanger } from 'theme/helperClasses'
-import { SwatchesPicker } from 'react-color'
+import { GithubPicker } from 'react-color'
 
 interface IGroupManager {
   baseGroup: IBaseGroup
@@ -40,15 +40,15 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
         <h6 className="card-subtitle mb-2 text-muted">
           {props.baseGroup.bases.length} x {props.baseGroup.baseSizeString}
         </h6>
-        <p className="card-text">
+        <div className="card-text">
           {/* 
           // @ts-ignore */}
-          <SwatchesPicker onChangeComplete={handleChangeComplete} />
+          <GithubPicker onChangeComplete={handleChangeComplete} />
           <br />
           <GenericButton onClick={handleDeleteClick} className={genericButtonBlockDanger}>
             Delete
           </GenericButton>
-        </p>
+        </div>
       </div>
     </div>
   )

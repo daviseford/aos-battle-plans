@@ -11,4 +11,5 @@ export interface IBaseGroup {
   bases: IBase[]
   id: string
   label: string
+  color: string // hexcode e.g. "#fff"
 }
