@@ -53,8 +53,8 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
             <div className="row justify-content-center">
               {baseGroups.map(group => {
                 return (
-                  <div className="col-3">
-                    <GroupManager baseGroup={group} key={group.id} />
+                  <div className="col-3" key={group.id}>
+                    <GroupManager baseGroup={group} />
                   </div>
                 )
               })}

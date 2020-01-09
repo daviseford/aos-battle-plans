@@ -7,6 +7,7 @@ import CircleBase from 'components/CircleBase'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { IBaseGroup } from 'types/bases'
+import { chunk } from 'lodash'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -34,16 +35,40 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
 
   if (!canvas || !baseGroup.bases.length) return <></>
 
-  const cohesion = 1 / canvas.conversionPercentX
+  const cohesionX = 1 / canvas.conversionPercentX
+  const cohesionY = 1 / canvas.conversionPercentY
+
   // Diameter + cohesion
-  const getXSpacing = (radius: number) => radius * 2 + cohesion
+  const getXSpacing = (radius: number) => radius * 2 + cohesionX * 2
+  const getYSpacing = (radius: number) => radius * 2 + cohesionY
+
+  const rows = chunk(baseGroup.bases, 10)
+
+  const rowY = {
+    0: 50,
+    1: 50 + getYSpacing(baseRadius),
+    2: 50 + getYSpacing(baseRadius) * 2,
+    3: 50 + getYSpacing(baseRadius) * 3,
+    4: 50 + getYSpacing(baseRadius) * 4,
+    5: 50 + getYSpacing(baseRadius) * 5,
+    6: 50 + getYSpacing(baseRadius) * 6,
+    7: 50 + getYSpacing(baseRadius) * 7,
+    8: 50 + getYSpacing(baseRadius) * 8,
+  }
 
   return (
     <>
       <Group draggable={true}>
-        {[...Array(baseGroup.bases.length)].map((x, i) => (
-          <CircleBase key={i} x={30 + getXSpacing(baseRadius) * i} y={50} radius={baseRadius} />
-        ))}
+        {rows.map((r, rowIndex) => {
+          return [...Array(r.length)].map((x, baseIndex) => (
+            <CircleBase
+              key={baseIndex}
+              x={30 + getXSpacing(baseRadius) * baseIndex}
+              y={rowY[rowIndex]}
+              radius={baseRadius}
+            />
+          ))
+        })}
       </Group>
     </>
   )

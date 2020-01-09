@@ -30,7 +30,7 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
   return (
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">Card title</h5>
+        <h5 className="card-title">{props.baseGroup.label}</h5>
         <h6 className="card-subtitle mb-2 text-muted">
           {props.baseGroup.bases.length} x {props.baseGroup.baseSizeString}
         </h6>
