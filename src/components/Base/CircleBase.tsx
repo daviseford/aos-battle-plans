@@ -4,6 +4,7 @@ import { DEFAULT_DRAGGABLE_COLOR } from 'theme/colors'
 import { connect } from 'react-redux'
 import { baseGroups, IUpdateBasePayload } from 'ducks'
 import { IBaseGroup, IBase } from 'types/bases'
+import { dragScaleUp, dragEndBounce } from 'utils/handleDrag'
 
 interface ICircleBase {
   base: IBase
@@ -33,8 +34,12 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
     [base, baseGroup.id, updateBase]
   )
 
+  const handleDragStart = e => dragScaleUp(e)
+
   const handleDragEnd = useCallback(
     e => {
+      dragEndBounce(e)
+
       const payload = {
         base: {
           ...base,
@@ -50,15 +55,16 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
 
   return (
     <Circle
-      x={base.x}
-      y={base.y}
-      radius={radius}
-      perfectDrawEnabled={false}
+      draggable={base.draggable}
       fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
-      shadowBlur={5}
       onClick={handleClick}
       onDragEnd={handleDragEnd}
-      draggable={base.draggable}
+      onDragStart={handleDragStart}
+      perfectDrawEnabled={false}
+      radius={radius}
+      shadowBlur={5}
+      x={base.x}
+      y={base.y}
     />
   )
 }
