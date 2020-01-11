@@ -1,7 +1,7 @@
 import Konva from 'konva'
-import { KonvaPointerEvent } from 'konva/types/PointerEvents'
+import { KonvaEventObject } from 'konva/types/Node'
 
-export const dragScaleUp = (e: KonvaPointerEvent) => {
+export const dragScaleUp = (e: KonvaEventObject<DragEvent>) => {
   e.target.setAttrs({
     shadowOffset: {
       x: 2,
@@ -12,7 +12,7 @@ export const dragScaleUp = (e: KonvaPointerEvent) => {
   })
 }
 
-export const dragEndBounce = (e: KonvaPointerEvent) => {
+export const dragEndBounce = (e: KonvaEventObject<DragEvent>) => {
   e.target.to({
     duration: 1,
     easing: Konva.Easings.ElasticEaseOut,
