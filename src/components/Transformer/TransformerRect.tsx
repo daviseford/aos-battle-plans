@@ -28,6 +28,9 @@ const TransformerRectComponent: React.FC<ICircleComponent> = props => {
     }
   }, [isSelected])
 
+  const inchesWidth = (canvas.conversionPercentX * shapeProps.width).toFixed(2)
+  const inchesHeight = (canvas.conversionPercentY * shapeProps.height).toFixed(2)
+
   return (
     <Group draggable={true}>
       <Rect
@@ -75,13 +78,13 @@ const TransformerRectComponent: React.FC<ICircleComponent> = props => {
       />
 
       <Text
-        text={`${(canvas.conversionPercentX * shapeProps.width).toFixed(2)}"`}
+        text={`${inchesWidth}" x ${inchesHeight}"`}
         stroke={`black`}
         fill={`white`}
         align={'center'}
         fontSize={16}
-        x={shapeProps.x + shapeProps.width / 2.5}
-        y={shapeProps.y + 20}
+        x={shapeProps.x + shapeProps.width / 6}
+        y={shapeProps.y + shapeProps.height + 2}
       />
 
       {isSelected && (
@@ -95,6 +98,7 @@ const TransformerRectComponent: React.FC<ICircleComponent> = props => {
             }
             return newBox
           }}
+          keepRatio={false}
         />
       )}
     </Group>
@@ -113,17 +117,9 @@ const initialRectangles = [
     x: 10,
     y: 10,
     width: 100,
-    height: 100,
-    fill: 'red',
-    id: 'rect1',
-  },
-  {
-    x: 150,
-    y: 150,
-    width: 100,
     height: 10,
-    fill: 'green',
-    id: 'rulerRect',
+    fill: 'black',
+    id: 'ruler',
   },
 ]
 
