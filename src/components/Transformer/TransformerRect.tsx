@@ -1,7 +1,20 @@
 import React from 'react'
-import { Layer, Rect, Transformer } from 'react-konva'
+import { Layer, Rect, Transformer, Group, Text } from 'react-konva'
+import { ICanvasDimensions } from 'types/canvas'
+import { connect } from 'react-redux'
+import { IStore } from 'types/store'
+import { selectors } from 'ducks'
 
-const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }) => {
+interface ICircleComponent {
+  shapeProps: any
+  isSelected: any
+  onSelect: any
+  onChange: any
+  canvas: ICanvasDimensions
+}
+
+const TransformerRectComponent: React.FC<ICircleComponent> = props => {
+  const { shapeProps, isSelected, onSelect, onChange, canvas } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -16,7 +29,7 @@ const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }
   }, [isSelected])
 
   return (
-    <React.Fragment>
+    <Group draggable={true}>
       <Rect
         onClick={onSelect}
         ref={shapeRef}
@@ -29,7 +42,7 @@ const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }
             y: e.target.y(),
           })
         }}
-        onTransformEnd={e => {
+        onTransform={e => {
           // transformer is changing scale of the node
           // and NOT its width or height
           // but in the store we have only width and height
@@ -45,6 +58,7 @@ const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }
           node.scaleX(1)
           // @ts-ignore
           node.scaleY(1)
+
           onChange({
             ...shapeProps,
             // @ts-ignore
@@ -57,7 +71,19 @@ const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }
             height: Math.max(node.height() * scaleY),
           })
         }}
+        rotationSnaps={[0, 90, 180, 270]}
       />
+
+      <Text
+        text={`${(canvas.conversionPercentX * shapeProps.width).toFixed(2)}"`}
+        stroke={`black`}
+        fill={`white`}
+        align={'center'}
+        fontSize={16}
+        x={shapeProps.x + shapeProps.width / 2.5}
+        y={shapeProps.y + 20}
+      />
+
       {isSelected && (
         <Transformer
           // @ts-ignore
@@ -71,9 +97,16 @@ const TransformerRectComponent = ({ shapeProps, isSelected, onSelect, onChange }
           }}
         />
       )}
-    </React.Fragment>
+    </Group>
   )
 }
+
+const mapStateToProps = (state: IStore, ownProps) => ({
+  ...ownProps,
+  canvas: selectors.getCanvas(state),
+})
+
+const ConnectedRect = connect(mapStateToProps, null)(TransformerRectComponent)
 
 const initialRectangles = [
   {
@@ -88,9 +121,9 @@ const initialRectangles = [
     x: 150,
     y: 150,
     width: 100,
-    height: 100,
+    height: 10,
     fill: 'green',
-    id: 'rect2',
+    id: 'rulerRect',
   },
 ]
 
@@ -102,7 +135,7 @@ const TransformerRect = () => {
     <Layer>
       {rectangles.map((rect, i) => {
         return (
-          <TransformerRectComponent
+          <ConnectedRect
             key={i}
             shapeProps={rect}
             isSelected={rect.id === selectedId}

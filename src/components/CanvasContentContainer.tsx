@@ -12,6 +12,7 @@ import BaseGroup from './BaseGroup/BaseGroup'
 import Ruler from './Line/Ruler'
 import TransformerCircle from './Transformer/TransformerCircle'
 import TransformerLine from './Transformer/TransformerLine'
+import TransformerRect from './Transformer/TransformerRect'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -33,9 +34,9 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       <ScenarioLines />
 
       {/* Drawable Auras */}
-      <TransformerCircle />
+      {/* <TransformerCircle /> */}
 
-      <TransformerLine />
+      <TransformerRect />
 
       {/* Base display layer */}
       <Layer>
