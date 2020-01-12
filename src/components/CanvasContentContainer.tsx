@@ -10,6 +10,7 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
 import Ruler from './Line/Ruler'
+import TransformerCircle from './Transformer/TransformerCircle'
 
 interface ICCC {
   canvas: ICanvasDimensions
@@ -27,7 +28,12 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   return (
     <>
+      {/* Grid lines, boundaries, etc */}
       <ScenarioLines />
+
+      {/* Drawable Auras */}
+      <TransformerCircle />
+
       {/* Base display layer */}
       <Layer>
         {baseGroups.map(group => (
