@@ -57,7 +57,7 @@ const AppComponent: React.FC<IApp> = props => {
     event.preventDefault()
     // @ts-ignore
     const dataURL = stageRef.current.toDataURL()
-    downloadURI(dataURL, `${scenario}.png`)
+    downloadURI(dataURL, `${scenario.name}.png`)
   }
 
   return (
