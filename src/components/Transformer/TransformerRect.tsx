@@ -4,6 +4,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
 import { selectors } from 'ducks'
+import { IRuler } from 'types/rulers'
 
 interface ICircleComponent {
   shapeProps: any
@@ -112,19 +113,10 @@ const mapStateToProps = (state: IStore, ownProps) => ({
 
 const ConnectedRect = connect(mapStateToProps, null)(TransformerRectComponent)
 
-const initialRectangles = [
-  {
-    x: 10,
-    y: 10,
-    width: 100,
-    height: 10,
-    fill: 'black',
-    id: 'ruler',
-  },
-]
+type TTransformerRect = React.FC<{ rectangles: IRuler[] }>
 
-const TransformerRect = () => {
-  const [rectangles, setRectangles] = React.useState(initialRectangles)
+const TransformerRect: TTransformerRect = props => {
+  const [rectangles, setRectangles] = React.useState(props.rectangles)
   const [selectedId, selectShape] = React.useState(null)
 
   return (

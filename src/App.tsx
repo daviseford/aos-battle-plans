@@ -17,6 +17,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import GenericButton from 'components/Input/GenericButton'
 import { IScenario } from 'types/scenario'
+import BottomToolbar from 'components/Toolbar/BottomToolbar'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -83,6 +84,12 @@ const AppComponent: React.FC<IApp> = props => {
       <div className="row bg-dark text-white text-center py-2 justify-content-center">
         <div className="col-3">
           <GenericButton onClick={handleSaveImage}>Save Image</GenericButton>
+        </div>
+      </div>
+
+      <div className="row  text-center py-2 justify-content-center">
+        <div className="col">
+          <BottomToolbar />
         </div>
       </div>
     </>

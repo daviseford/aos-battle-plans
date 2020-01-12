@@ -10,18 +10,18 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
 import Ruler from './Line/Ruler'
-import TransformerCircle from './Transformer/TransformerCircle'
-import TransformerLine from './Transformer/TransformerLine'
 import TransformerRect from './Transformer/TransformerRect'
+import { IRuler } from 'types/rulers'
 
 interface ICCC {
   canvas: ICanvasDimensions
+  rulers: IRuler[]
   scenario: IScenario
   baseGroups: IBaseGroup[]
 }
 
 const CanvasContentContainerComponent: React.FC<ICCC> = props => {
-  const { canvas, scenario, baseGroups } = props
+  const { canvas, scenario, baseGroups, rulers } = props
 
   if (!canvas) return <></>
 
@@ -36,8 +36,6 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* Drawable Auras */}
       {/* <TransformerCircle /> */}
 
-      <TransformerRect />
-
       {/* Base display layer */}
       <Layer>
         {baseGroups.map(group => (
@@ -45,6 +43,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
         ))}
       </Layer>
 
+      <TransformerRect rectangles={rulers} />
       <Layer>
         <Ruler
           rulerLengthInches={9}
@@ -65,6 +64,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
   scenario: selectors.getScenario(state),
+  rulers: selectors.getRulers(state),
   canvas: selectors.getCanvas(state),
   baseGroups: selectors.getBaseGroups(state),
 })
