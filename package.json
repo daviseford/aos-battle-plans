@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "up": "yarn upgrade-interactive --latest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -53,7 +54,7 @@
     "@types/react-redux": "7.1.5",
     "@types/react-select": "3.0.9",
     "@types/shortid": "0.0.29",
-    "husky": "4.0.6",
+    "husky": "4.0.7",
     "prettier": "1.19.1",
     "pretty-quick": "2.0.1",
     "typescript": "3.7.4"
