@@ -5,55 +5,21 @@ import { connect } from 'react-redux'
 import { IStore } from 'types/store'
 import { selectors, rulers } from 'ducks'
 import { IRuler } from 'types/rulers'
-import { sortBy } from 'lodash'
+import { getSnapDimensions } from 'utils/getSnapDimensions'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 
 interface IRect {
-  ruler: IRuler
-  isSelected: any
-  onSelect: any
-  updateRuler: (ruler: IRuler) => void
-  deleteRuler: (id: string) => void
   canvas: ICanvasDimensions
-}
-
-/**
- * Given inches like 10.73, will give us the width or height necessary to snap to 10.75"
- * @param inches
- * @param conversionPercent
- */
-const getSnapDimensions = (inches: number, conversionPercent: number): number => {
-  const flooredVal = Math.floor(inches)
-
-  const lookup = {
-    fromBottom: {
-      from: inches - flooredVal,
-      value: flooredVal,
-    },
-    fromQuarter: {
-      from: Math.abs(inches - (flooredVal + 0.25)),
-      value: flooredVal + 0.25,
-    },
-    fromHalf: {
-      from: Math.abs(inches - (flooredVal + 0.5)),
-      value: flooredVal + 0.5,
-    },
-    fromThreeQuarter: {
-      from: Math.abs(inches - (flooredVal + 0.75)),
-      value: flooredVal + 0.75,
-    },
-    fromTop: {
-      from: Math.abs(inches - (flooredVal + 1)),
-      value: flooredVal + 1,
-    },
-  }
-
-  const snapWidthTo = sortBy(Object.keys(lookup), key => lookup[key].from)[0]
-  return lookup[snapWidthTo].value / conversionPercent
+  deleteRuler: (id: string) => void
+  setSelectedRuler: (id: string | null) => void
+  isSelected: boolean
+  onSelect: any
+  ruler: IRuler
+  updateRuler: (ruler: IRuler) => void
 }
 
 const SingleRect: React.FC<IRect> = props => {
-  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler } = props
+  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler, setSelectedRuler } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -74,7 +40,7 @@ const SingleRect: React.FC<IRect> = props => {
         deleteRuler(ruler.id)
       } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
         e.preventDefault()
-        console.log('Todo: Unselect me')
+        setSelectedRuler(null)
       }
     }
 
@@ -82,7 +48,7 @@ const SingleRect: React.FC<IRect> = props => {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isSelected, deleteRuler, ruler])
+  }, [isSelected, deleteRuler, ruler, setSelectedRuler])
 
   const inchesWidth = (canvas.conversionPercentX * ruler.width).toFixed(2)
   const inchesHeight = (canvas.conversionPercentY * ruler.height).toFixed(2)
@@ -196,14 +162,18 @@ const mapStateToProps = (state: IStore, ownProps) => ({
 
 const ConnectedRect = connect(mapStateToProps, {
   deleteRuler: rulers.actions.deleteRuler,
+  setSelectedRuler: rulers.actions.setSelectedId,
   updateRuler: rulers.actions.updateRuler,
 })(SingleRect)
 
-type TTransformerRect = React.FC<{ rulers: IRuler[] }>
+type TTransformerRect = React.FC<{
+  rulers: IRuler[]
+  selectedRulerId: string | null
+  setSelectedRuler: (id: string | null) => void
+}>
 
 const TransformerRulersComponent: TTransformerRect = props => {
-  const { rulers } = props
-  const [selectedId, selectShape] = React.useState(null)
+  const { rulers, selectedRulerId, setSelectedRuler } = props
 
   return (
     <Layer>
@@ -214,10 +184,9 @@ const TransformerRulersComponent: TTransformerRect = props => {
             <ConnectedRect
               key={i}
               ruler={ruler}
-              isSelected={ruler.id === selectedId}
+              isSelected={ruler.id === selectedRulerId}
               onSelect={() => {
-                // @ts-ignore
-                selectShape(ruler.id)
+                setSelectedRuler(ruler.id)
               }}
             />
           )
@@ -229,8 +198,11 @@ const TransformerRulersComponent: TTransformerRect = props => {
 const mapStateToProps2 = (state: IStore, ownProps) => ({
   ...ownProps,
   rulers: selectors.getRulers(state),
+  selectedRulerId: selectors.getSelectedRulerId(state),
 })
 
-const TransformerRulers = connect(mapStateToProps2, null)(TransformerRulersComponent)
+const TransformerRulers = connect(mapStateToProps2, {
+  setSelectedRuler: rulers.actions.setSelectedId,
+})(TransformerRulersComponent)
 
 export default TransformerRulers

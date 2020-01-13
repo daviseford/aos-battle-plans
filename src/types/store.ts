@@ -11,6 +11,7 @@ export interface ICanvasStore {
 }
 export interface IRulerStore {
   rulers: IRuler[]
+  selectedId: string | null
 }
 export interface IScenarioStore {
   scenario: IScenario
