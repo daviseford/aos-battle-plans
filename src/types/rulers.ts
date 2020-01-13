@@ -6,4 +6,5 @@ export interface IRuler {
   width: number
   x: number
   y: number
+  rulerLength: number // in inches
 }

@@ -3,19 +3,19 @@ import { Layer, Rect, Transformer, Group, Text } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
-import { selectors } from 'ducks'
+import { selectors, rulers } from 'ducks'
 import { IRuler } from 'types/rulers'
 
-interface ICircleComponent {
+interface IRect {
   shapeProps: any
   isSelected: any
   onSelect: any
-  onChange: any
+  updateRuler: (id: string) => void
   canvas: ICanvasDimensions
 }
 
-const TransformerRectComponent: React.FC<ICircleComponent> = props => {
-  const { shapeProps, isSelected, onSelect, onChange, canvas } = props
+const SingleRect: React.FC<IRect> = props => {
+  const { shapeProps, isSelected, onSelect, canvas } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -37,10 +37,12 @@ const TransformerRectComponent: React.FC<ICircleComponent> = props => {
       <Rect
         onClick={onSelect}
         ref={shapeRef}
+        fill={'black'}
+        stroke={'black'}
         {...shapeProps}
         draggable
         onDragEnd={e => {
-          onChange({
+          props.updateRuler({
             ...shapeProps,
             x: e.target.x(),
             y: e.target.y(),
@@ -63,7 +65,7 @@ const TransformerRectComponent: React.FC<ICircleComponent> = props => {
           // @ts-ignore
           node.scaleY(1)
 
-          onChange({
+          props.updateRuler({
             ...shapeProps,
             // @ts-ignore
             x: node.x(),
@@ -111,36 +113,40 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const ConnectedRect = connect(mapStateToProps, null)(TransformerRectComponent)
+const ConnectedRect = connect(mapStateToProps, { updateRuler: rulers.actions.updateRuler })(SingleRect)
 
-type TTransformerRect = React.FC<{ rectangles: IRuler[] }>
+type TTransformerRect = React.FC<{ rulers: IRuler[] }>
 
-const TransformerRect: TTransformerRect = props => {
-  const [rectangles, setRectangles] = React.useState(props.rectangles)
+const TransformerRulersComponent: TTransformerRect = props => {
+  const { rulers } = props
   const [selectedId, selectShape] = React.useState(null)
 
   return (
     <Layer>
-      {rectangles.map((rect, i) => {
-        return (
-          <ConnectedRect
-            key={i}
-            shapeProps={rect}
-            isSelected={rect.id === selectedId}
-            onSelect={() => {
-              // @ts-ignore
-              selectShape(rect.id)
-            }}
-            onChange={newAttrs => {
-              const rects = rectangles.slice()
-              rects[i] = newAttrs
-              setRectangles(rects)
-            }}
-          />
-        )
-      })}
+      {rulers
+        .filter(x => x.canTransform)
+        .map((ruler, i) => {
+          return (
+            <ConnectedRect
+              key={i}
+              shapeProps={ruler}
+              isSelected={ruler.id === selectedId}
+              onSelect={() => {
+                // @ts-ignore
+                selectShape(ruler.id)
+              }}
+            />
+          )
+        })}
     </Layer>
   )
 }
 
-export default TransformerRect
+const mapStateToProps2 = (state: IStore, ownProps) => ({
+  ...ownProps,
+  rulers: selectors.getRulers(state),
+})
+
+const TransformerRulers = connect(mapStateToProps2, null)(TransformerRulersComponent)
+
+export default TransformerRulers

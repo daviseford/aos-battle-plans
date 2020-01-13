@@ -10,7 +10,7 @@ import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
 import Ruler from './Line/Ruler'
-import TransformerRect from './Transformer/TransformerRect'
+import TransformerRulers from './Transformer/TransformerRulers'
 import { IRuler } from 'types/rulers'
 
 interface ICCC {
@@ -43,7 +43,7 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
         ))}
       </Layer>
 
-      <TransformerRect rectangles={rulers} />
+      <TransformerRulers />
       <Layer>
         <Ruler
           rulerLengthInches={9}
