@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layer, Rect, Transformer, Group, Text } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
@@ -6,12 +6,14 @@ import { IStore } from 'types/store'
 import { selectors, rulers } from 'ducks'
 import { IRuler } from 'types/rulers'
 import { sortBy } from 'lodash'
+import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 
 interface IRect {
-  shapeProps: any
+  ruler: IRuler
   isSelected: any
   onSelect: any
-  updateRuler: (id: string) => void
+  updateRuler: (ruler: IRuler) => void
+  deleteRuler: (id: string) => void
   canvas: ICanvasDimensions
 }
 
@@ -51,7 +53,7 @@ const getSnapDimensions = (inches: number, conversionPercent: number): number =>
 }
 
 const SingleRect: React.FC<IRect> = props => {
-  const { shapeProps, isSelected, onSelect, canvas } = props
+  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -65,21 +67,39 @@ const SingleRect: React.FC<IRect> = props => {
     }
   }, [isSelected])
 
-  const inchesWidth = (canvas.conversionPercentX * shapeProps.width).toFixed(2)
-  const inchesHeight = (canvas.conversionPercentY * shapeProps.height).toFixed(2)
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.keyCode === BACKSPACE_KEYCODE || e.keyCode === DELETE_KEYCODE) {
+        e.preventDefault()
+        deleteRuler(ruler.id)
+      } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
+        e.preventDefault()
+        console.log('Todo: Unselect me')
+      }
+    }
+
+    if (isSelected && ruler) {
+      window.addEventListener('keydown', handleKeyDown)
+      return () => window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isSelected, deleteRuler, ruler])
+
+  const inchesWidth = (canvas.conversionPercentX * ruler.width).toFixed(2)
+  const inchesHeight = (canvas.conversionPercentY * ruler.height).toFixed(2)
 
   return (
     <Group draggable={true}>
       <Rect
         onClick={onSelect}
+        // @ts-ignore
         ref={shapeRef}
         fill={'black'}
         stroke={'black'}
-        {...shapeProps}
+        {...ruler}
         draggable
         onDragEnd={e => {
-          props.updateRuler({
-            ...shapeProps,
+          updateRuler({
+            ...ruler,
             x: e.target.x(),
             y: e.target.y(),
           })
@@ -100,7 +120,7 @@ const SingleRect: React.FC<IRect> = props => {
           const snapHeight = getSnapDimensions(rulerHeightInches, canvas.conversionPercentY)
 
           props.updateRuler({
-            ...shapeProps,
+            ...ruler,
             // @ts-ignore
             x: node.x(),
             // @ts-ignore
@@ -127,7 +147,7 @@ const SingleRect: React.FC<IRect> = props => {
           node.scaleY(1)
 
           props.updateRuler({
-            ...shapeProps,
+            ...ruler,
             // @ts-ignore
             x: node.x(),
             // @ts-ignore
@@ -147,8 +167,8 @@ const SingleRect: React.FC<IRect> = props => {
         fill={`white`}
         align={'center'}
         fontSize={16}
-        x={shapeProps.x + shapeProps.width / 6}
-        y={shapeProps.y + shapeProps.height + 2}
+        x={ruler.x + ruler.width / 6}
+        y={ruler.y + ruler.height + 2}
       />
 
       {isSelected && (
@@ -174,7 +194,10 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const ConnectedRect = connect(mapStateToProps, { updateRuler: rulers.actions.updateRuler })(SingleRect)
+const ConnectedRect = connect(mapStateToProps, {
+  deleteRuler: rulers.actions.deleteRuler,
+  updateRuler: rulers.actions.updateRuler,
+})(SingleRect)
 
 type TTransformerRect = React.FC<{ rulers: IRuler[] }>
 
@@ -190,7 +213,7 @@ const TransformerRulersComponent: TTransformerRect = props => {
           return (
             <ConnectedRect
               key={i}
-              shapeProps={ruler}
+              ruler={ruler}
               isSelected={ruler.id === selectedId}
               onSelect={() => {
                 // @ts-ignore
