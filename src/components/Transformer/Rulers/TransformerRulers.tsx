@@ -15,31 +15,39 @@ interface IRect {
   canvas: ICanvasDimensions
 }
 
-const getDistance = (inches: number) => {
-  const flooredW = Math.floor(inches)
+/**
+ * Given inches like 10.73, will give us the width or height necessary to snap to 10.75"
+ * @param inches
+ * @param conversionPercent
+ */
+const getNewDimension = (inches: number, conversionPercent: number): number => {
+  const flooredVal = Math.floor(inches)
 
-  return {
+  const lookup = {
     fromBottom: {
-      from: inches - flooredW,
-      value: flooredW,
+      from: inches - flooredVal,
+      value: flooredVal,
     },
     fromQuarter: {
-      from: Math.abs(inches - (flooredW + 0.25)),
-      value: flooredW + 0.25,
+      from: Math.abs(inches - (flooredVal + 0.25)),
+      value: flooredVal + 0.25,
     },
     fromHalf: {
-      from: Math.abs(inches - (flooredW + 0.5)),
-      value: flooredW + 0.5,
+      from: Math.abs(inches - (flooredVal + 0.5)),
+      value: flooredVal + 0.5,
     },
     fromThreeQuarter: {
-      from: Math.abs(inches - (flooredW + 0.75)),
-      value: flooredW + 0.75,
+      from: Math.abs(inches - (flooredVal + 0.75)),
+      value: flooredVal + 0.75,
     },
     fromTop: {
-      from: Math.abs(inches - (flooredW + 1)),
-      value: flooredW + 1,
+      from: Math.abs(inches - (flooredVal + 1)),
+      value: flooredVal + 1,
     },
   }
+
+  const snapWidthTo = sortBy(Object.keys(lookup), key => lookup[key].from)[0]
+  return lookup[snapWidthTo].value / conversionPercent
 }
 
 const SingleRect: React.FC<IRect> = props => {
@@ -90,9 +98,10 @@ const SingleRect: React.FC<IRect> = props => {
 
           // @ts-ignore
           const rulerWidthInches = node.width() * canvas.conversionPercentX
-          const distanceW = getDistance(rulerWidthInches)
-          const snapWidthTo = sortBy(Object.keys(distanceW), key => distanceW[key].from)[0]
-          const newWidth = distanceW[snapWidthTo].value / canvas.conversionPercentX
+          // @ts-ignore
+          const rulerHeightInches = node.height() * canvas.conversionPercentY
+          const snapWidth = getNewDimension(rulerWidthInches, canvas.conversionPercentX)
+          const snapHeight = getNewDimension(rulerHeightInches, canvas.conversionPercentY)
 
           props.updateRuler({
             ...shapeProps,
@@ -100,10 +109,8 @@ const SingleRect: React.FC<IRect> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
-            // @ts-ignore
-            width: newWidth, // set minimal value
-            // @ts-ignore
-            height: Math.max(node.height() * scaleY),
+            width: snapWidth, // set minimal value
+            height: snapHeight,
           })
         }}
         onTransform={e => {
