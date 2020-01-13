@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { IStore } from 'types/store'
 import { selectors, rulers } from 'ducks'
 import { IRuler } from 'types/rulers'
+import { sortBy } from 'lodash'
 
 interface IRect {
   shapeProps: any
@@ -12,6 +13,33 @@ interface IRect {
   onSelect: any
   updateRuler: (id: string) => void
   canvas: ICanvasDimensions
+}
+
+const getDistance = (inches: number) => {
+  const flooredW = Math.floor(inches)
+
+  return {
+    fromBottom: {
+      from: inches - flooredW,
+      value: flooredW,
+    },
+    fromQuarter: {
+      from: Math.abs(inches - (flooredW + 0.25)),
+      value: flooredW + 0.25,
+    },
+    fromHalf: {
+      from: Math.abs(inches - (flooredW + 0.5)),
+      value: flooredW + 0.5,
+    },
+    fromThreeQuarter: {
+      from: Math.abs(inches - (flooredW + 0.75)),
+      value: flooredW + 0.75,
+    },
+    fromTop: {
+      from: Math.abs(inches - (flooredW + 1)),
+      value: flooredW + 1,
+    },
+  }
 }
 
 const SingleRect: React.FC<IRect> = props => {
@@ -46,6 +74,36 @@ const SingleRect: React.FC<IRect> = props => {
             ...shapeProps,
             x: e.target.x(),
             y: e.target.y(),
+          })
+        }}
+        onTransformEnd={e => {
+          const node = shapeRef.current
+          // @ts-ignore
+          const scaleX = node.scaleX()
+          // @ts-ignore
+          const scaleY = node.scaleY()
+
+          // @ts-ignore
+          node.scaleX(1)
+          // @ts-ignore
+          node.scaleY(1)
+
+          // @ts-ignore
+          const rulerWidthInches = node.width() * canvas.conversionPercentX
+          const distanceW = getDistance(rulerWidthInches)
+          const snapWidthTo = sortBy(Object.keys(distanceW), key => distanceW[key].from)[0]
+          const newWidth = distanceW[snapWidthTo].value / canvas.conversionPercentX
+
+          props.updateRuler({
+            ...shapeProps,
+            // @ts-ignore
+            x: node.x(),
+            // @ts-ignore
+            y: node.y(),
+            // @ts-ignore
+            width: newWidth, // set minimal value
+            // @ts-ignore
+            height: Math.max(node.height() * scaleY),
           })
         }}
         onTransform={e => {
