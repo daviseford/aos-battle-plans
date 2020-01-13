@@ -21,7 +21,7 @@ interface ICCC {
 }
 
 const CanvasContentContainerComponent: React.FC<ICCC> = props => {
-  const { canvas, scenario, baseGroups, rulers } = props
+  const { canvas, scenario, baseGroups } = props
 
   if (!canvas) return <></>
 

@@ -20,7 +20,7 @@ interface IRect {
  * @param inches
  * @param conversionPercent
  */
-const getNewDimension = (inches: number, conversionPercent: number): number => {
+const getSnapDimensions = (inches: number, conversionPercent: number): number => {
   const flooredVal = Math.floor(inches)
 
   const lookup = {
@@ -86,10 +86,6 @@ const SingleRect: React.FC<IRect> = props => {
         }}
         onTransformEnd={e => {
           const node = shapeRef.current
-          // @ts-ignore
-          const scaleX = node.scaleX()
-          // @ts-ignore
-          const scaleY = node.scaleY()
 
           // @ts-ignore
           node.scaleX(1)
@@ -100,8 +96,8 @@ const SingleRect: React.FC<IRect> = props => {
           const rulerWidthInches = node.width() * canvas.conversionPercentX
           // @ts-ignore
           const rulerHeightInches = node.height() * canvas.conversionPercentY
-          const snapWidth = getNewDimension(rulerWidthInches, canvas.conversionPercentX)
-          const snapHeight = getNewDimension(rulerHeightInches, canvas.conversionPercentY)
+          const snapWidth = getSnapDimensions(rulerWidthInches, canvas.conversionPercentX)
+          const snapHeight = getSnapDimensions(rulerHeightInches, canvas.conversionPercentY)
 
           props.updateRuler({
             ...shapeProps,
