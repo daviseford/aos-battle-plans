@@ -60,7 +60,7 @@ const RulerSelectMenuComponent: React.FC<IRulerMenu> = props => {
           max={72}
         />
       </div>
-      <div className="col-3">
+      <div className="col-5">
         <GenericButton onClick={handleClick}>Add Ruler</GenericButton>
       </div>
     </div>

@@ -1,5 +1,9 @@
 import { IStore } from 'types/store'
 
+// Auras
+export const getAuras = (state: IStore) => state.auras.auras
+export const getSelectedAuraId = (state: IStore) => state.auras.selectedId
+
 // Base Groups
 export const getBaseGroups = (state: IStore) => state.baseGroups.baseGroups
 
