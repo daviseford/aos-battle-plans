@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { Layer, Rect, Transformer, Group, Text, Circle } from 'react-konva'
+import { Layer, Transformer, Group, Text, Circle } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
 import { selectors, auras } from 'ducks'
-import { getSnapDimensions } from 'utils/getSnapDimensions'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 import { IAura } from 'types/auras'
 
@@ -50,9 +49,6 @@ const SingleRect: React.FC<ICirc> = props => {
     }
   }, [isSelected, deleteAura, aura, setSelectedAura])
 
-  const inchesWidth = (canvas.conversionPercentX * aura.width).toFixed(2)
-  const inchesHeight = (canvas.conversionPercentY * aura.height).toFixed(2)
-
   return (
     <Group draggable={true}>
       <Circle
@@ -78,21 +74,12 @@ const SingleRect: React.FC<ICirc> = props => {
           // @ts-ignore
           node.scaleY(1)
 
-          // @ts-ignore
-          const rulerWidthInches = node.width() * canvas.conversionPercentX
-          // @ts-ignore
-          const rulerHeightInches = node.height() * canvas.conversionPercentY
-          const snapWidth = getSnapDimensions(rulerWidthInches, canvas.conversionPercentX)
-          const snapHeight = getSnapDimensions(rulerHeightInches, canvas.conversionPercentY)
-
           updateAura({
             ...aura,
             // @ts-ignore
             x: node.x(),
             // @ts-ignore
             y: node.y(),
-            width: snapWidth, // set minimal value
-            height: snapHeight,
           })
         }}
         onTransform={e => {
@@ -101,10 +88,6 @@ const SingleRect: React.FC<ICirc> = props => {
           // but in the store we have only width and height
           // to match the data better we will reset scale on transform end
           const node = shapeRef.current
-          // @ts-ignore
-          const scaleX = node.scaleX()
-          // @ts-ignore
-          const scaleY = node.scaleY()
 
           // we will reset it back
           // @ts-ignore
@@ -118,23 +101,18 @@ const SingleRect: React.FC<ICirc> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
-            // @ts-ignore
-            width: Math.max(5, node.width() * scaleX), // set minimal value
-            // @ts-ignore
-            height: Math.max(node.height() * scaleY),
           })
         }}
-        rotationSnaps={[0, 90, 180, 270]}
       />
 
       <Text
-        text={`${inchesWidth}" x ${inchesHeight}"`}
+        text={`${aura.radius}"`}
         stroke={`black`}
         fill={`white`}
         align={'center'}
         fontSize={16}
-        x={aura.x + aura.width / 6}
-        y={aura.y + aura.height + 2}
+        x={aura.x}
+        y={aura.y}
       />
 
       {isSelected && (
