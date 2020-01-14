@@ -6,5 +6,4 @@ export interface IAura {
   width: number
   x: number
   y: number
-  radius: number // in inches
 }

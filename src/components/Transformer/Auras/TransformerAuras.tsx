@@ -6,6 +6,7 @@ import { IStore } from 'types/store'
 import { selectors, auras } from 'ducks'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 import { IAura } from 'types/auras'
+import { getSnapDimensions } from 'utils/getSnapDimensions'
 
 interface ICirc {
   canvas: ICanvasDimensions
@@ -17,7 +18,7 @@ interface ICirc {
   updateAura: (aura: IAura) => void
 }
 
-const SingleRect: React.FC<ICirc> = props => {
+const SingleCircle: React.FC<ICirc> = props => {
   const { aura, isSelected, onSelect, canvas, deleteAura, updateAura, setSelectedAura } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
@@ -55,9 +56,10 @@ const SingleRect: React.FC<ICirc> = props => {
         onClick={onSelect}
         // @ts-ignore
         ref={shapeRef}
-        fill={'black'}
         stroke={'black'}
+        fill={'black'}
         {...aura}
+        fillEnabled={true}
         draggable
         onDragEnd={e => {
           updateAura({
@@ -67,12 +69,37 @@ const SingleRect: React.FC<ICirc> = props => {
           })
         }}
         onTransformEnd={e => {
+          // transformer is changing scale of the node
+          // and NOT its width or height
+          // but in the store we have only width and height
+          // to match the data better we will reset scale on transform end
           const node = shapeRef.current
 
+          // @ts-ignore
+          const scaleX = node.scaleX()
+          // @ts-ignore
+          const scaleY = node.scaleY()
+
+          // we will reset it back
           // @ts-ignore
           node.scaleX(1)
           // @ts-ignore
           node.scaleY(1)
+
+          // @ts-ignore
+          const newWidth = Math.max(5, node.width() * scaleX)
+          // @ts-ignore
+          const newHeight = Math.max(node.height() * scaleY)
+
+          // @ts-ignore
+          const auraWidthInches = newWidth * canvas.conversionPercentX
+          // @ts-ignore
+          const auraHeightInches = newHeight * canvas.conversionPercentY
+          const snapWidth = getSnapDimensions(auraWidthInches, canvas.conversionPercentX)
+          const snapHeight = getSnapDimensions(auraHeightInches, canvas.conversionPercentY)
+
+          console.log(newHeight, newWidth)
+          console.log(snapHeight, snapWidth)
 
           updateAura({
             ...aura,
@@ -80,6 +107,8 @@ const SingleRect: React.FC<ICirc> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
+            width: snapWidth,
+            height: snapHeight,
           })
         }}
         onTransform={e => {
@@ -89,11 +118,21 @@ const SingleRect: React.FC<ICirc> = props => {
           // to match the data better we will reset scale on transform end
           const node = shapeRef.current
 
+          // @ts-ignore
+          const scaleX = node.scaleX()
+          // @ts-ignore
+          const scaleY = node.scaleY()
+
           // we will reset it back
           // @ts-ignore
           node.scaleX(1)
           // @ts-ignore
           node.scaleY(1)
+
+          // @ts-ignore
+          const newWidth = Math.max(5, node.width() * scaleX)
+          // @ts-ignore
+          const newHeight = Math.max(node.height() * scaleY)
 
           updateAura({
             ...aura,
@@ -101,17 +140,21 @@ const SingleRect: React.FC<ICirc> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
+            // @ts-ignore
+            width: newWidth,
+            // @ts-ignore
+            height: newHeight,
           })
         }}
       />
 
       <Text
-        text={`${aura.radius}"`}
-        stroke={`black`}
+        text={`${(aura.width * canvas.conversionPercentX).toFixed(2)}"`}
+        stroke={`white`}
         fill={`white`}
         align={'center'}
         fontSize={16}
-        x={aura.x}
+        x={aura.x - 5}
         y={aura.y}
       />
 
@@ -142,7 +185,7 @@ const ConnectedCircle = connect(mapStateToProps, {
   deleteAura: auras.actions.deleteAura,
   setSelectedAura: auras.actions.setSelectedId,
   updateAura: auras.actions.updateAura,
-})(SingleRect)
+})(SingleCircle)
 
 type TTransformerRect = React.FC<{
   auras: IAura[]

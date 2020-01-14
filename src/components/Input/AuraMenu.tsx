@@ -26,7 +26,7 @@ const createAura = (radius: number, canvas: ICanvasDimensions): IAura => {
     height: 1 / canvas.conversionPercentY,
     width: radius / canvas.conversionPercentX,
     canTransform: true,
-    radius,
+    // radius,
   }
 }
 

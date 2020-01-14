@@ -91,7 +91,7 @@ const SingleRect: React.FC<IRect> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
-            width: snapWidth, // set minimal value
+            width: snapWidth,
             height: snapHeight,
           })
         }}
