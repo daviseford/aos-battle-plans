@@ -6,12 +6,12 @@ import { IStore } from 'types/store'
 import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import RulerSelectMenu from 'components/Input/RulerMenu'
+import AuraMenu from 'components/Input/AuraMenu'
 
 interface IBottomToolbar {
   baseGroups: IBaseGroup[]
   canvas: ICanvasDimensions
   scenario: IScenario
-  setScenario: (name: string) => void
 }
 
 const BottomToolbarComponent: React.FC<IBottomToolbar> = props => {
@@ -25,6 +25,9 @@ const BottomToolbarComponent: React.FC<IBottomToolbar> = props => {
         <div className="row bg-info text-center justify-content-center">
           <div className="col-6">
             <RulerSelectMenu />
+          </div>
+          <div className="col-6">
+            <AuraMenu />
           </div>
         </div>
       </div>

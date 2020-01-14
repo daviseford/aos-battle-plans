@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
-import { Layer, Rect, Transformer, Group, Text } from 'react-konva'
+import { Layer, Rect, Transformer, Group, Text, Circle } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
-import { selectors, rulers } from 'ducks'
-import { IRuler } from 'types/rulers'
+import { selectors, auras } from 'ducks'
 import { getSnapDimensions } from 'utils/getSnapDimensions'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
+import { IAura } from 'types/auras'
 
 interface ICirc {
   canvas: ICanvasDimensions
-  deleteRuler: (id: string) => void
-  setSelectedRuler: (id: string | null) => void
+  deleteAura: (id: string) => void
+  setSelectedAura: (id: string | null) => void
   isSelected: boolean
   onSelect: any
-  ruler: IRuler
-  updateRuler: (ruler: IRuler) => void
+  aura: IAura
+  updateAura: (aura: IAura) => void
 }
 
 const SingleRect: React.FC<ICirc> = props => {
-  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler, setSelectedRuler } = props
+  const { aura, isSelected, onSelect, canvas, deleteAura, updateAura, setSelectedAura } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -37,35 +37,35 @@ const SingleRect: React.FC<ICirc> = props => {
     const handleKeyDown = e => {
       if (e.keyCode === BACKSPACE_KEYCODE || e.keyCode === DELETE_KEYCODE) {
         e.preventDefault()
-        deleteRuler(ruler.id)
+        deleteAura(aura.id)
       } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
         e.preventDefault()
-        setSelectedRuler(null)
+        setSelectedAura(null)
       }
     }
 
-    if (isSelected && ruler) {
+    if (isSelected && aura) {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isSelected, deleteRuler, ruler, setSelectedRuler])
+  }, [isSelected, deleteAura, aura, setSelectedAura])
 
-  const inchesWidth = (canvas.conversionPercentX * ruler.width).toFixed(2)
-  const inchesHeight = (canvas.conversionPercentY * ruler.height).toFixed(2)
+  const inchesWidth = (canvas.conversionPercentX * aura.width).toFixed(2)
+  const inchesHeight = (canvas.conversionPercentY * aura.height).toFixed(2)
 
   return (
     <Group draggable={true}>
-      <Rect
+      <Circle
         onClick={onSelect}
         // @ts-ignore
         ref={shapeRef}
         fill={'black'}
         stroke={'black'}
-        {...ruler}
+        {...aura}
         draggable
         onDragEnd={e => {
-          updateRuler({
-            ...ruler,
+          updateAura({
+            ...aura,
             x: e.target.x(),
             y: e.target.y(),
           })
@@ -85,8 +85,8 @@ const SingleRect: React.FC<ICirc> = props => {
           const snapWidth = getSnapDimensions(rulerWidthInches, canvas.conversionPercentX)
           const snapHeight = getSnapDimensions(rulerHeightInches, canvas.conversionPercentY)
 
-          props.updateRuler({
-            ...ruler,
+          updateAura({
+            ...aura,
             // @ts-ignore
             x: node.x(),
             // @ts-ignore
@@ -112,8 +112,8 @@ const SingleRect: React.FC<ICirc> = props => {
           // @ts-ignore
           node.scaleY(1)
 
-          props.updateRuler({
-            ...ruler,
+          updateAura({
+            ...aura,
             // @ts-ignore
             x: node.x(),
             // @ts-ignore
@@ -133,8 +133,8 @@ const SingleRect: React.FC<ICirc> = props => {
         fill={`white`}
         align={'center'}
         fontSize={16}
-        x={ruler.x + ruler.width / 6}
-        y={ruler.y + ruler.height + 2}
+        x={aura.x + aura.width / 6}
+        y={aura.y + aura.height + 2}
       />
 
       {isSelected && (
@@ -160,33 +160,33 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const ConnectedRect = connect(mapStateToProps, {
-  deleteRuler: rulers.actions.deleteRuler,
-  setSelectedRuler: rulers.actions.setSelectedId,
-  updateRuler: rulers.actions.updateRuler,
+const ConnectedCircle = connect(mapStateToProps, {
+  deleteAura: auras.actions.deleteAura,
+  setSelectedAura: auras.actions.setSelectedId,
+  updateAura: auras.actions.updateAura,
 })(SingleRect)
 
 type TTransformerRect = React.FC<{
-  rulers: IRuler[]
-  selectedRulerId: string | null
-  setSelectedRuler: (id: string | null) => void
+  auras: IAura[]
+  selectedAuraId: string | null
+  setSelectedAura: (id: string | null) => void
 }>
 
 const TransformerRulersComponent: TTransformerRect = props => {
-  const { rulers, selectedRulerId, setSelectedRuler } = props
+  const { auras, selectedAuraId, setSelectedAura } = props
 
   return (
     <Layer>
-      {rulers
+      {auras
         .filter(x => x.canTransform)
-        .map((ruler, i) => {
+        .map((aura, i) => {
           return (
-            <ConnectedRect
+            <ConnectedCircle
               key={i}
-              ruler={ruler}
-              isSelected={ruler.id === selectedRulerId}
+              aura={aura}
+              isSelected={aura.id === selectedAuraId}
               onSelect={() => {
-                setSelectedRuler(ruler.id)
+                setSelectedAura(aura.id)
               }}
             />
           )
@@ -197,12 +197,12 @@ const TransformerRulersComponent: TTransformerRect = props => {
 
 const mapStateToProps2 = (state: IStore, ownProps) => ({
   ...ownProps,
-  rulers: selectors.getRulers(state),
-  selectedRulerId: selectors.getSelectedRulerId(state),
+  auras: selectors.getAuras(state),
+  selectedAuraId: selectors.getSelectedAuraId(state),
 })
 
-const TransformerRulers = connect(mapStateToProps2, {
-  setSelectedRuler: rulers.actions.setSelectedId,
+const TransformerAuras = connect(mapStateToProps2, {
+  setSelectedAura: auras.actions.setSelectedId,
 })(TransformerRulersComponent)
 
-export default TransformerRulers
+export default TransformerAuras

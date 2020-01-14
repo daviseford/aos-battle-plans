@@ -11,11 +11,10 @@ import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
 import Ruler from './Line/Ruler'
 import TransformerRulers from './Transformer/Rulers/TransformerRulers'
-import { IRuler } from 'types/rulers'
+import TransformerAuras from './Transformer/Auras/TransformerAuras'
 
 interface ICCC {
   canvas: ICanvasDimensions
-  rulers: IRuler[]
   scenario: IScenario
   baseGroups: IBaseGroup[]
 }
@@ -46,6 +45,9 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* Resizable rulers */}
       <TransformerRulers />
 
+      {/* Resizable auras */}
+      <TransformerAuras />
+
       <Layer>
         <Ruler
           rulerLengthInches={9}
@@ -66,7 +68,6 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
   scenario: selectors.getScenario(state),
-  rulers: selectors.getRulers(state),
   canvas: selectors.getCanvas(state),
   baseGroups: selectors.getBaseGroups(state),
 })
