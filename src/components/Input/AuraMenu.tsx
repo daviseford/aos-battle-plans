@@ -22,11 +22,11 @@ const createAura = (radius: number, canvas: ICanvasDimensions): IAura => {
     id: shortid.generate(),
     x: 100,
     y: 100,
-    color: 'black',
-    height: 1 / canvas.conversionPercentY,
+    stroke: 'black',
+    strokeWidth: 7,
+    height: radius / canvas.conversionPercentY,
     width: radius / canvas.conversionPercentX,
     canTransform: true,
-    // radius,
   }
 }
 

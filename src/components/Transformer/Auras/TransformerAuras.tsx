@@ -56,11 +56,8 @@ const SingleCircle: React.FC<ICirc> = props => {
         onClick={onSelect}
         // @ts-ignore
         ref={shapeRef}
-        stroke={'black'}
-        fill={'black'}
         {...aura}
-        fillEnabled={true}
-        draggable
+        fillEnabled={false}
         onDragEnd={e => {
           updateAura({
             ...aura,
@@ -69,10 +66,6 @@ const SingleCircle: React.FC<ICirc> = props => {
           })
         }}
         onTransformEnd={e => {
-          // transformer is changing scale of the node
-          // and NOT its width or height
-          // but in the store we have only width and height
-          // to match the data better we will reset scale on transform end
           const node = shapeRef.current
 
           // @ts-ignore
@@ -80,7 +73,6 @@ const SingleCircle: React.FC<ICirc> = props => {
           // @ts-ignore
           const scaleY = node.scaleY()
 
-          // we will reset it back
           // @ts-ignore
           node.scaleX(1)
           // @ts-ignore
@@ -91,15 +83,11 @@ const SingleCircle: React.FC<ICirc> = props => {
           // @ts-ignore
           const newHeight = Math.max(node.height() * scaleY)
 
-          // @ts-ignore
           const auraWidthInches = newWidth * canvas.conversionPercentX
-          // @ts-ignore
           const auraHeightInches = newHeight * canvas.conversionPercentY
+
           const snapWidth = getSnapDimensions(auraWidthInches, canvas.conversionPercentX)
           const snapHeight = getSnapDimensions(auraHeightInches, canvas.conversionPercentY)
-
-          console.log(newHeight, newWidth)
-          console.log(snapHeight, snapWidth)
 
           updateAura({
             ...aura,
@@ -140,9 +128,7 @@ const SingleCircle: React.FC<ICirc> = props => {
             x: node.x(),
             // @ts-ignore
             y: node.y(),
-            // @ts-ignore
             width: newWidth,
-            // @ts-ignore
             height: newHeight,
           })
         }}
