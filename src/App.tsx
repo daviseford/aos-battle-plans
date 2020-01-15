@@ -81,15 +81,15 @@ const AppComponent: React.FC<IApp> = props => {
         </Stage>
       </div>
 
-      <div className="row bg-dark text-white text-center py-2 justify-content-center">
-        <div className="col-3">
-          <GenericButton onClick={handleSaveImage}>Save Image</GenericButton>
+      <div className="row text-center justify-content-center">
+        <div className="col">
+          <BottomToolbar />
         </div>
       </div>
 
-      <div className="row  text-center py-2 justify-content-center">
-        <div className="col">
-          <BottomToolbar />
+      <div className="row bg-dark text-white text-center py-2 justify-content-center">
+        <div className="col-3">
+          <GenericButton onClick={handleSaveImage}>Save Image</GenericButton>
         </div>
       </div>
     </>

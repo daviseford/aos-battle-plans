@@ -10,6 +10,40 @@ import { IScenario } from 'types/scenario'
 
 const Scenarios: IScenario[] = [
   {
+    name: `Shifting Objectives (2019)`,
+    matchedPlay: true,
+    orientation: `horizontal`,
+    setupRestrictions: {
+      fromDividerInches: 12,
+      fromSideInches: 0,
+      fromPlayerInches: 0,
+    },
+    objectives: [
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_HALF + TABLE_HEIGHT_QUARTER, y: TABLE_HEIGHT_HALF },
+    ],
+  },
+  {
+    name: `The Better Part of Valour (2019)`,
+    matchedPlay: true,
+    orientation: `vertical`,
+    setupRestrictions: {
+      fromDividerInches: 9,
+      fromSideInches: 0,
+      fromPlayerInches: 0,
+    },
+    objectives: [
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF - 18 },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF + 18 },
+
+      { x: TABLE_WIDTH_FULL - TABLE_HEIGHT_QUARTER, y: TABLE_HEIGHT_HALF - 18 },
+      { x: TABLE_WIDTH_FULL - TABLE_HEIGHT_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_FULL - TABLE_HEIGHT_QUARTER, y: TABLE_HEIGHT_HALF + 18 },
+    ],
+  },
+  {
     name: `Battle For The Pass`,
     matchedPlay: true,
     orientation: `vertical`,
