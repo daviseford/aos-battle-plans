@@ -36,11 +36,9 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* <TransformerCircle /> */}
 
       {/* Base display layer */}
-      <Layer>
-        {baseGroups.map(group => (
-          <BaseGroup baseGroup={group} key={group.id} />
-        ))}
-      </Layer>
+      {baseGroups.map(group => (
+        <BaseGroup baseGroup={group} key={group.id} />
+      ))}
 
       {/* Resizable rulers */}
       <TransformerRulers />
