@@ -7,6 +7,7 @@ import { IStore } from 'types/store'
 import { IScenario } from 'types/scenario'
 import GenericButton from './GenericButton'
 import { IAura } from 'types/auras'
+import { FaRegCircle } from 'react-icons/fa'
 
 interface IAuraMenu {
   canvas: ICanvasDimensions
@@ -49,8 +50,8 @@ const AuraSelectMenuComponent: React.FC<IAuraMenu> = props => {
   }
 
   return (
-    <div className="row justify-content-center pb-3">
-      <div className="col">
+    <div className={`d-flex justify-content-start align-items-center`}>
+      <div className="">
         <input
           className="form-control"
           type="number"
@@ -60,8 +61,11 @@ const AuraSelectMenuComponent: React.FC<IAuraMenu> = props => {
           max={36}
         />
       </div>
-      <div className="col-5">
-        <GenericButton onClick={handleClick}>Add Aura</GenericButton>
+      <div className="flex-grow-1">
+        <GenericButton onClick={handleClick}>
+          <FaRegCircle className="mr-2" />
+          Add Aura
+        </GenericButton>
       </div>
     </div>
   )

@@ -7,6 +7,7 @@ import { IStore } from 'types/store'
 import { IScenario } from 'types/scenario'
 import GenericButton from './GenericButton'
 import { IRuler } from 'types/rulers'
+import { FaRulerVertical } from 'react-icons/fa'
 
 interface IRulerMenu {
   canvas: ICanvasDimensions
@@ -49,8 +50,8 @@ const RulerSelectMenuComponent: React.FC<IRulerMenu> = props => {
   }
 
   return (
-    <div className="row justify-content-center pb-3">
-      <div className="col">
+    <div className={`d-flex justify-content-start align-items-center`}>
+      <div className="">
         <input
           className="form-control"
           type="number"
@@ -60,8 +61,11 @@ const RulerSelectMenuComponent: React.FC<IRulerMenu> = props => {
           max={72}
         />
       </div>
-      <div className="col-5">
-        <GenericButton onClick={handleClick}>Add Ruler</GenericButton>
+      <div className="flex-grow-1">
+        <GenericButton onClick={handleClick}>
+          <FaRulerVertical className="mr-2" />
+          Add Ruler
+        </GenericButton>
       </div>
     </div>
   )

@@ -17,7 +17,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import GenericButton from 'components/Input/GenericButton'
 import { IScenario } from 'types/scenario'
-import BottomToolbar from 'components/Toolbar/BottomToolbar'
+import PageHeader from 'components/Page/Header'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -63,6 +63,8 @@ const AppComponent: React.FC<IApp> = props => {
 
   return (
     <>
+      <PageHeader />
+
       <TopToolbar />
 
       <div className="stage">
@@ -79,12 +81,6 @@ const AppComponent: React.FC<IApp> = props => {
             </PersistGate>
           </Provider>
         </Stage>
-      </div>
-
-      <div className="row text-center justify-content-center">
-        <div className="col">
-          <BottomToolbar />
-        </div>
       </div>
 
       <div className="row bg-dark text-white text-center py-2 justify-content-center">

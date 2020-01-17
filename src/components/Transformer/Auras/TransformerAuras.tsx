@@ -136,8 +136,8 @@ const SingleCircle: React.FC<ICirc> = props => {
 
       <Text
         text={`${(aura.width * canvas.conversionPercentX).toFixed(2)}"`}
-        stroke={`white`}
-        fill={`white`}
+        stroke={`black`}
+        fill={`black`}
         align={'center'}
         fontSize={16}
         x={aura.x - 5}

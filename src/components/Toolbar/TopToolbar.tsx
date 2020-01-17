@@ -9,6 +9,7 @@ import { IScenario } from 'types/scenario'
 import UnitSelectMenu from '../Input/UnitSelectMenu'
 import { IBaseGroup } from 'types/bases'
 import GroupManager from '../BaseGroup/GroupManager'
+import MarkupToolbar from './MarkupToolbar'
 
 interface ITopToolbar {
   baseGroups: IBaseGroup[]
@@ -25,7 +26,7 @@ const scenariosToOptions = (): { value: string; label: string }[] => {
 }
 
 const TopToolbarComponent: React.FC<ITopToolbar> = props => {
-  const { canvas, scenario, setScenario, baseGroups } = props
+  const { canvas, setScenario, baseGroups } = props
 
   if (!canvas) return <></>
 
@@ -37,30 +38,36 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row bg-info text-center justify-content-center">
-          <div className="col-6">
+      <div className="container-fluid bg-light pb-2">
+        <div className={`d-flex justify-content-start align-items-center`}>
+          <div className={`mr-5`}>
+            <h4>Scenario:</h4>
+          </div>
+          <div className={`flex-grow-1`}>
             <Select onChange={handleScenarioChange} options={options} placeholder={Scenarios[0].name} />
           </div>
-          <div className="col-12">
-            <h3 className="text-white">Scenario: {scenario.name}</h3>
-            <span className="text-white">Canvas Width: {canvas.canvasWidth}</span>
+        </div>
+
+        <div className={`d-flex justify-content-start align-items-center mt-2`}>
+          <div className={` mr-5`}>
+            <h4>Add Unit:</h4>
           </div>
-          <div className="col-12">
+          <div className={`flex-grow-1`}>
             <UnitSelectMenu />
           </div>
-          <div className="col-12">
-            <div className="row justify-content-center">
-              {baseGroups.map(group => {
-                return (
-                  <div className="col-3" key={group.id}>
-                    <GroupManager baseGroup={group} />
-                  </div>
-                )
-              })}
-            </div>
-          </div>
         </div>
+
+        <div className={`row text-center justify-content-center`}>
+          {baseGroups.map(group => {
+            return (
+              <div className="col-4" key={group.id}>
+                <GroupManager baseGroup={group} />
+              </div>
+            )
+          })}
+        </div>
+
+        <MarkupToolbar />
       </div>
     </>
   )

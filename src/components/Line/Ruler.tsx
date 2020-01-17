@@ -18,13 +18,14 @@ const RulerComponent: React.FC<IRulerProps> = props => {
   const { canvas, scenario, rulerLengthInches, x, y } = props
 
   let points = [x, y, x, y + rulerLengthInches / canvas.conversionPercentY]
-  let [xOffset, yOffset] = [0, 0]
+  let [xOffset, yOffset, strokeWidth] = [0, 0, 2 / canvas.conversionPercentX]
 
   if (scenario.orientation === 'vertical') {
     points = [x, y, x + rulerLengthInches / canvas.conversionPercentX, y]
     yOffset = -4
+    strokeWidth = 2 / canvas.conversionPercentY
   } else {
-    xOffset = -5
+    xOffset = rulerLengthInches < 10 ? -5 : -10
   }
 
   const pos = {
@@ -36,7 +37,7 @@ const RulerComponent: React.FC<IRulerProps> = props => {
 
   return (
     <Group draggable>
-      <Line points={points} stroke={'black'} strokeWidth={15} fill={'black'} />
+      <Line points={points} stroke={'black'} strokeWidth={strokeWidth} fill={'black'} />
       <Text text={`${rulerLengthInches}"`} x={pos.x} y={pos.y} fill={'white'} />
     </Group>
   )

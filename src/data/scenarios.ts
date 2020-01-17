@@ -19,9 +19,9 @@ const Scenarios: IScenario[] = [
       fromPlayerInches: 0,
     },
     objectives: [
-      { x: TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: 12, y: TABLE_HEIGHT_HALF },
       { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF },
-      { x: TABLE_WIDTH_HALF + TABLE_WIDTH_QUARTER, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_FULL - 12, y: TABLE_HEIGHT_HALF },
     ],
   },
   {

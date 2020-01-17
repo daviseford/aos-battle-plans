@@ -45,24 +45,22 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
   const rows = chunk(baseGroup.bases, 10)
 
   return (
-    <>
-      <Group draggable={true}>
-        {rows.map((bases, rowIndex) => {
-          return bases.map((base, baseIndex) => (
-            <CircleBaseComponent
-              key={baseIndex}
-              baseGroup={baseGroup}
-              base={{
-                ...base,
-                x: 30 + getXSpacing(baseRadius) * baseIndex,
-                y: 50 + getYSpacing(baseRadius) * rowIndex,
-              }}
-              radius={baseRadius}
-            />
-          ))
-        })}
-      </Group>
-    </>
+    <Group draggable={true}>
+      {rows.map((bases, rowIndex) => {
+        return bases.map((base, baseIndex) => (
+          <CircleBaseComponent
+            key={baseIndex}
+            baseGroup={baseGroup}
+            base={{
+              ...base,
+              x: 30 + getXSpacing(baseRadius) * baseIndex,
+              y: 50 + getYSpacing(baseRadius) * rowIndex,
+            }}
+            radius={baseRadius}
+          />
+        ))
+      })}
+    </Group>
   )
 }
 

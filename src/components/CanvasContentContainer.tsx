@@ -36,9 +36,11 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* <TransformerCircle /> */}
 
       {/* Base display layer */}
-      {baseGroups.map(group => (
-        <BaseGroup baseGroup={group} key={group.id} />
-      ))}
+      <Layer>
+        {baseGroups.map(group => (
+          <BaseGroup baseGroup={group} key={group.id} />
+        ))}
+      </Layer>
 
       {/* Resizable rulers */}
       <TransformerRulers />
@@ -47,6 +49,11 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       <TransformerAuras />
 
       <Layer>
+        <Ruler
+          rulerLengthInches={12}
+          x={canvas.canvasWidth - canvas.canvasWidth / 4}
+          y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
+        />
         <Ruler
           rulerLengthInches={9}
           x={canvas.canvasWidth / 2}

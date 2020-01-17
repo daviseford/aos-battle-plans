@@ -14,21 +14,19 @@ interface IBottomToolbar {
   scenario: IScenario
 }
 
-const BottomToolbarComponent: React.FC<IBottomToolbar> = props => {
+const MarkupToolbarComponent: React.FC<IBottomToolbar> = props => {
   const { canvas } = props
 
   if (!canvas) return <></>
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row bg-info text-center justify-content-center">
-          <div className="col-6">
-            <RulerSelectMenu />
-          </div>
-          <div className="col-6">
-            <AuraMenu />
-          </div>
+      <div className={`d-flex justify-content-start align-items-center mt-2`}>
+        <div className="w-30 mr-3">
+          <RulerSelectMenu />
+        </div>
+        <div className="w-30">
+          <AuraMenu />
         </div>
       </div>
     </>
@@ -41,6 +39,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   canvas: selectors.getCanvas(state),
 })
 
-const BottomToolbar = connect(mapStateToProps, {})(BottomToolbarComponent)
+const MarkupToolbar = connect(mapStateToProps, {})(MarkupToolbarComponent)
 
-export default BottomToolbar
+export default MarkupToolbar
