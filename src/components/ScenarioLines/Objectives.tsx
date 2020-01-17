@@ -13,6 +13,8 @@ const Objectives: React.FC<IObjectivesProps> = props => {
 
   const color = '#001870'
 
+  const radius = 6 / canvas.conversionPercentX
+
   return (
     <Layer>
       {/* Objectives */}
@@ -23,7 +25,7 @@ const Objectives: React.FC<IObjectivesProps> = props => {
             x={x}
             y={y}
             key={`stroke-${i}`}
-            radius={3 / canvas.conversionPercentX}
+            radius={radius}
             draggable={false}
             stroke={color}
             fillEnabled={false}
@@ -33,7 +35,7 @@ const Objectives: React.FC<IObjectivesProps> = props => {
             x={x}
             y={y}
             key={`fill-${i}`}
-            radius={3 / canvas.conversionPercentX}
+            radius={radius}
             draggable={false}
             fill={'#CCD1E2'}
             fillEnabled={true}

@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@reduxjs/toolkit": "1.2.1",
+    "@reduxjs/toolkit": "1.2.2",
     "bootstrap": "4.4.1",
     "core-js": "3.6.4",
     "konva": "4.1.2",
@@ -42,22 +42,22 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "4.2.4",
+    "@testing-library/jest-dom": "5.0.0",
     "@testing-library/react": "9.4.0",
     "@testing-library/user-event": "8.0.3",
-    "@types/jest": "24.0.25",
+    "@types/jest": "24.9.0",
     "@types/lodash": "4.14.149",
-    "@types/node": "13.1.6",
+    "@types/node": "13.1.8",
     "@types/react": "16.9.17",
     "@types/react-color": "3.0.1",
     "@types/react-dom": "16.9.4",
-    "@types/react-redux": "7.1.5",
+    "@types/react-redux": "7.1.6",
     "@types/react-select": "3.0.10",
     "@types/shortid": "0.0.29",
-    "husky": "4.0.9",
+    "husky": "4.0.10",
     "prettier": "1.19.1",
     "pretty-quick": "2.0.1",
-    "typescript": "3.7.4"
+    "typescript": "3.7.5"
   },
   "husky": {
     "hooks": {
