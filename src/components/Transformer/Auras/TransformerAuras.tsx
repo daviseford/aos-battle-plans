@@ -57,8 +57,8 @@ const SingleCircle: React.FC<ICirc> = props => {
         // @ts-ignore
         ref={shapeRef}
         {...aura}
-        strokeEnabled={false}
-        fillEnabled={false}
+        strokeEnabled={true}
+        fillEnabled={true}
         onDragEnd={e => {
           updateAura({
             ...aura,
@@ -134,10 +134,6 @@ const SingleCircle: React.FC<ICirc> = props => {
           })
         }}
       />
-
-      {/* Fill
-      //@ts-ignore */}
-      <Circle {...aura} strokeEnabled={false} fillEnabled={true} />
 
       <Text
         text={`${(aura.width * canvas.conversionPercentX).toFixed(2)}"`}

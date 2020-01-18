@@ -20,6 +20,7 @@ import { IScenario } from 'types/scenario'
 import PageHeader from 'components/Page/Header'
 import PageFooter from 'components/Page/Footer'
 import { FaRegImage } from 'react-icons/fa'
+import { logPageView } from 'utils/analytics'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -44,6 +45,10 @@ const AppComponent: React.FC<IApp> = props => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [setCanvas])
+
+  useEffect(() => {
+    logPageView()
+  }, [])
 
   if (!canvas) return <></>
 
