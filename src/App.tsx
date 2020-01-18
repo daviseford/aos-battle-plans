@@ -18,6 +18,8 @@ import { IStore } from 'types/store'
 import GenericButton from 'components/Input/GenericButton'
 import { IScenario } from 'types/scenario'
 import PageHeader from 'components/Page/Header'
+import PageFooter from 'components/Page/Footer'
+import { FaRegImage } from 'react-icons/fa'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -85,9 +87,14 @@ const AppComponent: React.FC<IApp> = props => {
 
       <div className="row bg-dark text-white text-center py-2 justify-content-center">
         <div className="col-3">
-          <GenericButton onClick={handleSaveImage}>Save Image</GenericButton>
+          <GenericButton onClick={handleSaveImage}>
+            <FaRegImage className="mr-2" />
+            Save
+          </GenericButton>
         </div>
       </div>
+
+      <PageFooter />
     </>
   )
 }
