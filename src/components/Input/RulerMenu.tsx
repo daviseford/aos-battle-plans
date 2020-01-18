@@ -56,7 +56,7 @@ const RulerSelectMenuComponent: React.FC<IRulerMenu> = props => {
           className="form-control"
           type="number"
           onChange={handleChange}
-          value={rulerLength}
+          placeholder={`${rulerLength}"`}
           min={1}
           max={72}
         />

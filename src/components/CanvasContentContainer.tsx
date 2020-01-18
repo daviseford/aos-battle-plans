@@ -32,8 +32,8 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* Grid lines, boundaries, etc */}
       <ScenarioLines />
 
-      {/* Drawable Auras */}
-      {/* <TransformerCircle /> */}
+      {/* Resizable auras */}
+      <TransformerAuras />
 
       {/* Base display layer */}
       <Layer>
@@ -45,26 +45,15 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
       {/* Resizable rulers */}
       <TransformerRulers />
 
-      {/* Resizable auras */}
-      <TransformerAuras />
-
       <Layer>
         <Ruler
           rulerLengthInches={12}
           x={canvas.canvasWidth - canvas.canvasWidth / 4}
-          y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
+          y={canvas.canvasHeight / 2}
         />
-        <Ruler
-          rulerLengthInches={9}
-          x={canvas.canvasWidth / 2}
-          y={canvas.canvasHeight / 2 - 6 / canvas.conversionPercentY}
-        />
-        <Ruler rulerLengthInches={6} x={canvas.canvasWidth / 2} y={canvas.canvasHeight / 2} />
-        <Ruler
-          rulerLengthInches={3}
-          x={canvas.canvasWidth / 2}
-          y={canvas.canvasHeight / 2 + 6 / canvas.conversionPercentY}
-        />
+        <Ruler rulerLengthInches={9} x={canvas.canvasWidth / 2} y={canvas.canvasHeight / 2} />
+        <Ruler rulerLengthInches={6} x={canvas.canvasWidth / 3} y={canvas.canvasHeight / 2} />
+        <Ruler rulerLengthInches={3} x={canvas.canvasWidth / 4} y={canvas.canvasHeight / 2} />
       </Layer>
     </>
   )

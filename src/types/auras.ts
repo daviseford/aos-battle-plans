@@ -1,9 +1,10 @@
 export interface IAura {
-  id: string
   canTransform: boolean
+  fill: string // hexcode e.g. "#fff"
+  height: number
+  id: string
   stroke: string // hexcode e.g. "#fff"
   strokeWidth: number
-  height: number
   width: number
   x: number
   y: number

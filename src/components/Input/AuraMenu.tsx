@@ -18,15 +18,16 @@ interface IAuraMenu {
   updateAura: (aura: IAura) => void
 }
 
-const createAura = (radius: number, canvas: ICanvasDimensions): IAura => {
+const createAura = (diameter: number, canvas: ICanvasDimensions): IAura => {
   return {
     id: shortid.generate(),
     x: 100,
     y: 100,
     stroke: 'black',
+    fill: `#dfeff7`,
     strokeWidth: 7,
-    height: radius / canvas.conversionPercentY,
-    width: radius / canvas.conversionPercentX,
+    height: diameter / canvas.conversionPercentY,
+    width: diameter / canvas.conversionPercentX,
     canTransform: true,
   }
 }
@@ -34,18 +35,18 @@ const createAura = (radius: number, canvas: ICanvasDimensions): IAura => {
 const AuraSelectMenuComponent: React.FC<IAuraMenu> = props => {
   const { canvas } = props
 
-  const [radius, setRadius] = useState(9)
+  const [diameter, setDiameter] = useState(9)
 
   if (!canvas) return <></>
 
   const handleChange = e => {
     const val = parseInt(e.target.value || 0)
-    setRadius(val)
+    setDiameter(val)
   }
 
   const handleClick = e => {
     e.preventDefault()
-    const ruler = createAura(radius, canvas)
+    const ruler = createAura(diameter, canvas)
     props.addAura(ruler)
   }
 
@@ -56,7 +57,7 @@ const AuraSelectMenuComponent: React.FC<IAuraMenu> = props => {
           className="form-control"
           type="number"
           onChange={handleChange}
-          value={radius}
+          placeholder={`${diameter}"`}
           min={1}
           max={36}
         />

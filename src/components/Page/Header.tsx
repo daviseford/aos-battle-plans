@@ -2,7 +2,7 @@ import React from 'react'
 
 const PageHeader = () => {
   return (
-    <div className="jumbotron jumbotron-fluid mb-0">
+    <div className="jumbotron jumbotron-fluid mb-0 py-2">
       <div className="container text-center">
         <h3 className="">AoS Battle Plans</h3>
         {/* <p className="lead">
