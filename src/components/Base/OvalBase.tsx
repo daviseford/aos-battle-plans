@@ -1,12 +1,16 @@
-import React, { useCallback, useEffect } from 'react'
-import { Ellipse } from 'react-konva'
+import React, { useCallback, useEffect, useRef } from 'react'
+import { Ellipse, Group, Transformer } from 'react-konva'
 import { DEFAULT_DRAGGABLE_COLOR } from 'theme/colors'
 import { connect } from 'react-redux'
-import { baseGroups, IUpdateBasePayload } from 'ducks'
+import { IUpdateBasePayload, selectors, canvas, baseGroups } from 'ducks'
 import { IBaseGroup, IBase } from 'types/bases'
 import { dragScaleUp, dragEndBounce } from 'utils/handleDrag'
+import { IStore } from 'types/store'
+import { ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 
-interface IOvalBase {
+interface IOvalBaseProps {
+  selectedBaseId: string | null
+  setSelectedBase: (id: string | null) => void
   base: IBase
   radiusX: number
   radiusY: number
@@ -14,12 +18,42 @@ interface IOvalBase {
   updateBase: (payload: IUpdateBasePayload) => void
 }
 
-const OvalBaseComponent: React.FC<IOvalBase> = ({ base, radiusX, radiusY, baseGroup, updateBase }) => {
+const OvalBaseComponent: React.FC<IOvalBaseProps> = props => {
+  const { selectedBaseId, setSelectedBase, base, radiusX, radiusY, baseGroup, updateBase } = props
+  const isSelected = selectedBaseId === base.id
+
   useEffect(() => {
     // Only run on mount
     updateBase({ base, groupId: baseGroup.id })
     // eslint-disable-next-line
   }, [])
+
+  const shapeRef = useRef()
+  const trRef = useRef()
+
+  useEffect(() => {
+    if (isSelected) {
+      // we need to attach transformer manually
+      // @ts-ignore
+      trRef.current.setNode(shapeRef.current)
+      // @ts-ignore
+      trRef.current.getLayer().batchDraw()
+    }
+  }, [isSelected])
+
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
+        e.preventDefault()
+        setSelectedBase(null)
+      }
+    }
+
+    if (isSelected) {
+      window.addEventListener('keydown', handleKeyDown)
+      return () => window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isSelected, setSelectedBase])
 
   const handleClick = useCallback(
     e => {
@@ -30,9 +64,11 @@ const OvalBaseComponent: React.FC<IOvalBase> = ({ base, radiusX, radiusY, baseGr
         },
         groupId: baseGroup.id,
       }
+
+      setSelectedBase(payload.base.draggable ? base.id : null)
       updateBase(payload)
     },
-    [base, baseGroup.id, updateBase]
+    [base, baseGroup.id, updateBase, setSelectedBase]
   )
 
   const handleDragStart = e => dragScaleUp(e)
@@ -55,23 +91,49 @@ const OvalBaseComponent: React.FC<IOvalBase> = ({ base, radiusX, radiusY, baseGr
   )
 
   return (
-    <Ellipse
-      draggable={base.draggable}
-      fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
-      onClick={handleClick}
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-      perfectDrawEnabled={false}
-      radiusX={radiusX}
-      radiusY={radiusY}
-      shadowBlur={5}
-      x={base.x}
-      y={base.y}
-    />
+    <Group>
+      <Ellipse
+        // @ts-ignore
+        ref={shapeRef}
+        draggable={base.draggable}
+        fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
+        onClick={handleClick}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        perfectDrawEnabled={false}
+        radiusX={radiusX}
+        radiusY={radiusY}
+        shadowBlur={5}
+        x={base.x}
+        y={base.y}
+      />
+      {isSelected && (
+        <Transformer
+          // @ts-ignore
+          ref={trRef}
+          rotateEnabled={true}
+          resizeEnabled={false}
+          boundBoxFunc={(oldBox, newBox) => {
+            // limit resize
+            if (newBox.width < 5 || newBox.height < 5) {
+              return oldBox
+            }
+            return newBox
+          }}
+          keepRatio={false}
+        />
+      )}
+    </Group>
   )
 }
 
-const OvalBase = connect(null, {
+const mapStateToProps = (state: IStore, ownProps) => ({
+  ...ownProps,
+  selectedBaseId: selectors.getSelectedOvalBaseId(state),
+})
+
+const OvalBase = connect(mapStateToProps, {
+  setSelectedBase: canvas.actions.setSelectedOvalBaseId,
   updateBase: baseGroups.actions.updateBase,
 })(OvalBaseComponent)
 

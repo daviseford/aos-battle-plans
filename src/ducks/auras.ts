@@ -4,7 +4,6 @@ import { IAura } from 'types/auras'
 
 const initialState: IAurasStore = {
   auras: [],
-  selectedId: null,
 }
 
 const addAura = (state: IAurasStore, action: { payload: IAura }) => {
@@ -20,10 +19,6 @@ const deleteAura = (state: IAurasStore, action: { payload: string }) => {
   state.auras = state.auras.filter(a => a.id !== action.payload)
 }
 
-const setSelectedId = (state: IAurasStore, action: { payload: string | null }) => {
-  state.selectedId = action.payload
-}
-
 export const auras = createSlice({
   name: 'auras',
   initialState,
@@ -31,7 +26,6 @@ export const auras = createSlice({
     addAura,
     clearAuras: state => (state = initialState),
     deleteAura,
-    setSelectedId,
     updateAura,
   },
 })

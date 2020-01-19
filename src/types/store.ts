@@ -6,17 +6,18 @@ import { IAura } from './auras'
 
 export interface IAurasStore {
   auras: IAura[]
-  selectedId: string | null
 }
 export interface IBaseGroupStore {
   baseGroups: IBaseGroup[]
 }
 export interface ICanvasStore {
   canvas: ICanvasDimensions | null
+  selectedOvalBaseId: string | null
+  selectedAuraId: string | null
+  selectedRulerId: string | null
 }
 export interface IRulerStore {
   rulers: IRuler[]
-  selectedId: string | null
 }
 export interface IScenarioStore {
   scenario: IScenario

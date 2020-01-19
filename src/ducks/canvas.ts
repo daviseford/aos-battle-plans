@@ -4,6 +4,26 @@ import { TABLE_HEIGHT_FULL, TABLE_WIDTH_FULL } from 'data/table'
 
 const initialState: ICanvasStore = {
   canvas: null,
+  // Metadata about the state of canvas selections
+  selectedOvalBaseId: null,
+  selectedAuraId: null,
+  selectedRulerId: null,
+}
+
+const setSelectedAuraId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedAuraId = action.payload
+  state.selectedOvalBaseId = null
+  state.selectedRulerId = null
+}
+const setSelectedOvalBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedAuraId = null
+  state.selectedOvalBaseId = action.payload
+  state.selectedRulerId = null
+}
+const setSelectedRulerId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedAuraId = null
+  state.selectedOvalBaseId = null
+  state.selectedRulerId = action.payload
 }
 
 const setCanvas = (state: ICanvasStore, action: { payload: number }) => {
@@ -25,5 +45,8 @@ export const canvas = createSlice({
   initialState,
   reducers: {
     setCanvas,
+    setSelectedAuraId,
+    setSelectedOvalBaseId,
+    setSelectedRulerId,
   },
 })

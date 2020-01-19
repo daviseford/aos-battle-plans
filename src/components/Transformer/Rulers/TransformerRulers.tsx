@@ -3,11 +3,10 @@ import { Layer, Rect, Transformer, Group, Text } from 'react-konva'
 import { ICanvasDimensions } from 'types/canvas'
 import { connect } from 'react-redux'
 import { IStore } from 'types/store'
-import { selectors, rulers } from 'ducks'
+import { selectors, rulers, canvas } from 'ducks'
 import { IRuler } from 'types/rulers'
 import { getSnapDimensions } from 'utils/getSnapDimensions'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
-import { setSelectedIdInStore } from 'ducks/sharedActions'
 
 interface IRect {
   canvas: ICanvasDimensions
@@ -20,7 +19,7 @@ interface IRect {
 }
 
 const SingleRect: React.FC<IRect> = props => {
-  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler } = props
+  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler, setSelectedRuler } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -41,7 +40,7 @@ const SingleRect: React.FC<IRect> = props => {
         deleteRuler(ruler.id)
       } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
         e.preventDefault()
-        setSelectedIdInStore('ruler', null)
+        setSelectedRuler(null)
       }
     }
 
@@ -49,11 +48,10 @@ const SingleRect: React.FC<IRect> = props => {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isSelected, deleteRuler, ruler])
+  }, [isSelected, deleteRuler, ruler, setSelectedRuler])
 
   const handleTap = e => {
-    if (isSelected) return setSelectedIdInStore('ruler', null)
-    return setSelectedIdInStore('ruler', ruler.id)
+    return setSelectedRuler(isSelected ? null : ruler.id)
   }
 
   const inchesWidth = (canvas.conversionPercentX * ruler.width).toFixed(2)
@@ -148,6 +146,7 @@ const SingleRect: React.FC<IRect> = props => {
         <Transformer
           // @ts-ignore
           ref={trRef}
+          rotateEnabled={true}
           boundBoxFunc={(oldBox, newBox) => {
             // limit resize
             if (newBox.width < 5 || newBox.height < 5) {
@@ -169,7 +168,7 @@ const mapStateToProps = (state: IStore, ownProps) => ({
 
 const ConnectedRect = connect(mapStateToProps, {
   deleteRuler: rulers.actions.deleteRuler,
-  setSelectedRuler: rulers.actions.setSelectedId,
+  setSelectedRuler: canvas.actions.setSelectedRulerId,
   updateRuler: rulers.actions.updateRuler,
 })(SingleRect)
 
@@ -209,7 +208,7 @@ const mapStateToProps2 = (state: IStore, ownProps) => ({
 })
 
 const TransformerRulers = connect(mapStateToProps2, {
-  setSelectedRuler: rulers.actions.setSelectedId,
+  setSelectedRuler: canvas.actions.setSelectedRulerId,
 })(TransformerRulersComponent)
 
 export default TransformerRulers

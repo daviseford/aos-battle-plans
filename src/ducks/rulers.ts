@@ -4,7 +4,6 @@ import { IRuler } from 'types/rulers'
 
 const initialState: IRulerStore = {
   rulers: [],
-  selectedId: null,
 }
 
 const addRuler = (state: IRulerStore, action: { payload: IRuler }) => {
@@ -20,10 +19,6 @@ const deleteRuler = (state: IRulerStore, action: { payload: string }) => {
   state.rulers = state.rulers.filter(r => r.id !== action.payload)
 }
 
-const setSelectedId = (state: IRulerStore, action: { payload: string | null }) => {
-  state.selectedId = action.payload
-}
-
 export const rulers = createSlice({
   name: 'rulers',
   initialState,
@@ -31,7 +26,6 @@ export const rulers = createSlice({
     addRuler,
     clearRulers: state => (state = initialState),
     deleteRuler,
-    setSelectedId,
     updateRuler,
   },
 })

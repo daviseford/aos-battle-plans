@@ -61,7 +61,9 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
               y: 50 + getYSpacing(baseRadius[1]) * rowIndex,
             }}
             radius={baseRadius[0]} // Used by Circle
+            // @ts-ignore
             radiusX={baseRadius[0]} // Used by Oval
+            // @ts-ignore
             radiusY={baseRadius[1]} // Used by Oval
           />
         ))
