@@ -12,8 +12,10 @@ export interface IBaseGroupStore {
 }
 export interface ICanvasStore {
   canvas: ICanvasDimensions | null
-  selectedOvalBaseId: string | null
   selectedAuraId: string | null
+  selectedBaseGroupId: string | null
+  selectedCircleBaseId: string | null
+  selectedOvalBaseId: string | null
   selectedRulerId: string | null
 }
 export interface IRulerStore {

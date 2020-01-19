@@ -4,3 +4,4 @@ export const centerContentClass = `d-flex align-items-center justify-content-cen
 export const genericButtonBlock = `btn btn-block`
 export const genericButtonBlockSuccess = `btn btn-block btn-success`
 export const genericButtonBlockDanger = `btn btn-block btn-danger`
+export const genericButtonDanger = `btn btn-danger`

@@ -9,8 +9,15 @@ export const getBaseGroups = (state: IStore) => state.baseGroups.baseGroups
 // Canvas
 export const getCanvas = (state: IStore) => state.canvas.canvas
 
-// Canvas selections
+// Canvas Selections
 export const getSelectedAuraId = (state: IStore) => state.canvas.selectedAuraId
+export const getSelectedBaseGroup = (state: IStore) => {
+  const id = state.canvas.selectedBaseGroupId
+  if (!id) return null
+  return state.baseGroups.baseGroups.find(x => x.id === id) || null
+}
+export const getSelectedBaseGroupId = (state: IStore) => state.canvas.selectedBaseGroupId
+export const getSelectedCircleBaseId = (state: IStore) => state.canvas.selectedCircleBaseId
 export const getSelectedOvalBaseId = (state: IStore) => state.canvas.selectedOvalBaseId
 export const getSelectedRulerId = (state: IStore) => state.canvas.selectedRulerId
 

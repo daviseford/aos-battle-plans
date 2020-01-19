@@ -5,23 +5,39 @@ import { TABLE_HEIGHT_FULL, TABLE_WIDTH_FULL } from 'data/table'
 const initialState: ICanvasStore = {
   canvas: null,
   // Metadata about the state of canvas selections
-  selectedOvalBaseId: null,
   selectedAuraId: null,
+  selectedCircleBaseId: null,
+  selectedBaseGroupId: null,
+  selectedOvalBaseId: null,
   selectedRulerId: null,
+}
+
+const setSelectedBaseGroupId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedBaseGroupId = action.payload
+}
+
+const setSelectedCircleBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedAuraId = null
+  state.selectedCircleBaseId = action.payload
+  state.selectedOvalBaseId = null
+  state.selectedRulerId = null
 }
 
 const setSelectedAuraId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = action.payload
+  state.selectedCircleBaseId = null
   state.selectedOvalBaseId = null
   state.selectedRulerId = null
 }
 const setSelectedOvalBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
+  state.selectedCircleBaseId = null
   state.selectedOvalBaseId = action.payload
   state.selectedRulerId = null
 }
 const setSelectedRulerId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
+  state.selectedCircleBaseId = null
   state.selectedOvalBaseId = null
   state.selectedRulerId = action.payload
 }
@@ -46,6 +62,8 @@ export const canvas = createSlice({
   reducers: {
     setCanvas,
     setSelectedAuraId,
+    setSelectedBaseGroupId,
+    setSelectedCircleBaseId,
     setSelectedOvalBaseId,
     setSelectedRulerId,
   },

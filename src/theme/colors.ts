@@ -4,15 +4,15 @@ export const STAGE_BG_COLOR = '#CFFBD5'
 
 export const PICKER_COLORS = [
   '#9c27b0',
-  // '#673ab7',
+  '#673ab7',
   '#3f51b5',
-  // '#2196f3',
+  '#2196f3',
   '#00bcd4',
   '#009688',
-  // '#4caf50',
+  '#4caf50',
   '#8bc34a',
-  // '#cddc39',
-  // '#ffc107',
+  '#cddc39',
+  '#ffc107',
   '#795548',
-  // '#607d8b',
+  '#607d8b',
 ]

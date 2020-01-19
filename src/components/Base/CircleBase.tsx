@@ -2,18 +2,25 @@ import React, { useCallback, useEffect } from 'react'
 import { Circle } from 'react-konva'
 import { DEFAULT_DRAGGABLE_COLOR } from 'theme/colors'
 import { connect } from 'react-redux'
-import { baseGroups, IUpdateBasePayload } from 'ducks'
+import { baseGroups, IUpdateBasePayload, canvas, selectors } from 'ducks'
 import { IBaseGroup, IBase } from 'types/bases'
 import { dragScaleUp, dragEndBounce } from 'utils/handleDrag'
+import { IStore } from 'types/store'
 
 interface ICircleBase {
   base: IBase
   radius: number
   baseGroup: IBaseGroup
+  selectedBaseId: string | null
   updateBase: (payload: IUpdateBasePayload) => void
+  setSelectedCircleBaseId: (id: string | null) => void
 }
 
-const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, updateBase }) => {
+const CircleBaseComponent: React.FC<ICircleBase> = props => {
+  const { base, radius, baseGroup, updateBase, setSelectedCircleBaseId, selectedBaseId } = props
+
+  const isSelected = selectedBaseId === base.id
+
   useEffect(() => {
     // Only run on mount
     updateBase({ base, groupId: baseGroup.id })
@@ -30,8 +37,9 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
         groupId: baseGroup.id,
       }
       updateBase(payload)
+      setSelectedCircleBaseId(payload.base.draggable ? base.id : null)
     },
-    [base, baseGroup.id, updateBase]
+    [base, baseGroup.id, updateBase, setSelectedCircleBaseId]
   )
 
   const handleDragStart = e => dragScaleUp(e)
@@ -53,10 +61,15 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
     [base, baseGroup.id, updateBase]
   )
 
+  const handleTap = e => {
+    return setSelectedCircleBaseId(isSelected ? null : base.id)
+  }
+
   return (
     <Circle
       draggable={base.draggable}
       fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
+      onTap={handleTap}
       onClick={handleClick}
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
@@ -69,8 +82,14 @@ const CircleBaseComponent: React.FC<ICircleBase> = ({ base, radius, baseGroup, u
   )
 }
 
-const CircleBase = connect(null, {
+const mapStateToProps = (state: IStore, ownProps) => ({
+  ...ownProps,
+  selectedBaseId: selectors.getSelectedCircleBaseId(state),
+})
+
+const CircleBase = connect(mapStateToProps, {
   updateBase: baseGroups.actions.updateBase,
+  setSelectedCircleBaseId: canvas.actions.setSelectedCircleBaseId,
 })(CircleBaseComponent)
 
 export default CircleBase

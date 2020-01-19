@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { selectors, baseGroups } from 'ducks'
+import { selectors, baseGroups, canvas } from 'ducks'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
-import { genericButtonBlockDanger } from 'theme/helperClasses'
+import { genericButtonDanger } from 'theme/helperClasses'
 import { CirclePicker } from 'react-color'
 import { PICKER_COLORS } from 'theme/colors'
+import { FaTimes } from 'react-icons/fa'
 
 interface IGroupManager {
   baseGroup: IBaseGroup
@@ -17,29 +18,38 @@ interface IGroupManager {
   baseGroups: IBaseGroup[]
   deleteBaseGroup: (id: string) => void
   updateBaseGroup: (group: IBaseGroup) => void
+  selectedBaseGroup: IBaseGroup | null
+  setSelectedBaseGroupId: (id: string | null) => void
 }
 
 const GroupManagerComponent: React.FC<IGroupManager> = props => {
-  const { canvas, deleteBaseGroup, updateBaseGroup, baseGroup } = props
+  const { canvas, deleteBaseGroup, updateBaseGroup, selectedBaseGroup, setSelectedBaseGroupId } = props
 
-  if (!canvas) return <></>
+  if (!canvas || !selectedBaseGroup) return <></>
 
   const handleDeleteClick = e => {
     e.preventDefault()
-    deleteBaseGroup(props.baseGroup.id)
+    deleteBaseGroup(selectedBaseGroup.id)
   }
 
   const handleChangeComplete = (color, event) => {
-    updateBaseGroup({ ...baseGroup, color: color.hex })
+    updateBaseGroup({ ...selectedBaseGroup, color: color.hex })
+  }
+
+  const handleCloseClick = e => {
+    setSelectedBaseGroupId(null)
   }
 
   return (
     <div className="card">
       <div className="card-body">
-        <h5 className="card-title">{props.baseGroup.label}</h5>
-        <h6 className="card-subtitle mb-2 text-muted">
-          {props.baseGroup.bases.length} x {props.baseGroup.baseSizeString}
-        </h6>
+        <div className="py-0 my-0 text-right">
+          <FaTimes className="ml-5" onClick={handleCloseClick} />
+        </div>
+        <div className="text-center">{selectedBaseGroup.label || 'Untitled'}</div>
+        <div className="card-subtitle mb-2 text-muted text-center">
+          {selectedBaseGroup.bases.length} x {selectedBaseGroup.baseSizeString}
+        </div>
         <div className="card-text">
           <div className="d-flex justify-content-center">
             {/* 
@@ -48,7 +58,7 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
           </div>
 
           <br />
-          <GenericButton onClick={handleDeleteClick} className={genericButtonBlockDanger}>
+          <GenericButton onClick={handleDeleteClick} className={genericButtonDanger}>
             Delete
           </GenericButton>
         </div>
@@ -62,11 +72,13 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   baseGroups: selectors.getBaseGroups(state),
   canvas: selectors.getCanvas(state),
   scenario: selectors.getScenario(state),
+  selectedBaseGroup: selectors.getSelectedBaseGroup(state),
 })
 
 const GroupManager = connect(mapStateToProps, {
   deleteBaseGroup: baseGroups.actions.deleteBaseGroup,
   updateBaseGroup: baseGroups.actions.updateBaseGroup,
+  setSelectedBaseGroupId: canvas.actions.setSelectedBaseGroupId,
 })(GroupManagerComponent)
 
 export default GroupManager
