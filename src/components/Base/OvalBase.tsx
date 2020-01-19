@@ -90,6 +90,10 @@ const OvalBaseComponent: React.FC<IOvalBaseProps> = props => {
     [base, baseGroup.id, updateBase]
   )
 
+  const handleTap = e => {
+    return setSelectedBase(isSelected ? null : base.id)
+  }
+
   return (
     <Group>
       <Ellipse
@@ -98,6 +102,7 @@ const OvalBaseComponent: React.FC<IOvalBaseProps> = props => {
         draggable={base.draggable}
         fill={base.draggable ? DEFAULT_DRAGGABLE_COLOR : baseGroup.color}
         onClick={handleClick}
+        onTap={handleTap}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
         perfectDrawEnabled={false}
