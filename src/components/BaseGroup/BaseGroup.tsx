@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Group } from 'react-konva'
 import { selectors } from 'ducks'
 import { mmToInches } from 'utils/measurements'
-import CircleBaseComponent from 'components/Base/CircleBase'
+import CircleBase from 'components/Base/CircleBase'
+import OvalBase from 'components/Base/OvalBase'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import { IBaseGroup } from 'types/bases'
@@ -16,7 +17,7 @@ interface ICCC {
 
 const BaseGroupComponent: React.FC<ICCC> = props => {
   const { canvas, baseGroup } = props
-  const [baseRadius, setBaseRadius] = useState(0)
+  const [baseRadius, setBaseRadius] = useState([0, 0])
 
   useEffect(() => {
     const { baseSizeMM } = baseGroup
@@ -24,12 +25,13 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
     if (baseSizeMM[0] === baseSizeMM[1]) {
       // Circle
       const convertedBaseSize = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
-      setBaseRadius(convertedBaseSize)
+      setBaseRadius([convertedBaseSize, convertedBaseSize])
     } else {
       // Oval
       // TODO FIX THIS to be an oval component
-      const convertedBaseSize = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
-      setBaseRadius(convertedBaseSize)
+      const convertedBaseSizeX = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
+      const convertedBaseSizeY = mmToInches(baseGroup.baseSizeMM[1]) / canvas.conversionPercentY / 2
+      setBaseRadius([convertedBaseSizeX, convertedBaseSizeY])
     }
   }, [baseGroup, canvas])
 
@@ -44,19 +46,23 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
 
   const rows = chunk(baseGroup.bases, 10)
 
+  const BaseComponent = baseRadius[0] === baseRadius[1] ? CircleBase : OvalBase
+
   return (
     <Group draggable={true}>
       {rows.map((bases, rowIndex) => {
         return bases.map((base, baseIndex) => (
-          <CircleBaseComponent
+          <BaseComponent
             key={baseIndex}
             baseGroup={baseGroup}
             base={{
               ...base,
-              x: 30 + getXSpacing(baseRadius) * baseIndex,
-              y: 50 + getYSpacing(baseRadius) * rowIndex,
+              x: 30 + getXSpacing(baseRadius[0]) * baseIndex,
+              y: 50 + getYSpacing(baseRadius[1]) * rowIndex,
             }}
-            radius={baseRadius}
+            radius={baseRadius[0]} // Used by Circle
+            radiusX={baseRadius[0]} // Used by Oval
+            radiusY={baseRadius[1]} // Used by Oval
           />
         ))
       })}
