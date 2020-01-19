@@ -18,12 +18,12 @@ const RulerComponent: React.FC<IRulerProps> = props => {
   const { canvas, scenario, rulerLengthInches, x, y } = props
 
   let points = [x, y, x, y + rulerLengthInches / canvas.conversionPercentY]
-  let [xOffset, yOffset, strokeWidth] = [0, 0, 2 / canvas.conversionPercentX]
+  let [xOffset, yOffset, strokeWidth] = [0, 0, 3 / canvas.conversionPercentX]
 
   if (scenario.orientation === 'vertical') {
     points = [x, y, x + rulerLengthInches / canvas.conversionPercentX, y]
     yOffset = -4
-    strokeWidth = 2 / canvas.conversionPercentY
+    strokeWidth = 3 / canvas.conversionPercentY
   } else {
     xOffset = rulerLengthInches < 10 ? -5 : -10
   }

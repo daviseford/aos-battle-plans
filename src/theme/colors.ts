@@ -1,5 +1,6 @@
 export const DEFAULT_BASE_COLOR = '#008b02'
 export const DEFAULT_DRAGGABLE_COLOR = '#ff000d'
+export const STAGE_BG_COLOR = '#CFFBD5'
 
 export const PICKER_COLORS = [
   '#9c27b0',

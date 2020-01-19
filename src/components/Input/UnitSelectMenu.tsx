@@ -95,34 +95,39 @@ const UnitSelectMenuComponent: React.FC<IUnitSelectMenu> = props => {
   const canClick = state.baseSizeString !== '' && state.numBases > 0
 
   return (
-    <div className="row justify-content-center pb-3">
-      <div className="col">
-        <input
-          className="form-control"
-          type="number"
-          onChange={handleNumBaseChange}
-          placeholder="# Models"
-          min={MIN_MODELS}
-          max={MAX_MODELS}
-        />
+    <>
+      <div className={`row justify-content-center align-items-center text-center mt-2`}>
+        <h5>Add Unit:</h5>
       </div>
-      <div className="col">
-        <Select
-          onChange={handleBaseSizeChange}
-          options={options}
-          placeholder={'Base Size'}
-          defaultValue={options[0]}
-        />
+      <div className={`row justify-content-start align-items-center  pb-3`}>
+        <div className="col-6 col-md-3">
+          <input
+            className="form-control"
+            type="number"
+            onChange={handleNumBaseChange}
+            placeholder="# Models"
+            min={MIN_MODELS}
+            max={MAX_MODELS}
+          />
+        </div>
+        <div className="col-6 col-md-3">
+          <Select
+            onChange={handleBaseSizeChange}
+            options={options}
+            placeholder={'Base Size'}
+            defaultValue={options[0]}
+          />
+        </div>
+        <div className="col-6 col-md-3">
+          <input className="form-control" type="text" onChange={handleNameChange} placeholder="Name" />
+        </div>
+        <div className="col">
+          <GenericButton onClick={handleDeployButtonClick} disabled={!canClick}>
+            Deploy Unit
+          </GenericButton>
+        </div>
       </div>
-      <div className="col">
-        <input className="form-control" type="text" onChange={handleNameChange} placeholder="Name" />
-      </div>
-      <div className="col-3" hidden={!canClick}>
-        <GenericButton onClick={handleDeployButtonClick} hidden={!canClick}>
-          Deploy Unit
-        </GenericButton>
-      </div>
-    </div>
+    </>
   )
 }
 

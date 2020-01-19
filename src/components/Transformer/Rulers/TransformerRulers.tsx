@@ -7,6 +7,7 @@ import { selectors, rulers } from 'ducks'
 import { IRuler } from 'types/rulers'
 import { getSnapDimensions } from 'utils/getSnapDimensions'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
+import { setSelectedIdInStore } from 'ducks/sharedActions'
 
 interface IRect {
   canvas: ICanvasDimensions
@@ -19,7 +20,7 @@ interface IRect {
 }
 
 const SingleRect: React.FC<IRect> = props => {
-  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler, setSelectedRuler } = props
+  const { ruler, isSelected, onSelect, canvas, deleteRuler, updateRuler } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -40,7 +41,7 @@ const SingleRect: React.FC<IRect> = props => {
         deleteRuler(ruler.id)
       } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
         e.preventDefault()
-        setSelectedRuler(null)
+        setSelectedIdInStore('ruler', null)
       }
     }
 
@@ -48,7 +49,12 @@ const SingleRect: React.FC<IRect> = props => {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isSelected, deleteRuler, ruler, setSelectedRuler])
+  }, [isSelected, deleteRuler, ruler])
+
+  const handleTap = e => {
+    if (isSelected) return setSelectedIdInStore('ruler', null)
+    return setSelectedIdInStore('ruler', ruler.id)
+  }
 
   const inchesWidth = (canvas.conversionPercentX * ruler.width).toFixed(2)
   const inchesHeight = (canvas.conversionPercentY * ruler.height).toFixed(2)
@@ -63,6 +69,7 @@ const SingleRect: React.FC<IRect> = props => {
         stroke={'black'}
         {...ruler}
         draggable
+        onTap={handleTap}
         onDragEnd={e => {
           updateRuler({
             ...ruler,

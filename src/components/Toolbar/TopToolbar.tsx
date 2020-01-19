@@ -39,23 +39,16 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
   return (
     <>
       <div className="container-fluid bg-light pb-2">
-        <div className={`d-flex justify-content-start align-items-center`}>
-          <div className={`mr-5`}>
+        <div className={`row justify-content-start align-items-center`}>
+          <div className={`col-12 col-md-3 text-center`}>
             <h4>Scenario:</h4>
           </div>
-          <div className={`flex-grow-1`}>
+          <div className={`col-12 col-md-9`}>
             <Select onChange={handleScenarioChange} options={options} placeholder={Scenarios[0].name} />
           </div>
         </div>
 
-        <div className={`d-flex justify-content-start align-items-center mt-2`}>
-          <div className={` mr-5`}>
-            <h4>Add Unit:</h4>
-          </div>
-          <div className={`flex-grow-1`}>
-            <UnitSelectMenu />
-          </div>
-        </div>
+        <UnitSelectMenu />
 
         <div className={`row text-center justify-content-center`}>
           {baseGroups.map(group => {

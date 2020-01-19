@@ -65,7 +65,7 @@ const AuraSelectMenuComponent: React.FC<IAuraMenu> = props => {
       <div className="flex-grow-1">
         <GenericButton onClick={handleClick}>
           <FaRegCircle className="mr-2" />
-          Add Aura
+          <span className="d-none d-md-inline">Add&nbsp;</span> Aura
         </GenericButton>
       </div>
     </div>

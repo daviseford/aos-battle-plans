@@ -21,6 +21,7 @@ import PageHeader from 'components/Page/Header'
 import PageFooter from 'components/Page/Footer'
 import { FaRegImage } from 'react-icons/fa'
 import { logPageView } from 'utils/analytics'
+import { STAGE_BG_COLOR } from 'theme/colors'
 
 /**
  * Are you wondering why the Provider is tucked inside the Stage?
@@ -40,7 +41,9 @@ const AppComponent: React.FC<IApp> = props => {
 
   // Handle window resizes and initial sizing
   useEffect(() => {
-    const handleResize = () => setCanvas(window.innerWidth)
+    const handleResize = () => {
+      setCanvas(window.innerWidth)
+    }
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
@@ -78,7 +81,7 @@ const AppComponent: React.FC<IApp> = props => {
         <Stage
           width={canvas.canvasWidth}
           height={canvas.canvasHeight}
-          style={{ backgroundColor: 'white' }}
+          style={{ backgroundColor: STAGE_BG_COLOR }}
           // @ts-ignore
           ref={stageRef}
         >

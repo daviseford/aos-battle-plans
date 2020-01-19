@@ -64,7 +64,7 @@ const RulerSelectMenuComponent: React.FC<IRulerMenu> = props => {
       <div className="flex-grow-1">
         <GenericButton onClick={handleClick}>
           <FaRulerVertical className="mr-2" />
-          Add Ruler
+          <span className="d-none d-md-inline">Add&nbsp;</span> Ruler
         </GenericButton>
       </div>
     </div>

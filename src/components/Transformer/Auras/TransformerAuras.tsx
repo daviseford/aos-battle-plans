@@ -7,11 +7,11 @@ import { selectors, auras } from 'ducks'
 import { BACKSPACE_KEYCODE, DELETE_KEYCODE, ENTER_KEYCODE, ESCAPE_KEYCODE } from 'utils/keyCodes'
 import { IAura } from 'types/auras'
 import { getSnapDimensions } from 'utils/getSnapDimensions'
+import { setSelectedIdInStore } from 'ducks/sharedActions'
 
 interface ICirc {
   canvas: ICanvasDimensions
   deleteAura: (id: string) => void
-  setSelectedAura: (id: string | null) => void
   isSelected: boolean
   onSelect: any
   aura: IAura
@@ -19,7 +19,7 @@ interface ICirc {
 }
 
 const SingleCircle: React.FC<ICirc> = props => {
-  const { aura, isSelected, onSelect, canvas, deleteAura, updateAura, setSelectedAura } = props
+  const { aura, isSelected, onSelect, canvas, deleteAura, updateAura } = props
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -40,7 +40,7 @@ const SingleCircle: React.FC<ICirc> = props => {
         deleteAura(aura.id)
       } else if (e.keyCode === ENTER_KEYCODE || e.keyCode === ESCAPE_KEYCODE) {
         e.preventDefault()
-        setSelectedAura(null)
+        setSelectedIdInStore('aura', null)
       }
     }
 
@@ -48,7 +48,12 @@ const SingleCircle: React.FC<ICirc> = props => {
       window.addEventListener('keydown', handleKeyDown)
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isSelected, deleteAura, aura, setSelectedAura])
+  }, [isSelected, deleteAura, aura])
+
+  const handleTap = e => {
+    if (isSelected) return setSelectedIdInStore('aura', null)
+    return setSelectedIdInStore('aura', aura.id)
+  }
 
   return (
     <Group draggable={true}>
@@ -58,6 +63,7 @@ const SingleCircle: React.FC<ICirc> = props => {
         ref={shapeRef}
         {...aura}
         strokeEnabled={true}
+        onTap={handleTap}
         fillEnabled={true}
         onDragEnd={e => {
           updateAura({
@@ -170,18 +176,16 @@ const mapStateToProps = (state: IStore, ownProps) => ({
 
 const ConnectedCircle = connect(mapStateToProps, {
   deleteAura: auras.actions.deleteAura,
-  setSelectedAura: auras.actions.setSelectedId,
   updateAura: auras.actions.updateAura,
 })(SingleCircle)
 
 type TTransformerRect = React.FC<{
   auras: IAura[]
   selectedAuraId: string | null
-  setSelectedAura: (id: string | null) => void
 }>
 
 const TransformerRulersComponent: TTransformerRect = props => {
-  const { auras, selectedAuraId, setSelectedAura } = props
+  const { auras, selectedAuraId } = props
 
   return (
     <Layer>
@@ -194,7 +198,7 @@ const TransformerRulersComponent: TTransformerRect = props => {
               aura={aura}
               isSelected={aura.id === selectedAuraId}
               onSelect={() => {
-                setSelectedAura(aura.id)
+                setSelectedIdInStore('aura', aura.id)
               }}
             />
           )
@@ -209,8 +213,6 @@ const mapStateToProps2 = (state: IStore, ownProps) => ({
   selectedAuraId: selectors.getSelectedAuraId(state),
 })
 
-const TransformerAuras = connect(mapStateToProps2, {
-  setSelectedAura: auras.actions.setSelectedId,
-})(TransformerRulersComponent)
+const TransformerAuras = connect(mapStateToProps2, {})(TransformerRulersComponent)
 
 export default TransformerAuras
