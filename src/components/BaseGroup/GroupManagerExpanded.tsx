@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { selectors, baseGroups, canvas } from 'ducks'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { genericButtonDanger } from 'theme/helperClasses'
@@ -14,7 +13,6 @@ import { FaTimes } from 'react-icons/fa'
 interface IGroupManager {
   baseGroup: IBaseGroup
   canvas: ICanvasDimensions
-  scenario: IScenario
   baseGroups: IBaseGroup[]
   deleteBaseGroup: (id: string) => void
   updateBaseGroup: (group: IBaseGroup) => void
@@ -71,7 +69,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,
   baseGroups: selectors.getBaseGroups(state),
   canvas: selectors.getCanvas(state),
-  scenario: selectors.getScenario(state),
   selectedBaseGroup: selectors.getSelectedBaseGroup(state),
 })
 

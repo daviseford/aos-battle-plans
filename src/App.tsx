@@ -19,7 +19,7 @@ import GenericButton from 'components/Input/GenericButton'
 import { IScenario } from 'types/scenario'
 import PageHeader from 'components/Page/Header'
 import PageFooter from 'components/Page/Footer'
-import { FaRegImage } from 'react-icons/fa'
+import { FaFileImage } from 'react-icons/fa'
 import { logPageView } from 'utils/analytics'
 import { STAGE_BG_COLOR } from 'theme/colors'
 
@@ -96,7 +96,7 @@ const AppComponent: React.FC<IApp> = props => {
       <div className="row bg-dark text-white text-center py-2 justify-content-center">
         <div className="col-3">
           <GenericButton onClick={handleSaveImage}>
-            <FaRegImage className="mr-2" />
+            <FaFileImage className="mr-2" />
             Save
           </GenericButton>
         </div>

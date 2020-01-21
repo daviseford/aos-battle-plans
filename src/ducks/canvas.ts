@@ -13,11 +13,16 @@ const initialState: ICanvasStore = {
 }
 
 const setSelectedBaseGroupId = (state: ICanvasStore, action: { payload: string | null }) => {
+  state.selectedAuraId = null
   state.selectedBaseGroupId = action.payload
+  state.selectedCircleBaseId = null
+  state.selectedOvalBaseId = null
+  state.selectedRulerId = null
 }
 
 const setSelectedCircleBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
+  state.selectedBaseGroupId = null
   state.selectedCircleBaseId = action.payload
   state.selectedOvalBaseId = null
   state.selectedRulerId = null
@@ -25,18 +30,21 @@ const setSelectedCircleBaseId = (state: ICanvasStore, action: { payload: string 
 
 const setSelectedAuraId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = action.payload
+  state.selectedBaseGroupId = null
   state.selectedCircleBaseId = null
   state.selectedOvalBaseId = null
   state.selectedRulerId = null
 }
 const setSelectedOvalBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
+  state.selectedBaseGroupId = null
   state.selectedCircleBaseId = null
   state.selectedOvalBaseId = action.payload
   state.selectedRulerId = null
 }
 const setSelectedRulerId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
+  state.selectedBaseGroupId = null
   state.selectedCircleBaseId = null
   state.selectedOvalBaseId = null
   state.selectedRulerId = action.payload

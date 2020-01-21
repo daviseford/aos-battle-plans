@@ -10,6 +10,11 @@ export const getBaseGroups = (state: IStore) => state.baseGroups.baseGroups
 export const getCanvas = (state: IStore) => state.canvas.canvas
 
 // Canvas Selections
+export const getSelectedAura = (state: IStore) => {
+  const id = state.canvas.selectedAuraId
+  if (!id) return null
+  return state.auras.auras.find(x => x.id === id) || null
+}
 export const getSelectedAuraId = (state: IStore) => state.canvas.selectedAuraId
 export const getSelectedBaseGroup = (state: IStore) => {
   const id = state.canvas.selectedBaseGroupId

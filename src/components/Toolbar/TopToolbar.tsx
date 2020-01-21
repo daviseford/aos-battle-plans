@@ -11,6 +11,7 @@ import { IBaseGroup } from 'types/bases'
 import GroupManagerCollapsed from '../BaseGroup/GroupManagerCollapsed'
 import MarkupToolbar from './MarkupToolbar'
 import GroupManagerExpanded from 'components/BaseGroup/GroupManagerExpanded'
+import AuraManager from 'components/Aura/AuraManager'
 
 interface ITopToolbar {
   baseGroups: IBaseGroup[]
@@ -51,6 +52,7 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
 
         <UnitSelectMenu />
 
+        <AuraManager />
         <GroupManagerExpanded />
 
         <div className={`row text-center justify-content-center`}>

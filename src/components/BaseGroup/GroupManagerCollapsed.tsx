@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { selectors, baseGroups, canvas } from 'ducks'
 import { ICanvasDimensions } from 'types/canvas'
-import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import GenericButton from '../Input/GenericButton'
 import { FaTimes, FaCog } from 'react-icons/fa'
@@ -13,7 +12,6 @@ interface IGroupManagerCollapsed {
   baseGroups: IBaseGroup[]
   canvas: ICanvasDimensions
   deleteBaseGroup: (id: string) => void
-  scenario: IScenario
   selectedBaseGroupId: string | null
   setSelectedBaseGroupId: (id: string | null) => void
   updateBaseGroup: (group: IBaseGroup) => void
@@ -59,7 +57,6 @@ const mapStateToProps = (state: IStore, ownProps) => ({
   baseGroups: selectors.getBaseGroups(state),
   canvas: selectors.getCanvas(state),
   selectedBaseGroupId: selectors.getSelectedBaseGroupId(state),
-  scenario: selectors.getScenario(state),
 })
 
 const GroupManagerCollapsed = connect(mapStateToProps, {
