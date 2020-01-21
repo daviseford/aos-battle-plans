@@ -43,8 +43,10 @@ const AuraManagerComponent: React.FC<IAuraManagerProps> = props => {
         <div className="py-0 my-0 text-right">
           <FaTimes className="ml-5" onClick={handleCloseClick} />
         </div>
-        {/* <div className="text-center">{selectedAura.label || 'Untitled'}</div>
-        <div className="card-subtitle mb-2 text-muted text-center">
+        <div className="text-center mb-2">
+          {(selectedAura.width * canvas.conversionPercentX).toFixed(2)}" Aura
+        </div>
+        {/* <div className="card-subtitle mb-2 text-muted text-center">
           {selectedAura.bases.length} x {selectedAura.baseSizeString}
         </div> */}
         <div className="card-text">

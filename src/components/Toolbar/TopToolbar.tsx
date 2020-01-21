@@ -52,8 +52,10 @@ const TopToolbarComponent: React.FC<ITopToolbar> = props => {
 
         <UnitSelectMenu />
 
-        <AuraManager />
-        <GroupManagerExpanded />
+        <div className={`row text-center justify-content-center`}>
+          <AuraManager />
+          <GroupManagerExpanded />
+        </div>
 
         <div className={`row text-center justify-content-center`}>
           {baseGroups.map(group => {

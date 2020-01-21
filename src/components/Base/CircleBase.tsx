@@ -19,7 +19,7 @@ interface ICircleBase {
 const CircleBaseComponent: React.FC<ICircleBase> = props => {
   const { base, radius, baseGroup, updateBase, setSelectedCircleBaseId, selectedBaseId } = props
 
-  const isSelected = selectedBaseId === base.id
+  // const isSelected = selectedBaseId === base.id
 
   useEffect(() => {
     // Only run on mount
@@ -62,7 +62,7 @@ const CircleBaseComponent: React.FC<ICircleBase> = props => {
   )
 
   const handleTap = e => {
-    return setSelectedCircleBaseId(isSelected ? null : base.id)
+    return setSelectedCircleBaseId(base.id)
   }
 
   return (

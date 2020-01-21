@@ -22,7 +22,7 @@ const setSelectedBaseGroupId = (state: ICanvasStore, action: { payload: string |
 
 const setSelectedCircleBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
-  state.selectedBaseGroupId = null
+  // state.selectedBaseGroupId = null
   state.selectedCircleBaseId = action.payload
   state.selectedOvalBaseId = null
   state.selectedRulerId = null
@@ -37,7 +37,7 @@ const setSelectedAuraId = (state: ICanvasStore, action: { payload: string | null
 }
 const setSelectedOvalBaseId = (state: ICanvasStore, action: { payload: string | null }) => {
   state.selectedAuraId = null
-  state.selectedBaseGroupId = null
+  // state.selectedBaseGroupId = null
   state.selectedCircleBaseId = null
   state.selectedOvalBaseId = action.payload
   state.selectedRulerId = null
