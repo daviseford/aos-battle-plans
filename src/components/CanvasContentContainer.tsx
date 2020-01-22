@@ -6,6 +6,7 @@ import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
 import HorizontalScenarioLines from 'components/ScenarioLines/Horizontal'
 import VerticalScenarioLines from './ScenarioLines/Vertical'
+import DiagonalScenarioLines from './ScenarioLines/Diagonal'
 import { IScenario } from 'types/scenario'
 import { IBaseGroup } from 'types/bases'
 import BaseGroup from './BaseGroup/BaseGroup'
@@ -24,8 +25,12 @@ const CanvasContentContainerComponent: React.FC<ICCC> = props => {
 
   if (!canvas) return <></>
 
-  const ScenarioLines =
-    scenario.orientation === 'horizontal' ? HorizontalScenarioLines : VerticalScenarioLines
+  const ScenarioLines = {
+    horizontal: HorizontalScenarioLines,
+    vertical: VerticalScenarioLines,
+    diagonalTopRight: DiagonalScenarioLines,
+    diagonalTopLeft: DiagonalScenarioLines,
+  }[scenario.orientation]
 
   return (
     <>

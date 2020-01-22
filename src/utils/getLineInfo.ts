@@ -60,6 +60,57 @@ const getInfoHorizontal = (canvas: ICanvasDimensions, scenario: IScenario): ILin
   }
 }
 
+export interface IDiagonalLineInfo {
+  divider: {
+    startX: number
+    startY: number
+    endX: number
+    endY: number
+  }
+  sideOffset: number
+  dividerOffset: number
+  playerOffset: number
+  canvasWidth: number
+  canvasHeight: number
+  objectives: IObjective[]
+}
+
+export const getDiagonalInfo = (canvas: ICanvasDimensions, scenario: IScenario): IDiagonalLineInfo => {
+  let divider = {} as IDiagonalLineInfo['divider']
+  if (scenario.orientation === 'diagonalTopRight') {
+    divider = {
+      startX: 0,
+      startY: canvas.canvasHeight,
+      endX: canvas.canvasWidth,
+      endY: 0,
+    }
+  } else {
+    divider = {
+      startX: 0,
+      startY: 0,
+      endX: canvas.canvasWidth,
+      endY: canvas.canvasHeight,
+    }
+  }
+
+  const { setupRestrictions } = scenario
+  const { fromSideInches = 0, fromDividerInches = 0, fromPlayerInches = 0 } = setupRestrictions
+
+  const sideOffset = fromSideInches ? fromSideInches / canvas.conversionPercentY : 0
+  const dividerOffset = fromDividerInches ? fromDividerInches / canvas.conversionPercentX : 0
+  const playerOffset = fromPlayerInches ? fromPlayerInches / canvas.conversionPercentX : 0
+
+  return {
+    dividerOffset,
+    divider,
+    sideOffset,
+    playerOffset,
+    canvasWidth: canvas.canvasWidth,
+    canvasHeight: canvas.canvasHeight,
+    objectives: convertObjectives(canvas, scenario),
+  }
+}
+
 const convertObjectives = (canvas: ICanvasDimensions, scenario: IScenario): IObjective[] => {
   return scenario.objectives.map(o => ({
     x: o.x / canvas.conversionPercentX,

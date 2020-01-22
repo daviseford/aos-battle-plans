@@ -17,7 +17,7 @@ interface ICircleBase {
 }
 
 const CircleBaseComponent: React.FC<ICircleBase> = props => {
-  const { base, radius, baseGroup, updateBase, setSelectedCircleBaseId, selectedBaseId } = props
+  const { base, radius, baseGroup, updateBase, setSelectedCircleBaseId } = props
 
   // const isSelected = selectedBaseId === base.id
 

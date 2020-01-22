@@ -10,6 +10,21 @@ import { IScenario } from 'types/scenario'
 
 const Scenarios: IScenario[] = [
   {
+    name: `Places of Arcane Power`,
+    matchedPlay: true,
+    orientation: `diagonalTopRight`,
+    setupRestrictions: {
+      fromDividerInches: 12,
+      fromSideInches: 3,
+      fromPlayerInches: 2,
+    },
+    objectives: [
+      // { x: 12, y: TABLE_HEIGHT_HALF },
+      { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF },
+      // { x: TABLE_WIDTH_FULL - 12, y: TABLE_HEIGHT_HALF },
+    ],
+  },
+  {
     name: `Shifting Objectives (2019)`,
     matchedPlay: true,
     orientation: `horizontal`,

@@ -21,7 +21,7 @@ const MarkupToolbarComponent: React.FC<IBottomToolbar> = props => {
 
   return (
     <>
-      <div className={`d-flex justify-content-start align-items-center mt-2`}>
+      <div className={`d-flex justify-content-center align-items-center mt-2`}>
         <div className="w-30 mr-3">
           <RulerSelectMenu />
         </div>
