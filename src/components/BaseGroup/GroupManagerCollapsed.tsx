@@ -18,9 +18,9 @@ interface IGroupManagerCollapsed {
 }
 
 const GroupManagerCollapsedComponent: React.FC<IGroupManagerCollapsed> = props => {
-  const { canvas, deleteBaseGroup, baseGroup, setSelectedBaseGroupId } = props
+  const { canvas, deleteBaseGroup, baseGroup, selectedBaseGroupId, setSelectedBaseGroupId } = props
 
-  if (!canvas) return <></>
+  if (!canvas || selectedBaseGroupId === baseGroup.id) return <></>
 
   const handleDeleteClick = e => {
     e.preventDefault()
@@ -35,7 +35,15 @@ const GroupManagerCollapsedComponent: React.FC<IGroupManagerCollapsed> = props =
   return (
     <div className="card">
       <div className="card-body">
-        <div className="">{baseGroup.label || 'Untitled'}</div>
+        <div className="row">
+          <div className="col">
+            <h3>
+              <span className="badge" style={{ backgroundColor: baseGroup.color, color: '#fff' }}>
+                {baseGroup.label || 'Untitled'}
+              </span>
+            </h3>
+          </div>
+        </div>
         <div className="card-subtitle text-muted">
           {baseGroup.bases.length} x {baseGroup.baseSizeString}
         </div>

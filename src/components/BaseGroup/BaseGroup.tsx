@@ -28,7 +28,6 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
       setBaseRadius([convertedBaseSize, convertedBaseSize])
     } else {
       // Oval
-      // TODO FIX THIS to be an oval component
       const convertedBaseSizeX = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
       const convertedBaseSizeY = mmToInches(baseGroup.baseSizeMM[1]) / canvas.conversionPercentY / 2
       setBaseRadius([convertedBaseSizeX, convertedBaseSizeY])

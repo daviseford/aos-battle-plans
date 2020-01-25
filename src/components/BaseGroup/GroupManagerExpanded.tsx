@@ -11,7 +11,6 @@ import { PICKER_COLORS } from 'theme/colors'
 import { FaTimes } from 'react-icons/fa'
 
 interface IGroupManager {
-  baseGroup: IBaseGroup
   canvas: ICanvasDimensions
   baseGroups: IBaseGroup[]
   deleteBaseGroup: (id: string) => void
@@ -44,7 +43,13 @@ const GroupManagerComponent: React.FC<IGroupManager> = props => {
         <div className="py-0 my-0 text-right">
           <FaTimes className="ml-5" onClick={handleCloseClick} />
         </div>
-        <div className="text-center">{selectedBaseGroup.label || 'Untitled'}</div>
+        <div className="text-center">
+          <h3>
+            <span className="badge" style={{ backgroundColor: selectedBaseGroup.color, color: '#fff' }}>
+              {selectedBaseGroup.label || 'Untitled'}
+            </span>
+          </h3>
+        </div>
         <div className="card-subtitle mb-2 text-muted text-center">
           {selectedBaseGroup.bases.length} x {selectedBaseGroup.baseSizeString}
         </div>
