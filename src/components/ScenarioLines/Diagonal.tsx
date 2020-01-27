@@ -27,7 +27,7 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   if (!canvas || !lineInfo) return <></>
 
-  const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight, objectives } = lineInfo
+  const { dividerOffset, divider, sideOffsetY, sideOffsetX, canvasWidth, canvasHeight, objectives } = lineInfo
 
   return (
     <>
@@ -49,34 +49,37 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         /> */}
 
         {/* These lines are created when you have to deploy X inches from the sides  */}
-        {sideOffset > 0 ? (
+        {sideOffsetX > 0 ? (
           <>
-            <Line points={[sideOffset, sideOffset, sideOffset, canvasHeight - sideOffset]} stroke="red" />
-            <Line points={[sideOffset, sideOffset, canvasWidth - sideOffset, sideOffset]} stroke="red" />
+            <Line points={[sideOffsetX, sideOffsetY, sideOffsetX, canvasHeight - sideOffsetY]} stroke="red" />
+            <Line points={[sideOffsetX, sideOffsetY, canvasWidth - sideOffsetY, sideOffsetY]} stroke="red" />
 
             <Line
               points={[
-                canvasWidth - sideOffset,
-                sideOffset,
-                canvasWidth - sideOffset,
-                canvasHeight - sideOffset,
+                canvasWidth - sideOffsetX,
+                sideOffsetY,
+                canvasWidth - sideOffsetX,
+                canvasHeight - sideOffsetY,
               ]}
               stroke="red"
             />
             <Line
               points={[
-                sideOffset,
-                canvasHeight - sideOffset,
-                canvasWidth - sideOffset,
-                canvasHeight - sideOffset,
+                sideOffsetX,
+                canvasHeight - sideOffsetY,
+                canvasWidth - sideOffsetX,
+                canvasHeight - sideOffsetY,
               ]}
               stroke="red"
             />
           </>
         ) : (
           <>
-            {/* <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
-            <Line points={[canvasWidth, 0, canvasWidth, canvasHeight]} stroke="red" /> */}
+            <Line points={[0, 0, canvasWidth, 0]} stroke="red" />
+            <Line points={[canvasWidth, 0, canvasWidth, canvasHeight]} stroke="red" />
+
+            <Line points={[0, 0, 0, canvasHeight]} stroke="red" />
+            <Line points={[canvasWidth, 0, canvasWidth, canvasHeight]} stroke="red" />
           </>
         )}
 
@@ -85,18 +88,18 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
           <>
             <Line
               points={[
-                sideOffset,
+                sideOffsetX,
                 divider - dividerOffset,
-                canvasWidth - sideOffset,
+                canvasWidth - sideOffsetX,
                 divider - dividerOffset,
               ]}
               stroke="red"
             />
             <Line
               points={[
-                sideOffset,
+                sideOffsetX,
                 divider + dividerOffset,
-                canvasWidth - sideOffset,
+                canvasWidth - sideOffsetX,
                 divider + dividerOffset,
               ]}
               stroke="red"
@@ -113,7 +116,7 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
 /** All of the zones we need to display for the user */
 // const Zones: React.FC<IDiagonalLineInfo> = props => {
-//   const { dividerOffset, divider, sideOffset, playerOffset, canvasWidth, canvasHeight } = props
+//   const { dividerOffset, divider, sideOffsetX, playerOffset, canvasWidth, canvasHeight } = props
 
 //   return (
 //     <>
@@ -129,17 +132,17 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 //         )}
 
 //         {/* Side */}
-//         {sideOffset > 0 && (
+//         {sideOffsetX > 0 && (
 //           <>
 //             {/* Player */}
-//             <ZoneRect x={0} y={0} width={sideOffset} height={divider} />
-//             <ZoneRect x={canvasWidth - sideOffset} y={0} width={sideOffset} height={divider} />
+//             <ZoneRect x={0} y={0} width={sideOffsetX} height={divider} />
+//             <ZoneRect x={canvasWidth - sideOffsetX} y={0} width={sideOffsetX} height={divider} />
 //             {/* Enemy */}
-//             <ZoneRect x={0} y={divider + dividerOffset} width={sideOffset} height={divider} />
+//             <ZoneRect x={0} y={divider + dividerOffset} width={sideOffsetX} height={divider} />
 //             <ZoneRect
-//               x={canvasWidth - sideOffset}
+//               x={canvasWidth - sideOffsetX}
 //               y={divider + dividerOffset}
-//               width={sideOffset}
+//               width={sideOffsetX}
 //               height={divider}
 //             />
 //           </>
