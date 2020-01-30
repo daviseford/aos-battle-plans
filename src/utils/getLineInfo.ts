@@ -77,13 +77,22 @@ export interface IDiagonalLineInfo {
 }
 
 export const getDiagonalInfo = (canvas: ICanvasDimensions, scenario: IScenario): IDiagonalLineInfo => {
+  const { setupRestrictions } = scenario
+  const { fromSideInches = 0, fromDividerInches = 0 } = setupRestrictions
+
+  const sideOffsetY = fromSideInches ? fromSideInches / canvas.conversionPercentY : 0
+  const sideOffsetX = fromSideInches ? fromSideInches / canvas.conversionPercentX : 0
+  const dividerOffsetX = fromDividerInches ? fromDividerInches / canvas.conversionPercentX : 0
+  const dividerOffsetY = fromDividerInches ? fromDividerInches / canvas.conversionPercentY : 0
+
   let divider = {} as IDiagonalLineInfo['divider']
+
   if (scenario.orientation === 'diagonalTopRight') {
     divider = {
-      startX: 0,
-      startY: canvas.canvasHeight,
-      endX: canvas.canvasWidth,
-      endY: 0,
+      startX: sideOffsetX,
+      startY: canvas.canvasHeight - sideOffsetY,
+      endX: canvas.canvasWidth - sideOffsetX,
+      endY: sideOffsetY,
     }
   } else {
     divider = {
@@ -93,14 +102,6 @@ export const getDiagonalInfo = (canvas: ICanvasDimensions, scenario: IScenario):
       endY: canvas.canvasHeight,
     }
   }
-
-  const { setupRestrictions } = scenario
-  const { fromSideInches = 0, fromDividerInches = 0 } = setupRestrictions
-
-  const sideOffsetY = fromSideInches ? fromSideInches / canvas.conversionPercentY : 0
-  const sideOffsetX = fromSideInches ? fromSideInches / canvas.conversionPercentX : 0
-  const dividerOffsetX = fromDividerInches ? fromDividerInches / canvas.conversionPercentX : 0
-  const dividerOffsetY = fromDividerInches ? fromDividerInches / canvas.conversionPercentY : 0
 
   return {
     canvasHeight: canvas.canvasHeight,

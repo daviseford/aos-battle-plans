@@ -5,7 +5,7 @@ import { selectors } from 'ducks'
 import { IDiagonalLineInfo, getDiagonalInfo } from 'utils/getLineInfo'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import { ZoneRect, EnemyZone } from './ZoneRect'
+// import { ZoneRect, EnemyZone } from './ZoneRect'
 import Objectives from './Objectives'
 import { IScenario } from 'types/scenario'
 
@@ -99,10 +99,10 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
             {/* <Line points={[divider.startX, divider.startY, divider.endX, divider.endY]} stroke="black" /> */}
             <Line
               points={[
-                sideOffsetX,
-                divider.startY - dividerOffsetY - sideOffsetY,
-                divider.endX - dividerOffsetX - sideOffsetX,
-                divider.endY + sideOffsetY,
+                divider.startX,
+                divider.startY - dividerOffsetY,
+                divider.endX - dividerOffsetX,
+                divider.endY,
               ]}
               stroke="red"
             />
