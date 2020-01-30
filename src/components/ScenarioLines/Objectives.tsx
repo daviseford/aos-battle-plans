@@ -13,7 +13,7 @@ const Objectives: React.FC<IObjectivesProps> = props => {
 
   const color = '#001870'
 
-  const radius = 6 / canvas.conversionPercentX
+  const radius = 6 / canvas.conversionPercentY
 
   return (
     <Layer>

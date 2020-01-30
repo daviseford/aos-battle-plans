@@ -24,11 +24,11 @@ const BaseGroupComponent: React.FC<ICCC> = props => {
     // Determine if this is a Circle or Oval base
     if (baseSizeMM[0] === baseSizeMM[1]) {
       // Circle
-      const convertedBaseSize = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
+      const convertedBaseSize = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentY / 2
       setBaseRadius([convertedBaseSize, convertedBaseSize])
     } else {
       // Oval
-      const convertedBaseSizeX = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentX / 2
+      const convertedBaseSizeX = mmToInches(baseGroup.baseSizeMM[0]) / canvas.conversionPercentY / 2
       const convertedBaseSizeY = mmToInches(baseGroup.baseSizeMM[1]) / canvas.conversionPercentY / 2
       setBaseRadius([convertedBaseSizeX, convertedBaseSizeY])
     }
