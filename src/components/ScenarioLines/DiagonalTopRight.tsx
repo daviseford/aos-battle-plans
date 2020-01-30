@@ -5,9 +5,10 @@ import { selectors } from 'ducks'
 import { IDiagonalLineInfo, getDiagonalInfo } from 'utils/getLineInfo'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-// import { ZoneRect, EnemyZone } from './ZoneRect'
+import { ZoneRect, EnemyZone } from './ZoneRect'
 import Objectives from './Objectives'
 import { IScenario } from 'types/scenario'
+import { ENEMY_AREA_FILL_COLOR, NEUTRAL_AREA_FILL_COLOR, STAGE_BG_COLOR } from 'theme/colors'
 
 interface IScenarioLines {
   scenario: IScenario
@@ -41,7 +42,7 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
   console.log(lineInfo, canvas)
   return (
     <>
-      {/* <Zones {...lineInfo} /> */}
+      <Zones {...lineInfo} />
       <Objectives objectives={objectives} canvas={canvas} />
 
       <Layer>
@@ -62,7 +63,7 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         {sideOffsetX > 0 ? (
           <>
             <Line points={[sideOffsetX, sideOffsetY, sideOffsetX, canvasHeight - sideOffsetY]} stroke="red" />
-            <Line points={[sideOffsetX, sideOffsetY, canvasWidth - sideOffsetY, sideOffsetY]} stroke="red" />
+            <Line points={[sideOffsetX, sideOffsetY, canvasWidth - sideOffsetX, sideOffsetY]} stroke="red" />
 
             <Line
               points={[
@@ -107,8 +108,8 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
             />
             <Line
               points={[
-                divider.startX,
-                divider.startY + dividerOffsetY,
+                divider.startX + dividerOffsetX,
+                divider.startY,
                 divider.endX,
                 divider.endY + dividerOffsetY,
               ]}
@@ -125,47 +126,83 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 }
 
 /** All of the zones we need to display for the user */
-// const Zones: React.FC<IDiagonalLineInfo> = props => {
-//   const { dividerOffset, divider, sideOffsetX, playerOffset, canvasWidth, canvasHeight } = props
+const Zones: React.FC<IDiagonalLineInfo> = props => {
+  const {
+    dividerOffsetY,
+    dividerOffsetX,
+    divider,
+    sideOffsetX,
+    sideOffsetY,
+    canvasWidth,
+    canvasHeight,
+  } = props
 
-//   return (
-//     <>
-//       <Layer>
-//         {/* Enemy area */}
-//         <EnemyZone x={0} y={divider + 1} width={canvasWidth} height={canvasHeight} />
+  return (
+    <>
+      <Layer>
+        {/* Friendly area */}
+        {/* <Line
+          points={[
+            divider.startX,
+            divider.startY - dividerOffsetY,
+            divider.endX - dividerOffsetX,
+            divider.endY,
+            sideOffsetX,
+            sideOffsetY,
+          ]}
+          fill={ENEMY_AREA_FILL_COLOR}
+          closed={true}
+        /> */}
 
-//         {/* Player edge */}
-//         {playerOffset > 0 && <ZoneRect x={0} y={0} width={canvasWidth} height={playerOffset} />}
-//         {/* Enemy edge */}
-//         {playerOffset > 0 && (
-//           <ZoneRect x={0} y={canvasHeight - playerOffset} width={canvasWidth} height={playerOffset} />
-//         )}
+        {/* Enemy area */}
+        <Line
+          points={[
+            divider.startX + dividerOffsetX,
+            divider.startY,
+            divider.endX,
+            divider.endY + dividerOffsetY,
+            canvasWidth - sideOffsetX,
+            canvasHeight - sideOffsetY,
+          ]}
+          fill={ENEMY_AREA_FILL_COLOR}
+          closed={true}
+        />
 
-//         {/* Side */}
-//         {sideOffsetX > 0 && (
-//           <>
-//             {/* Player */}
-//             <ZoneRect x={0} y={0} width={sideOffsetX} height={divider} />
-//             <ZoneRect x={canvasWidth - sideOffsetX} y={0} width={sideOffsetX} height={divider} />
-//             {/* Enemy */}
-//             <ZoneRect x={0} y={divider + dividerOffset} width={sideOffsetX} height={divider} />
-//             <ZoneRect
-//               x={canvasWidth - sideOffsetX}
-//               y={divider + dividerOffset}
-//               width={sideOffsetX}
-//               height={divider}
-//             />
-//           </>
-//         )}
+        {/* Side */}
+        {sideOffsetX + sideOffsetY > 0 && (
+          <>
+            <ZoneRect x={0} y={0} width={canvasWidth} height={sideOffsetY} />
+            <ZoneRect x={0} y={canvasHeight - sideOffsetY} width={canvasWidth} height={sideOffsetY} />
+            <ZoneRect x={0} y={0} width={sideOffsetX} height={canvasHeight} />
+            <ZoneRect x={canvasWidth - sideOffsetX} y={0} width={sideOffsetX} height={canvasHeight} />
+          </>
+        )}
 
-//         {/* Divider */}
-//         {dividerOffset > 0 && (
-//           <ZoneRect x={0} y={divider - dividerOffset} width={canvasWidth} height={dividerOffset * 2} />
-//         )}
-//       </Layer>
-//     </>
-//   )
-// }
+        {/* Divider */}
+        {dividerOffsetX > 0 && (
+          <Line
+            points={[
+              divider.startX,
+              divider.startY,
+              divider.startX,
+              divider.startY - dividerOffsetY,
+              divider.endX - dividerOffsetX,
+              divider.endY,
+              divider.endX,
+              divider.endY,
+              divider.endX,
+              divider.endY + dividerOffsetY,
+              divider.startX + dividerOffsetX,
+              divider.startY,
+            ]}
+            fill={NEUTRAL_AREA_FILL_COLOR}
+            closed={true}
+          />
+        )}
+      </Layer>
+    </>
+  )
+}
 
 const mapStateToProps = (state: IStore, ownProps) => ({
   ...ownProps,

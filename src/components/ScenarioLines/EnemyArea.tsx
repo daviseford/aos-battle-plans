@@ -1,5 +1,6 @@
 import React from 'react'
 import { Rect } from 'react-konva'
+import { ENEMY_AREA_FILL_COLOR } from 'theme/colors'
 
 interface IEnemyAreaProps {
   x: number
@@ -8,8 +9,8 @@ interface IEnemyAreaProps {
   height: number
 }
 
-const ZoneRect: React.FC<IEnemyAreaProps> = props => {
-  return <Rect {...props} fill={'#FFD9D9'} opacity={1} />
+const EnemyArea: React.FC<IEnemyAreaProps> = props => {
+  return <Rect {...props} fill={ENEMY_AREA_FILL_COLOR} opacity={1} />
 }
 
-export default ZoneRect
+export default EnemyArea

@@ -16,3 +16,6 @@ export const PICKER_COLORS = [
   '#795548',
   '#607d8b',
 ]
+
+export const ENEMY_AREA_FILL_COLOR = '#FFD9D9'
+export const NEUTRAL_AREA_FILL_COLOR = '#d6d5d0'
