@@ -96,7 +96,6 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         {/* This line is created when you need to deploy X inches from the midline  */}
         {dividerOffsetX > 0 && (
           <>
-            {/* <Line points={[divider.startX, divider.startY, divider.endX, divider.endY]} stroke="black" /> */}
             <Line
               points={[
                 divider.startX,
@@ -106,15 +105,15 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
               ]}
               stroke="red"
             />
-            {/* <Line
+            <Line
               points={[
-                sideOffsetX,
-                divider + dividerOffset,
-                canvasWidth - sideOffsetX,
-                divider + dividerOffset,
+                divider.startX,
+                divider.startY + dividerOffsetY,
+                divider.endX,
+                divider.endY + dividerOffsetY,
               ]}
               stroke="red"
-            /> */}
+            />
           </>
         )}
 

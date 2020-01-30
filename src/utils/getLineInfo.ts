@@ -118,7 +118,7 @@ export const getDiagonalInfo = (canvas: ICanvasDimensions, scenario: IScenario):
 const convertObjectives = (canvas: ICanvasDimensions, scenario: IScenario): IObjective[] => {
   return scenario.objectives.map(o => ({
     x: o.x / canvas.conversionPercentX,
-    y: o.y / canvas.conversionPercentY,
+    y: o.y / canvas.conversionPercentX,
     label: o.label || undefined,
   }))
 }

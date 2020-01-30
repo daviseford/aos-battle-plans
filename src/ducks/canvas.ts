@@ -54,7 +54,7 @@ const setCanvas = (state: ICanvasStore, action: { payload: number }) => {
   const canvasWidth = action.payload // window.innerWidth
   const canvasHeight = canvasWidth * (TABLE_HEIGHT_FULL / TABLE_WIDTH_FULL)
   const conversionPercentX = TABLE_WIDTH_FULL / canvasWidth
-  const conversionPercentY = TABLE_HEIGHT_FULL / canvasHeight
+  const conversionPercentY = TABLE_WIDTH_FULL / canvasHeight
 
   state.canvas = {
     canvasWidth,
