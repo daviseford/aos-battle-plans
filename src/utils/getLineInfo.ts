@@ -69,7 +69,8 @@ export interface IDiagonalLineInfo {
   }
   sideOffsetX: number
   sideOffsetY: number
-  dividerOffset: number
+  dividerOffsetX: number
+  dividerOffsetY: number
   canvasWidth: number
   canvasHeight: number
   objectives: IObjective[]
@@ -98,13 +99,15 @@ export const getDiagonalInfo = (canvas: ICanvasDimensions, scenario: IScenario):
 
   const sideOffsetY = fromSideInches ? fromSideInches / canvas.conversionPercentY : 0
   const sideOffsetX = fromSideInches ? fromSideInches / canvas.conversionPercentX : 0
-  const dividerOffset = fromDividerInches ? fromDividerInches / canvas.conversionPercentX : 0
+  const dividerOffsetX = fromDividerInches ? fromDividerInches / canvas.conversionPercentX : 0
+  const dividerOffsetY = fromDividerInches ? fromDividerInches / canvas.conversionPercentY : 0
 
   return {
     canvasHeight: canvas.canvasHeight,
     canvasWidth: canvas.canvasWidth,
     divider,
-    dividerOffset,
+    dividerOffsetX,
+    dividerOffsetY,
     objectives: convertObjectives(canvas, scenario),
     sideOffsetX,
     sideOffsetY,

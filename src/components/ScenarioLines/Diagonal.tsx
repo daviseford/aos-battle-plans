@@ -27,8 +27,18 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
 
   if (!canvas || !lineInfo) return <></>
 
-  const { dividerOffset, divider, sideOffsetY, sideOffsetX, canvasWidth, canvasHeight, objectives } = lineInfo
+  const {
+    dividerOffsetX,
+    dividerOffsetY,
+    divider,
+    sideOffsetY,
+    sideOffsetX,
+    canvasWidth,
+    canvasHeight,
+    objectives,
+  } = lineInfo
 
+  console.log(lineInfo, canvas)
   return (
     <>
       {/* <Zones {...lineInfo} /> */}
@@ -84,18 +94,19 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
         )}
 
         {/* This line is created when you need to deploy X inches from the midline  */}
-        {/* {dividerOffset > 0 && (
+        {dividerOffsetX > 0 && (
           <>
+            {/* <Line points={[divider.startX, divider.startY, divider.endX, divider.endY]} stroke="black" /> */}
             <Line
               points={[
                 sideOffsetX,
-                divider - dividerOffset,
-                canvasWidth - sideOffsetX,
-                divider - dividerOffset,
+                divider.startY - dividerOffsetY - sideOffsetY,
+                divider.endX - dividerOffsetX - sideOffsetX,
+                divider.endY + sideOffsetY,
               ]}
               stroke="red"
             />
-            <Line
+            {/* <Line
               points={[
                 sideOffsetX,
                 divider + dividerOffset,
@@ -103,9 +114,9 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
                 divider + dividerOffset,
               ]}
               stroke="red"
-            />
+            /> */}
           </>
-        )} */}
+        )}
 
         {/* This layer is the dividing line */}
         <Line points={[divider.startX, divider.startY, divider.endX, divider.endY]} stroke="black" />
