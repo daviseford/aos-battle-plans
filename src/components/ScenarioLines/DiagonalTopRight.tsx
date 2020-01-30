@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Layer, Line, Text } from 'react-konva'
+import { Layer, Line } from 'react-konva'
 import { connect } from 'react-redux'
 import { selectors } from 'ducks'
 import { IDiagonalLineInfo, getDiagonalInfo } from 'utils/getLineInfo'
 import { ICanvasDimensions } from 'types/canvas'
 import { IStore } from 'types/store'
-import { ZoneRect, EnemyZone } from './ZoneRect'
+import { ZoneRect } from './ZoneRect'
 import Objectives from './Objectives'
 import { IScenario } from 'types/scenario'
-import { ENEMY_AREA_FILL_COLOR, NEUTRAL_AREA_FILL_COLOR, STAGE_BG_COLOR } from 'theme/colors'
+import { ENEMY_AREA_FILL_COLOR, NEUTRAL_AREA_FILL_COLOR } from 'theme/colors'
 
 interface IScenarioLines {
   scenario: IScenario
