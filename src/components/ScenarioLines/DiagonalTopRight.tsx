@@ -46,19 +46,6 @@ const DiagonalScenarioLinesComponent: React.FC<IScenarioLines> = props => {
       <Objectives objectives={objectives} canvas={canvas} />
 
       <Layer>
-        {/* Enemy Deployment Zone text */}
-        {/* <Text
-          align={'center'}
-          fill="white"
-          fontFamily={'Calibri'}
-          fontSize={36}
-          fontStyle={'normal'}
-          stroke="white"
-          text={'ENEMY AREA'}
-          x={canvasWidth / 2 - 100}
-          y={canvasHeight / 2}
-        /> */}
-
         {/* These lines are created when you have to deploy X inches from the sides  */}
         {sideOffsetX > 0 ? (
           <>

@@ -86,7 +86,7 @@ const SingleRect: React.FC<IRect> = props => {
           // @ts-ignore
           const rulerWidthInches = node.width() * canvas.conversionPercentX
           // @ts-ignore
-          const rulerHeightInches = node.height() * canvas.conversionPercentY
+          const rulerHeightInches = node.height() * canvas.conversionPercentX
           const snapWidth = getSnapDimensions(rulerWidthInches, canvas.conversionPercentX)
           const snapHeight = getSnapDimensions(rulerHeightInches, canvas.conversionPercentY)
 

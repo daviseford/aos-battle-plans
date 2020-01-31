@@ -10,18 +10,34 @@ import { IScenario } from 'types/scenario'
 
 const Scenarios: IScenario[] = [
   {
-    name: `Places of Arcane Power`,
+    name: `Places of Arcane Power (2019)`,
     matchedPlay: true,
     orientation: `diagonalTopRight`,
     setupRestrictions: {
       fromDividerInches: 12,
-      fromSideInches: 3,
+      fromSideInches: 0,
       fromPlayerInches: 0, // Unused in Diagonal layouts
     },
     objectives: [
       { x: 18, y: TABLE_HEIGHT_HALF + 12 },
       { x: TABLE_WIDTH_HALF, y: TABLE_HEIGHT_HALF },
       { x: TABLE_WIDTH_FULL - 18, y: TABLE_HEIGHT_HALF - 12 },
+    ],
+  },
+  {
+    name: `Total Commitment (2019)`,
+    matchedPlay: true,
+    orientation: `diagonalTopRight`,
+    setupRestrictions: {
+      fromDividerInches: 9,
+      fromSideInches: 0,
+      fromPlayerInches: 0, // Unused in Diagonal layouts
+    },
+    objectives: [
+      { x: 30, y: 6 },
+      { x: 6, y: TABLE_HEIGHT_FULL - 24 },
+      { x: TABLE_WIDTH_FULL - 6, y: 24 },
+      { x: TABLE_WIDTH_FULL - 30, y: TABLE_HEIGHT_FULL - 6 },
     ],
   },
   {
@@ -75,7 +91,7 @@ const Scenarios: IScenario[] = [
     ],
   },
   {
-    name: `Total Commitment`,
+    name: `Total Commitment (2018)`,
     matchedPlay: true,
     orientation: `horizontal`,
     setupRestrictions: {
