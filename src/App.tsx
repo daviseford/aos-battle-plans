@@ -71,6 +71,13 @@ const AppComponent: React.FC<IApp> = props => {
     downloadURI(dataURL, `${scenario.name}.png`)
   }
 
+  const goToKofi = e => {
+    window.open('https://ko-fi.com/darrenwatson', '_blank')
+  }
+  const goToPaypal = e => {
+    window.open('https://www.paypal.me/daviseford', '_blank')
+  }
+
   return (
     <>
       <PageHeader />
@@ -97,8 +104,14 @@ const AppComponent: React.FC<IApp> = props => {
         <div className="col-3">
           <GenericButton onClick={handleSaveImage}>
             <FaFileImage className="mr-2" />
-            Save
+            Save PNG
           </GenericButton>
+        </div>
+        <div className="col-3">
+          <GenericButton onClick={goToKofi}>Darren's Ko-Fi</GenericButton>
+        </div>
+        <div className="col-3">
+          <GenericButton onClick={goToPaypal}>Davis' PayPal</GenericButton>
         </div>
       </div>
 
